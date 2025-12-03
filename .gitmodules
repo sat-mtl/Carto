@@ -1,0 +1,3 @@
+[submodule "point-mapper-godot/godot-orbbec"]
+	path = point-mapper-godot/godot-orbbec
+	url = git@gitlab.com:sat-mtl/tools/livepose/godot-orbbec.git
