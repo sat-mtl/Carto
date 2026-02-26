@@ -1,0 +1,3 @@
+[submodule "point-mapper-godot/godot-orbbec"]
+	path = point-mapper-godot/godot-orbbec
+	url = https://github.com/sat-mtl/godot-orbbec.git
