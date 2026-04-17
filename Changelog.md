@@ -15,7 +15,7 @@ Features
 - All UI buttons work !38
 - Improve build script for godot-orbbec !15
 - Remove camera IP from list when selected !20
-- Adjust point transparency
+- Adjust point transparency !31
 
 
 ## PointMapper 0.0.0 (2026-02-27)
