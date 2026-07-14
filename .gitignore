@@ -3,3 +3,4 @@ point-mapper-godot/pointmapper-godot-project/bin/Windows
 point-mapper-godot/pointmapper-godot-project/bin/Linux
 *.dll*.TMP
 *~*.dll
+*.tmp
