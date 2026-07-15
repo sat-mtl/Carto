@@ -2,7 +2,7 @@
 
 cd /d "%~dp0"
 
-pushd "%~dp03dparty\godot-orbbec"
+pushd "%~dp03rdparty\godot-orbbec"
 
 cmd /c call "build_windows.cmd"
 
