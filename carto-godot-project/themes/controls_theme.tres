@@ -1,0 +1,73 @@
+[gd_resource type="Theme" format=3 uid="uid://bl51ay8kbmrp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_byybw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rfs3n"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2c3jx"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.225, 0.225, 0.225, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1kff2"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w2pv8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tea7j"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cl2ei"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4r7af"]
+
+[resource]
+Button/font_sizes/font_size = 12
+Label/font_sizes/font_size = 12
+LineEdit/font_sizes/font_size = 12
+SpinBox/colors/down_disabled_icon_modulate = Color(0.875, 0.875, 0.875, 0.5)
+SpinBox/colors/down_hover_icon_modulate = Color(0.95, 0.95, 0.95, 1)
+SpinBox/colors/down_icon_modulate = Color(0.875, 0.875, 0.875, 1)
+SpinBox/colors/down_pressed_icon_modulate = Color(0.95, 0.95, 0.95, 1)
+SpinBox/colors/up_disabled_icon_modulate = Color(0.875, 0.875, 0.875, 0.5)
+SpinBox/colors/up_hover_icon_modulate = Color(0.95, 0.95, 0.95, 1)
+SpinBox/colors/up_icon_modulate = Color(0.875, 0.875, 0.875, 1)
+SpinBox/colors/up_pressed_icon_modulate = Color(0.95, 0.95, 0.95, 1)
+SpinBox/constants/buttons_vertical_separation = 0
+SpinBox/constants/buttons_width = 0
+SpinBox/constants/field_and_buttons_separation = 0
+SpinBox/constants/set_min_buttons_width_from_icons = 1
+SpinBox/icons/down = null
+SpinBox/icons/down_disabled = null
+SpinBox/icons/down_hover = null
+SpinBox/icons/down_pressed = null
+SpinBox/icons/up = null
+SpinBox/icons/up_disabled = null
+SpinBox/icons/up_hover = null
+SpinBox/icons/up_pressed = null
+SpinBox/icons/updown = null
+SpinBox/styles/down_background = SubResource("StyleBoxEmpty_byybw")
+SpinBox/styles/down_background_disabled = SubResource("StyleBoxEmpty_rfs3n")
+SpinBox/styles/down_background_hovered = SubResource("StyleBoxFlat_2c3jx")
+SpinBox/styles/down_background_pressed = SubResource("StyleBoxFlat_1kff2")
+SpinBox/styles/field_and_buttons_separator = SubResource("StyleBoxEmpty_w2pv8")
+SpinBox/styles/up_background = SubResource("StyleBoxEmpty_tea7j")
+SpinBox/styles/up_background_disabled = SubResource("StyleBoxEmpty_cl2ei")
+SpinBox/styles/up_background_hovered = SubResource("StyleBoxFlat_2c3jx")
+SpinBox/styles/up_background_pressed = SubResource("StyleBoxFlat_1kff2")
+SpinBox/styles/up_down_buttons_separator = SubResource("StyleBoxEmpty_4r7af")

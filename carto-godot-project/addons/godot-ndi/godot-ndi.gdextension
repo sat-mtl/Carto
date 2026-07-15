@@ -1,0 +1,21 @@
+[configuration]
+
+entry_symbol = "godot_ndi_init"
+compatibility_minimum = "4.4"
+reloadable = false
+
+[libraries]
+
+linux.x86_64.single.debug = "bin/linux/libgodot-ndi.linux.template_debug.x86_64.so"
+linux.arm64.single.debug = "bin/linux/libgodot-ndi.linux.template_debug.arm64.so"
+linux.x86_64.single.release = "bin/linux/libgodot-ndi.linux.template_release.x86_64.so"
+linux.arm64.single.release = "bin/linux/libgodot-ndi.linux.template_release.arm64.so"
+
+windows.x86_64.single = "bin/windows/libgodot-ndi.windows.template_debug.x86_64.dll"
+macos.single = "bin/macos/libgodot-ndi.macos.template_debug.universal.dylib"
+
+[icons]
+
+VideoStreamNDI = "icons/VideoStreamNDI.svg"
+NDIOutput = "icons/NDIOutput.svg"
+NDIFinder = "icons/NDIFinder.svg"

@@ -1,0 +1,107 @@
+[gd_scene format=3 uid="uid://ce1akvjroa744"]
+
+[ext_resource type="Script" uid="uid://c04sqq1o7xoax" path="res://scripts/ndi_output.gd" id="1_ivnjr"]
+[ext_resource type="Shader" uid="uid://dmfmn62og8wys" path="res://shaders/ndi_colors_canvas.gdshader" id="2_ivnjr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c6mop"]
+bg_color = Color(0.53200006, 0.22000003, 1, 0.29803923)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7kk6q"]
+shader = ExtResource("2_ivnjr")
+
+[node name="NDI_output" type="MarginContainer" unique_id=1201868779]
+offset_right = 463.0
+offset_bottom = 94.0
+script = ExtResource("1_ivnjr")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1194624284]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_c6mop")
+
+[node name="SidePanel" type="HBoxContainer" parent="PanelContainer" unique_id=1453105239]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/SidePanel" unique_id=46174634]
+layout_mode = 2
+
+[node name="OutputNum" type="Label" parent="PanelContainer/SidePanel/PanelContainer" unique_id=2138471374]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 12
+text = "1"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/SidePanel" unique_id=1129284600]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/SidePanel" unique_id=645300171]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SettingsContainer" type="GridContainer" parent="PanelContainer/SidePanel/VBoxContainer" unique_id=565246959]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 21
+columns = 2
+
+[node name="ActiveLabel" type="Label" parent="PanelContainer/SidePanel/VBoxContainer/SettingsContainer" unique_id=133286765]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Active"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/SidePanel/VBoxContainer/SettingsContainer" unique_id=2038735178]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ActiveToggle" type="CheckButton" parent="PanelContainer/SidePanel/VBoxContainer/SettingsContainer/HBoxContainer" unique_id=668070585]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 12
+
+[node name="DeleteButton" type="Button" parent="PanelContainer/SidePanel/VBoxContainer/SettingsContainer/HBoxContainer" unique_id=48615214]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+text = "  X  "
+
+[node name="NameLabel" type="Label" parent="PanelContainer/SidePanel/VBoxContainer/SettingsContainer" unique_id=1030313071]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Name"
+
+[node name="NameLineEdit" type="LineEdit" parent="PanelContainer/SidePanel/VBoxContainer/SettingsContainer" unique_id=866455009]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Carto"
+
+[node name="ViewLabel" type="Label" parent="PanelContainer/SidePanel/VBoxContainer/SettingsContainer" unique_id=2063698977]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "View"
+
+[node name="ViewOptionButton" type="OptionButton" parent="PanelContainer/SidePanel/VBoxContainer/SettingsContainer" unique_id=1769522945]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FeedContainer" type="MarginContainer" parent="PanelContainer/SidePanel/VBoxContainer" unique_id=2035564979]
+layout_mode = 2
+
+[node name="NDITextureRect" type="TextureRect" parent="PanelContainer/SidePanel/VBoxContainer/FeedContainer" unique_id=1048361127]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_7kk6q")
+layout_mode = 2
+size_flags_vertical = 3
+expand_mode = 5
+
+[connection signal="toggled" from="PanelContainer/SidePanel/VBoxContainer/SettingsContainer/HBoxContainer/ActiveToggle" to="." method="_on_active_toggle_toggled"]
+[connection signal="pressed" from="PanelContainer/SidePanel/VBoxContainer/SettingsContainer/HBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
+[connection signal="focus_exited" from="PanelContainer/SidePanel/VBoxContainer/SettingsContainer/NameLineEdit" to="." method="_on_ip_line_edit_focus_exited"]
+[connection signal="text_submitted" from="PanelContainer/SidePanel/VBoxContainer/SettingsContainer/NameLineEdit" to="." method="_on_ip_line_edit_text_submitted"]
+[connection signal="item_selected" from="PanelContainer/SidePanel/VBoxContainer/SettingsContainer/ViewOptionButton" to="." method="_on_view_option_button_item_selected"]

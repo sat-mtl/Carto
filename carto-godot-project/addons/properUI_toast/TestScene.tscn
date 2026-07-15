@@ -1,0 +1,87 @@
+[gd_scene load_steps=2 format=3 uid="uid://dbtp7062pwa2f"]
+
+[sub_resource type="GDScript" id="GDScript_rqjmb"]
+script/source = "extends Control
+
+@onready var grid_container: GridContainer = $CenterContainer/PanelContainer/MarginContainer/VBoxContainer/GridContainer
+
+func _ready() -> void:
+	# Note: This requires the 'ToastManager' autoload to be enabled in Project Settings.
+	# The plugin script handles adding it, but if you are running this scene alone 
+	# without the plugin enabled, it might fail.
+	
+	_create_button(\"Info Toast\", func(): ToastManager.show_toast(\"This is an info message.\", \"info\"))
+	_create_button(\"Success Toast\", func(): ToastManager.show_toast(\"Operation completed successfully!\", \"success\"))
+	_create_button(\"Warning Toast\", func(): ToastManager.show_toast(\"Disk space is running low.\", \"warning\"))
+	_create_button(\"Error Toast\", func(): ToastManager.show_toast(\"Failed to connect to server.\", \"error\"))
+	
+	_create_button(\"Toast with Action\", func(): 
+		ToastManager.show_toast(\"File deleted.\", \"info\", {
+			\"action\": { \"text\": \"Undo\", \"name\": \"undo\" },
+			\"display_sec\": 5.0
+		}))
+		
+	_create_button(\"Persistent Toast\", func():
+		ToastManager.show_toast(\"I will stay until dismissed.\", \"info\", {
+			\"persistent\": true
+		}))
+
+	_create_button(\"Top Left\", func(): ToastManager.show_toast(\"Hello from Top Left\", \"info\", {}, \"TL\"))
+	_create_button(\"Top Center\", func(): ToastManager.show_toast(\"Hello from Top Center\", \"success\", {}, \"T\"))
+	_create_button(\"Bottom Left\", func(): ToastManager.show_toast(\"Hello from Bottom Left\", \"warning\", {}, \"BL\"))
+	
+	_create_button(\"Flood Queue\", func():
+		for i in range(5):
+			ToastManager.show_toast(\"Queued Message %d\" % i, \"info\")
+	)
+	
+	_create_button(\"Clear All\", func(): ToastManager.clear_all())
+
+func _create_button(text: String, callable: Callable) -> void:
+	var btn := Button.new()
+	btn.text = text
+	btn.pressed.connect(callable)
+	grid_container.add_child(btn)
+"
+
+[node name="TestScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_rqjmb")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "ProperUI Toast Manager Test"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+columns = 2

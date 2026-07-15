@@ -1,0 +1,345 @@
+[gd_scene load_steps=26 format=3 uid="uid://jygsbdchwydl"]
+
+[ext_resource type="Material" uid="uid://gtwtuc5g054s" path="res://scenes/materials/manipulator_gizmo_z_material.tres" id="1_0gsx2"]
+[ext_resource type="Script" uid="uid://5jqnk33i3wof" path="res://scripts/manipulator_gizmo.gd" id="1_wmi2y"]
+[ext_resource type="Material" uid="uid://c5fqdipv5locw" path="res://scenes/materials/manipulator_gizmo_x_material.tres" id="2_b74n8"]
+[ext_resource type="Shader" uid="uid://bipp3mqjah0ak" path="res://shaders/manipulator_gizmo.gdshader" id="2_wmi2y"]
+[ext_resource type="Material" uid="uid://ccs7005fbtx1u" path="res://scenes/materials/manipulator_gizmo_y_material.tres" id="3_wmi2y"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nkc7i"]
+shader = ExtResource("2_wmi2y")
+
+[sub_resource type="Environment" id="Environment_pho41"]
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.5559
+volumetric_fog_emission_energy = 0.3
+
+[sub_resource type="World3D" id="World3D_nkc7i"]
+environment = SubResource("Environment_pho41")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wmi2y"]
+shading_mode = 0
+albedo_color = Color(0.3234, 0.53132343, 0.98, 1)
+uv1_scale = Vector3(4.02, 4.02, 4.02)
+uv1_offset = Vector3(0.035, 0.07, -0.28)
+uv1_triplanar = true
+texture_repeat = false
+billboard_mode = 1
+stencil_mode = 3
+stencil_flags = 2
+
+[sub_resource type="SphereMesh" id="SphereMesh_n1w1t"]
+material = SubResource("StandardMaterial3D_wmi2y")
+flip_faces = true
+radius = 0.25
+height = 0.5
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_b74n8"]
+radius = 0.25
+
+[sub_resource type="SphereMesh" id="SphereMesh_0samr"]
+material = ExtResource("2_b74n8")
+flip_faces = true
+radius = 0.25
+height = 0.5
+
+[sub_resource type="SphereMesh" id="SphereMesh_jlocd"]
+material = ExtResource("3_wmi2y")
+flip_faces = true
+radius = 0.25
+height = 0.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_b5mjm"]
+material = ExtResource("2_b74n8")
+size = Vector3(0.8, 0.05, 0.05)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2rhx1"]
+material = ExtResource("3_wmi2y")
+size = Vector3(0.05, 0.8, 0.05)
+
+[sub_resource type="BoxMesh" id="BoxMesh_v0cva"]
+material = ExtResource("1_0gsx2")
+size = Vector3(0.05, 0.05, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2mer6"]
+render_priority = 1
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0.34117648, 0.34117648, 1)
+grow = true
+grow_amount = 0.025
+stencil_mode = 3
+stencil_flags = 1
+stencil_compare = 5
+stencil_reference = 2
+metadata/_stencil_owned = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jlocd"]
+next_pass = SubResource("StandardMaterial3D_2mer6")
+shading_mode = 0
+albedo_color = Color(0.58291596, 0, 0.090620704, 1)
+stencil_mode = 1
+stencil_flags = 2
+stencil_reference = 2
+stencil_color = Color(1, 0.34117648, 0.34117648, 1)
+stencil_outline_thickness = 0.025
+
+[sub_resource type="SphereMesh" id="SphereMesh_rycw3"]
+material = SubResource("StandardMaterial3D_jlocd")
+radius = 0.225
+height = 0.45
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hitg7"]
+render_priority = 1
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.56078434, 1, 0.56078434, 1)
+grow = true
+grow_amount = 0.025
+stencil_mode = 3
+stencil_flags = 1
+stencil_compare = 5
+stencil_reference = 3
+metadata/_stencil_owned = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b74n8"]
+next_pass = SubResource("StandardMaterial3D_hitg7")
+shading_mode = 0
+albedo_color = Color(0.3192, 0.57, 0.3192, 1)
+stencil_mode = 1
+stencil_flags = 2
+stencil_reference = 3
+stencil_color = Color(0.56078434, 1, 0.56078434, 1)
+stencil_outline_thickness = 0.025
+
+[sub_resource type="SphereMesh" id="SphereMesh_x53vj"]
+material = SubResource("StandardMaterial3D_b74n8")
+radius = 0.225
+height = 0.45
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x0qwp"]
+render_priority = 1
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.32156864, 0.5294118, 0.98039216, 1)
+grow = true
+grow_amount = 0.025
+stencil_mode = 3
+stencil_flags = 1
+stencil_compare = 5
+stencil_reference = 6
+metadata/_stencil_owned = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v0cva"]
+next_pass = SubResource("StandardMaterial3D_x0qwp")
+shading_mode = 0
+albedo_color = Color(0.059709467, 0.24412191, 0.70400524, 1)
+stencil_mode = 1
+stencil_flags = 2
+stencil_reference = 6
+stencil_color = Color(0.32156864, 0.5294118, 0.98039216, 1)
+stencil_outline_thickness = 0.025
+
+[sub_resource type="SphereMesh" id="SphereMesh_th16o"]
+material = SubResource("StandardMaterial3D_v0cva")
+radius = 0.225
+height = 0.45
+
+[node name="ManipulatorGizmo" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 512.0
+offset_bottom = 512.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_wmi2y")
+
+[node name="HighlightCircle" type="ColorRect" parent="."]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_nkc7i")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+mouse_target = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+unique_name_in_owner = true
+own_world_3d = true
+world_3d = SubResource("World3D_nkc7i")
+transparent_bg = true
+handle_input_locally = false
+scaling_3d_scale = 2.0
+physics_object_picking = true
+physics_object_picking_sort = true
+physics_object_picking_first_only = true
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.537)
+cull_mask = 524288
+projection = 1
+current = true
+fov = 85.1
+size = 3.0
+
+[node name="ZSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+layers = 524288
+mesh = SubResource("SphereMesh_n1w1t")
+skeleton = NodePath("../YSphere")
+
+[node name="Label3D" type="Label3D" parent="SubViewportContainer/SubViewport/ZSphere"]
+layers = 524288
+sorting_offset = 7.785
+billboard = 1
+render_priority = 1
+modulate = Color(0, 0, 0, 1)
+text = "Z
+"
+font_size = 88
+outline_size = 10
+
+[node name="ZSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/ZSphere"]
+unique_name_in_owner = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/ZSphere/ZSphereArea3D"]
+shape = SubResource("SphereShape3D_b74n8")
+
+[node name="XSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+layers = 524288
+mesh = SubResource("SphereMesh_0samr")
+skeleton = NodePath("../YSphere")
+
+[node name="Label3D" type="Label3D" parent="SubViewportContainer/SubViewport/XSphere"]
+layers = 524288
+billboard = 1
+alpha_cut = 2
+render_priority = 2
+outline_render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "X
+"
+font_size = 88
+outline_size = 10
+
+[node name="XSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/XSphere"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/XSphere/XSphereArea3D"]
+shape = SubResource("SphereShape3D_b74n8")
+
+[node name="YSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+layers = 524288
+mesh = SubResource("SphereMesh_jlocd")
+skeleton = NodePath("")
+
+[node name="Label3D" type="Label3D" parent="SubViewportContainer/SubViewport/YSphere"]
+layers = 524288
+billboard = 1
+alpha_cut = 2
+render_priority = 2
+outline_render_priority = 2
+modulate = Color(0, 0, 0, 1)
+text = "Y"
+font_size = 88
+outline_size = 10
+
+[node name="YSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/YSphere"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/YSphere/YSphereArea3D"]
+shape = SubResource("SphereShape3D_b74n8")
+
+[node name="XStick" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+layers = 524288
+mesh = SubResource("BoxMesh_b5mjm")
+skeleton = NodePath("")
+
+[node name="YStick" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+layers = 524288
+mesh = SubResource("BoxMesh_2rhx1")
+skeleton = NodePath("")
+
+[node name="ZStick" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.4)
+layers = 524288
+mesh = SubResource("BoxMesh_v0cva")
+skeleton = NodePath("")
+
+[node name="XMinusSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+layers = 524288
+mesh = SubResource("SphereMesh_rycw3")
+skeleton = NodePath("../YMinusSphere")
+
+[node name="XMinuxSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/XMinusSphere"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/XMinusSphere/XMinuxSphereArea3D"]
+shape = SubResource("SphereShape3D_b74n8")
+
+[node name="YMinusSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+layers = 524288
+mesh = SubResource("SphereMesh_x53vj")
+skeleton = NodePath("")
+
+[node name="YMinusSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/YMinusSphere"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/YMinusSphere/YMinusSphereArea3D"]
+shape = SubResource("SphereShape3D_b74n8")
+
+[node name="ZMinusSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+layers = 524288
+mesh = SubResource("SphereMesh_th16o")
+skeleton = NodePath("../YMinusSphere")
+
+[node name="ZMinusSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/ZMinusSphere"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/ZMinusSphere/ZMinusSphereArea3D"]
+shape = SubResource("SphereShape3D_b74n8")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="gui_input" from="HighlightCircle" to="." method="_on_gui_input"]
+[connection signal="gui_input" from="SubViewportContainer" to="." method="_on_gui_input"]
+[connection signal="input_event" from="SubViewportContainer/SubViewport/ZSphere/ZSphereArea3D" to="." method="_on_z_sphere_area_3d_input_event"]
+[connection signal="mouse_entered" from="SubViewportContainer/SubViewport/ZSphere/ZSphereArea3D" to="." method="_on_z_sphere_area_3d_mouse_entered"]
+[connection signal="mouse_exited" from="SubViewportContainer/SubViewport/ZSphere/ZSphereArea3D" to="." method="_on_z_sphere_area_3d_mouse_exited"]
+[connection signal="input_event" from="SubViewportContainer/SubViewport/XSphere/XSphereArea3D" to="." method="_on_x_sphere_area_3d_input_event"]
+[connection signal="mouse_entered" from="SubViewportContainer/SubViewport/XSphere/XSphereArea3D" to="." method="_on_x_sphere_area_3d_mouse_entered"]
+[connection signal="mouse_exited" from="SubViewportContainer/SubViewport/XSphere/XSphereArea3D" to="." method="_on_x_sphere_area_3d_mouse_exited"]
+[connection signal="input_event" from="SubViewportContainer/SubViewport/YSphere/YSphereArea3D" to="." method="_on_y_sphere_area_3d_input_event"]
+[connection signal="mouse_entered" from="SubViewportContainer/SubViewport/YSphere/YSphereArea3D" to="." method="_on_y_sphere_area_3d_mouse_entered"]
+[connection signal="mouse_exited" from="SubViewportContainer/SubViewport/YSphere/YSphereArea3D" to="." method="_on_y_sphere_area_3d_mouse_exited"]
+[connection signal="input_event" from="SubViewportContainer/SubViewport/XMinusSphere/XMinuxSphereArea3D" to="." method="_on_x_minus_sphere_area_3d_input_event"]
+[connection signal="mouse_entered" from="SubViewportContainer/SubViewport/XMinusSphere/XMinuxSphereArea3D" to="." method="_on_x_minux_sphere_area_3d_mouse_entered"]
+[connection signal="mouse_exited" from="SubViewportContainer/SubViewport/XMinusSphere/XMinuxSphereArea3D" to="." method="_on_x_minux_sphere_area_3d_mouse_exited"]
+[connection signal="input_event" from="SubViewportContainer/SubViewport/YMinusSphere/YMinusSphereArea3D" to="." method="_on_y_minus_sphere_area_3d_input_event"]
+[connection signal="mouse_entered" from="SubViewportContainer/SubViewport/YMinusSphere/YMinusSphereArea3D" to="." method="_on_y_minus_sphere_area_3d_mouse_entered"]
+[connection signal="mouse_exited" from="SubViewportContainer/SubViewport/YMinusSphere/YMinusSphereArea3D" to="." method="_on_y_minus_sphere_area_3d_mouse_exited"]
+[connection signal="input_event" from="SubViewportContainer/SubViewport/ZMinusSphere/ZMinusSphereArea3D" to="." method="_on_z_minus_sphere_area_3d_input_event"]
+[connection signal="mouse_entered" from="SubViewportContainer/SubViewport/ZMinusSphere/ZMinusSphereArea3D" to="." method="_on_z_minus_sphere_area_3d_mouse_entered"]
+[connection signal="mouse_exited" from="SubViewportContainer/SubViewport/ZMinusSphere/ZMinusSphereArea3D" to="." method="_on_z_minus_sphere_area_3d_mouse_exited"]

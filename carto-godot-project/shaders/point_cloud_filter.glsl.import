@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://bds6eqwddygji"
+path="res://.godot/imported/point_cloud_filter.glsl-e7e6da4a05359898b4d4500e5aff6b6b.res"
+
+[deps]
+
+source_file="res://shaders/point_cloud_filter.glsl"
+dest_files=["res://.godot/imported/point_cloud_filter.glsl-e7e6da4a05359898b4d4500e5aff6b6b.res"]
+
+[params]
+

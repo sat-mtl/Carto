@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://ccs7005fbtx1u"]
+
+[resource]
+shading_mode = 0
+albedo_color = Color(0.56, 1, 0.56, 1)
+stencil_flags = 2
+stencil_color = Color(0.56078434, 1, 0.56078434, 1)

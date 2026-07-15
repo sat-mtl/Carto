@@ -1,0 +1,22 @@
+[remap]
+
+importer="svg"
+type="DPITexture"
+uid="uid://bypv18pxw3k0m"
+path="res://.godot/imported/gear.svg-68b9404028c4abb9686e1842df932af1.dpitex"
+
+[deps]
+
+source_file="res://assets/gear.svg"
+dest_files=["res://.godot/imported/gear.svg-68b9404028c4abb9686e1842df932af1.dpitex"]
+
+[params]
+
+base_scale=0.03
+saturation=1.0
+color_map={
+Color(0, 0, 0, 1): Color(1, 1, 1, 1)
+}
+fix_alpha_border=false
+premult_alpha=false
+compress=true

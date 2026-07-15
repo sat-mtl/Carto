@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1knnhn22cjyc"]
+
+[ext_resource type="Script" uid="uid://dgur35isqp64i" path="res://scripts/keybinding_display.gd" id="1_xhvsa"]
+
+[node name="KeybindingDisplay" type="HBoxContainer"]
+theme_override_constants/separation = 12
+script = ExtResource("1_xhvsa")
+
+[node name="KeyPanel" type="PanelContainer" parent="."]
+layout_mode = 2
+
+[node name="KeyText" type="Label" parent="KeyPanel"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2

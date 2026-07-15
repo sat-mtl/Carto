@@ -1,6 +1,6 @@
-# PointMapper release notes
+# Carto release notes
 
-## PointMapper 0.0.1 (2026-04-17)
+## Carto 0.0.1 (2026-04-17)
 
 Features
 
@@ -18,9 +18,9 @@ Features
 - Adjust point transparency !31
 
 
-## PointMapper 0.0.0 (2026-02-27)
+## Carto 0.0.0 (2026-02-27)
 
-* Alpha Release PointMapper-Godot
+* Alpha Release Carto-Godot
 
 Features
 
