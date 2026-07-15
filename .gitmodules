@@ -1,6 +1,6 @@
-[submodule "point-mapper-godot/godot-orbbec"]
-	path = godot-orbbec
-	url = https://github.com/sat-mtl/godot-orbbec.git
-[submodule "point-mapper-godot/godot-hesai"]
-	path = godot-hesai
-	url = https://github.com/sat-mtl/godot-hesai.git
+[submodule "3rdparty/godot-hesai"]
+	path = 3rdparty/godot-hesai
+	url = git@github.com:sat-mtl/godot-hesai.git
+[submodule "3rdparty/godot-orbbec"]
+	path = 3rdparty/godot-orbbec
+	url = git@github.com:sat-mtl/godot-orbbec.git
