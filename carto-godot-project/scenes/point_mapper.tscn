@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://halhuefrfjby" path="res://scripts/accept_dialog.gd" id="14_3ukpp"]
 [ext_resource type="Script" uid="uid://5oiwcutjml3v" path="res://scripts/save_dialog.gd" id="15_qmy37"]
 [ext_resource type="PackedScene" uid="uid://jygsbdchwydl" path="res://scenes/ui_components/manipulator_gizmo.tscn" id="18_ku3x0"]
+[ext_resource type="Script" uid="uid://7m0ekawqrbcw" path="res://addons/godot360/src/camera360.gd" id="19_24b5v"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_ku3x0"]
 material = ExtResource("6_4gu3m")
@@ -121,6 +122,8 @@ albedo_color = Color(0, 1, 1, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_i31ge"]
 material = SubResource("StandardMaterial3D_s1rv2")
+
+[sub_resource type="Environment" id="Environment_24b5v"]
 
 [node name="Carto" type="Node3D" unique_id=557453807]
 script = ExtResource("1_a4htx")
@@ -984,6 +987,27 @@ mesh = SubResource("BoxMesh_i31ge")
 [node name="AutosaveTimer" type="Timer" parent="." unique_id=1061200048]
 wait_time = 5.0
 autostart = true
+
+[node name="FullDomeSubViewport" type="SubViewport" parent="." unique_id=982642143]
+size = Vector2i(2048, 2048)
+render_target_update_mode = 4
+
+[node name="NDIOutput" type="NDIOutput" parent="FullDomeSubViewport" unique_id=858563110]
+name = "Carto fulldome"
+
+[node name="Camera360" type="Camera3D" parent="FullDomeSubViewport/NDIOutput" unique_id=301334232 node_paths=PackedStringArray("subviewport")]
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, -0.99999994, 0, 0.99999994, -4.3711385e-08, 0, 0.05849445, 0)
+cull_mask = 1048564
+script = ExtResource("19_24b5v")
+fovx = 198.611
+lens = 7
+camera_environment = SubResource("Environment_24b5v")
+subviewport = NodePath("SubViewport")
+auto_resize_subviewport = true
+metadata/_custom_type_script = "uid://7m0ekawqrbcw"
+
+[node name="SubViewport" type="SubViewport" parent="FullDomeSubViewport/NDIOutput/Camera360" unique_id=715669102]
+size = Vector2i(1024, 1024)
 
 [connection signal="forward_input_event" from="." to="FreeCamera" method="process_input"]
 [connection signal="forward_input_event" from="." to="Gizmo3D" method="process_input"]
