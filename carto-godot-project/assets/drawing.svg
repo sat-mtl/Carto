@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="100mm"
+   height="100mm"
+   viewBox="0 0 100 100"
+   version="1.1"
+   id="svg1"
+   inkscape:export-filename="grid.png"
+   inkscape:export-xdpi="25.4"
+   inkscape:export-ydpi="25.4"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   sodipodi:docname="drawing.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="false"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.5019781"
+     inkscape:cx="190.74845"
+     inkscape:cy="158.7906"
+     inkscape:window-width="1920"
+     inkscape:window-height="1052"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g1"
+       inkscape:tile-cx="9.9999999"
+       inkscape:tile-cy="9.9999999"
+       inkscape:tile-w="20"
+       inkscape:tile-h="20"
+       inkscape:tile-x0="0"
+       inkscape:tile-y0="0">
+      <rect
+         style="fill:#999999;stroke-width:211.667"
+         id="rect1"
+         width="10"
+         height="10"
+         x="0"
+         y="0"
+         ry="0" />
+      <rect
+         style="fill:#4d4d4d;stroke-width:211.667"
+         id="rect1-3"
+         width="10"
+         height="10"
+         x="10"
+         y="0"
+         ry="0" />
+      <rect
+         style="fill:#999999;stroke-width:211.667"
+         id="rect1-1"
+         width="10"
+         height="10"
+         x="-20"
+         y="-20"
+         ry="0"
+         transform="scale(-1)" />
+      <rect
+         style="fill:#4d4d4d;stroke-width:211.667"
+         id="rect1-3-2"
+         width="10"
+         height="10"
+         x="-10"
+         y="-20"
+         ry="0"
+         transform="scale(-1)" />
+    </g>
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       id="use1" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(0,20)"
+       id="use2" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(0,40)"
+       id="use3" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(0,60)"
+       id="use4" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(0,79.999999)"
+       id="use5" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(20)"
+       id="use6" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(20,20)"
+       id="use7" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(20,40)"
+       id="use8" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(20,60)"
+       id="use9" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(20,79.999999)"
+       id="use10" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(40)"
+       id="use11" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(40,20)"
+       id="use12" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(40,40)"
+       id="use13" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(40,60)"
+       id="use14" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(40,79.999999)"
+       id="use15" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(60)"
+       id="use16" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(60,20)"
+       id="use17" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(60,40)"
+       id="use18" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(60,60)"
+       id="use19" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(60,79.999999)"
+       id="use20" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(79.999999)"
+       id="use21" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(79.999999,20)"
+       id="use22" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(79.999999,40)"
+       id="use23" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(79.999999,60)"
+       id="use24" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#g1"
+       xlink:href="#g1"
+       transform="translate(79.999999,79.999999)"
+       id="use25" />
+  </g>
+</svg>

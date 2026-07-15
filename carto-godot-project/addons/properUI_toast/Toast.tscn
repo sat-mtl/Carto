@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxm70ponh1ura"]
+
+[ext_resource type="Script" uid="uid://buqo8dcqa7re0" path="res://addons/properUI_toast/Toast.gd" id="1_e5id5"]
+
+[node name="Toast" type="PanelContainer"]
+custom_minimum_size = Vector2(320, 0)
+focus_mode = 1
+script = ExtResource("1_e5id5")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+
+[node name="HBox" type="HBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="IconTextureRect" type="TextureRect" parent="Margin/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
+
+[node name="Content" type="VBoxContainer" parent="Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Message" type="Label" parent="Margin/HBox/Content"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Toast message"
+autowrap_mode = 2
+max_lines_visible = 3
+
+[node name="Actions" type="HBoxContainer" parent="Margin/HBox/Content"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ActionButton" type="Button" parent="Margin/HBox/Content/Actions"]
+visible = false
+layout_mode = 2
+
+[node name="SecondaryActionButton" type="Button" parent="Margin/HBox/Content/Actions"]
+visible = false
+layout_mode = 2
+
+[node name="Dismiss" type="Button" parent="Margin/HBox"]
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "Dismiss"
+text = "✕"

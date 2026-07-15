@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://dblvg3ixxbyej"]
+
+[ext_resource type="Script" uid="uid://dju45xxbck6nk" path="res://scripts/point_cloud.gd" id="1_s58di"]
+[ext_resource type="Texture2D" uid="uid://cp8m1pym0k7d6" path="res://assets/cam.png" id="2_qgsid"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_qgsid"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qgsid"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qgsid"]
+
+[sub_resource type="TextMesh" id="TextMesh_s58di"]
+material = SubResource("StandardMaterial3D_qgsid")
+text = "awefawefawef"
+
+[node name="PointCloud" type="Node3D" unique_id=1694020401]
+script = ExtResource("1_s58di")
+
+[node name="OrbbecPointCloudGPU" type="OrbbecPointCloudGPU" parent="." unique_id=785969721]
+unique_name_in_owner = true
+
+[node name="CentroidPivot" type="Node3D" parent="." unique_id=1034982586]
+unique_name_in_owner = true
+
+[node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="CentroidPivot" unique_id=1157385583]
+unique_name_in_owner = true
+layers = 7
+extra_cull_margin = 1000.0
+ignore_occlusion_culling = true
+
+[node name="CentroidIndicator" type="MeshInstance3D" parent="CentroidPivot" unique_id=151456627]
+unique_name_in_owner = true
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+visible = false
+mesh = SubResource("SphereMesh_qgsid")
+
+[node name="CameraSprite3D" type="Sprite3D" parent="." unique_id=1105812293]
+unique_name_in_owner = true
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+alpha_scissor_threshold = 0.4
+render_priority = 3
+texture = ExtResource("2_qgsid")
+
+[node name="CameraSpriteStaticBody3D" type="StaticBody3D" parent="CameraSprite3D" unique_id=259515293]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraSprite3D/CameraSpriteStaticBody3D" unique_id=764428407]
+shape = SubResource("SphereShape3D_qgsid")
+
+[node name="CameraNameMeshInstance3D" type="MeshInstance3D" parent="." unique_id=1583792142]
+unique_name_in_owner = true
+transform = Transform3D(-2.5, 0, 2.1855695e-07, 0, 2.5, 0, -2.1855695e-07, 0, -2.5, -0.5, 0, 0)
+visible = false
+mesh = SubResource("TextMesh_s58di")
+skeleton = NodePath("../CameraSprite3D")
+
+[connection signal="point_cloud_frame" from="OrbbecPointCloudGPU" to="." method="_on_orbbec_point_cloud_gpu_point_cloud_frame"]
+[connection signal="mouse_entered" from="CameraSprite3D/CameraSpriteStaticBody3D" to="." method="_on_camera_sprite_static_body_3d_mouse_entered"]
+[connection signal="mouse_exited" from="CameraSprite3D/CameraSpriteStaticBody3D" to="." method="_on_camera_sprite_static_body_3d_mouse_exited"]

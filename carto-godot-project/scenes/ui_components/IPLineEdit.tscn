@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://8fcl5673v366"]
+
+[ext_resource type="Script" uid="uid://dcdlxslieetiw" path="res://scripts/IPLineEdit.gd" id="1_ncvj1"]
+
+[node name="IpLineEdit" type="LineEdit"]
+script = ExtResource("1_ncvj1")
+
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="text_submitted" from="." to="." method="_on_text_submitted"]

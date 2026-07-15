@@ -1,0 +1,77 @@
+[configuration]
+
+entry_symbol = "orbbec_library_init"
+compatibility_minimum = "4.5"
+
+[libraries]
+; Relative paths ensure that our GDExtension can be placed anywhere in the project directory.
+macos.single.debug = "./macos/libgodot-orbbec.macos.template_debug.dylib"
+macos.double.debug = "./macos/libgodot-orbbec.macos.template_debug.double.dylib"
+macos.single.release = "./macos/libgodot-orbbec.macos.template_release.dylib"
+macos.double.release = "./macos/libgodot-orbbec.macos.template_debug.double.dylib"
+
+ios.arm64.single.debug = "./ios/libgodot-orbbec.ios.template_debug.arm64.dylib"
+ios.arm64.double.debug = "./ios/libgodot-orbbec.ios.template_debug.arm64.double.dylib"
+ios.arm64.single.release = "./ios/libgodot-orbbec.ios.template_release.arm64.dylib"
+ios.arm64.double.release = "./ios/libgodot-orbbec.ios.template_release.arm64.double.dylib"
+
+windows.x86_32.single.debug = "./windows/godot-orbbec.windows.template_debug.x86_32.dll"
+windows.x86_32.double.debug = "./windows/godot-orbbec.windows.template_debug.x86_32.double.dll"
+windows.x86_32.single.release = "./windows/godot-orbbec.windows.template_release.x86_32.dll"
+windows.x86_32.double.release = "./windows/godot-orbbec.windows.template_release.x86_32.double.dll"
+
+windows.x86_64.single.debug = "./windows/godot-orbbec.windows.template_debug.x86_64.dll"
+windows.x86_64.double.debug = "./windows/godot-orbbec.windows.template_debug.x86_64.double.dll"
+windows.x86_64.single.release = "./windows/godot-orbbec.windows.template_release.x86_64.dll"
+windows.x86_64.double.release = "./windows/godot-orbbec.windows.template_release.x86_64.double.dll"
+
+linux.x86_64.single.debug = "./linux/godot-orbbec.linux.template_debug.x86_64.so"
+linux.x86_64.double.debug = "./linux/godot-orbbec.linux.template_debug.x86_64.double.so"
+linux.x86_64.single.release = "./linux/godot-orbbec.linux.template_release.x86_64.so"
+linux.x86_64.double.release = "./linux/godot-orbbec.linux.template_release.x86_64.double.so"
+
+linux.arm64.single.debug = "./linux/libgodot-orbbec.linux.template_debug.arm64.so"
+linux.arm64.double.debug = "./linux/libgodot-orbbec.linux.template_debug.arm64.double.so"
+linux.arm64.single.release = "./linux/libgodot-orbbec.linux.template_release.arm64.so"
+linux.arm64.double.release = "./linux/libgodot-orbbec.linux.template_release.arm64.double.so"
+
+linux.rv64.single.debug = "./linux/libgodot-orbbec.linux.template_debug.rv64.so"
+linux.rv64.double.debug = "./linux/libgodot-orbbec.linux.template_debug.rv64.double.so"
+linux.rv64.single.release = "./linux/libgodot-orbbec.linux.template_release.rv64.so"
+linux.rv64.double.release = "./linux/libgodot-orbbec.linux.template_release.rv64.double.so"
+
+android.x86_64.single.debug = "./android/libgodot-orbbec.android.template_debug.x86_64.so"
+android.x86_64.double.debug = "./android/libgodot-orbbec.android.template_debug.x86_64.double.so"
+android.x86_64.single.release = "./android/libgodot-orbbec.android.template_release.x86_64.so"
+android.x86_64.double.release = "./android/libgodot-orbbec.android.template_release.x86_64.double.so"
+
+android.arm64.single.debug = "./android/libgodot-orbbec.android.template_debug.arm64.so"
+android.arm64.double.debug = "./android/libgodot-orbbec.android.template_debug.arm64.double.so"
+android.arm64.single.release = "./android/libgodot-orbbec.android.template_release.arm64.so"
+android.arm64.double.release = "./android/libgodot-orbbec.android.template_release.arm64.double.so"
+
+web.wasm32.single.debug = "./web/libgodot-orbbec.web.template_debug.wasm32.nothreads.wasm"
+web.wasm32.double.debug = "./web/libgodot-orbbec.web.template_release.wasm32.double.nothreads.wasm"
+web.wasm32.single.release = "./web/libgodot-orbbec.web.template_release.wasm32.nothreads.wasm"
+web.wasm32.double.release = "./web/libgodot-orbbec.web.template_release.wasm32.double.nothreads.wasm"
+
+[dependencies]
+
+windows.debug = {
+    "res://bin/windows/OrbbecSDK.dll": ""
+}
+windows.release = {
+    "res://bin/windows/OrbbecSDK.dll": ""
+}
+
+linux.debug {
+    "res://bin/linux/libOrbbecSDK.so.2":""
+    "res://bin/linux/libOrbbecSDK.so.2.5.5":""
+    "res://bin/linux/libOrbbecSDK.so":""
+}
+
+linux.release {
+    "res://bin/linux/libOrbbecSDK.so.2":""
+    "res://bin/linux/libOrbbecSDK.so.2.5.5":""
+    "res://bin/linux/libOrbbecSDK.so":""
+}

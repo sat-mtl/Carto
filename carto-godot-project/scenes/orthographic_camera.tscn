@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://tq6uf5kjby7t"]
+
+[ext_resource type="Script" uid="uid://dh26fbw7ndf2w" path="res://scripts/orthographic_camera.gd" id="1_aqjlg"]
+[ext_resource type="Script" uid="uid://nau8ebls4g5m" path="res://scripts/sub_viewports.gd" id="2_to84w"]
+[ext_resource type="Shader" uid="uid://dmfmn62og8wys" path="res://shaders/ndi_colors_canvas.gdshader" id="3_n05wi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6r436"]
+shader = ExtResource("3_n05wi")
+
+[node name="OrthogonalCamera" type="Camera3D" unique_id=1576987639]
+cull_mask = 1048566
+projection = 1
+size = 7.0
+script = ExtResource("1_aqjlg")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1773622608]
+unique_name_in_owner = true
+size = Vector2i(1920, 1080)
+script = ExtResource("2_to84w")
+
+[node name="NDICamera" type="Camera3D" parent="SubViewport" unique_id=93207138]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 2.5, 4.5, 2.5)
+cull_mask = 1048572
+projection = 1
+size = 7.0
+
+[node name="NDIViewport" type="SubViewport" parent="SubViewport" unique_id=2124137487]
+unique_name_in_owner = true
+disable_3d = true
+size = Vector2i(1920, 1080)
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/NDIViewport" unique_id=1496662601]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_6r436")
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="NDIOutput" type="NDIOutput" parent="SubViewport/NDIViewport" unique_id=428507467]
+name = "Carto orthogonal view"
+enable_video_output = false
+unique_name_in_owner = true

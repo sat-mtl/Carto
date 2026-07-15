@@ -1,0 +1,1032 @@
+[gd_scene format=3 uid="uid://tt8g7d4xmyef"]
+
+[ext_resource type="Script" uid="uid://bh1152w0ne357" path="res://scripts/carto.gd" id="1_a4htx"]
+[ext_resource type="Script" uid="uid://dk1utdqgvj4w3" path="res://scripts/filter_areas.gd" id="2_i46el"]
+[ext_resource type="Script" uid="uid://vwryfd5ch66d" path="res://scripts/crop_region.gd" id="2_xtm48"]
+[ext_resource type="Script" uid="uid://c7ieqghvdbi45" path="res://scripts/free_camera.gd" id="3_hsaqs"]
+[ext_resource type="Texture2D" uid="uid://bgmbgqc1wd2p3" path="res://assets/grid.png" id="4_a4htx"]
+[ext_resource type="Script" uid="uid://ck3u4sb2nm7ch" path="res://scripts/crop_region_container.gd" id="4_ku3x0"]
+[ext_resource type="Material" uid="uid://c4ht70wksvn1h" path="res://scenes/materials/filter_material.tres" id="6_4gu3m"]
+[ext_resource type="Theme" uid="uid://bl51ay8kbmrp" path="res://themes/controls_theme.tres" id="8_i31ge"]
+[ext_resource type="Texture2D" uid="uid://bypv18pxw3k0m" path="res://assets/gear.svg" id="8_s1rv2"]
+[ext_resource type="Script" uid="uid://bcydqv6jfkgjn" path="res://scripts/camera_view_menu.gd" id="9_24b5v"]
+[ext_resource type="Texture2D" uid="uid://bk8yy82uqfvhn" path="res://assets/log_icon.svg" id="9_a1b3o"]
+[ext_resource type="Script" uid="uid://bcpis2ryug32f" path="res://scripts/tcp_output.gd" id="10_5wrc5"]
+[ext_resource type="PackedScene" uid="uid://d1knnhn22cjyc" path="res://scenes/ui_components/keybinding_display.tscn" id="10_i31ge"]
+[ext_resource type="Script" uid="uid://cd6aaethcy4un" path="res://scripts/gizmo_3d_overrides.gd" id="10_i46el"]
+[ext_resource type="PackedScene" uid="uid://tq6uf5kjby7t" path="res://scenes/orthographic_camera.tscn" id="11_s1rv2"]
+[ext_resource type="Script" uid="uid://halhuefrfjby" path="res://scripts/accept_dialog.gd" id="14_3ukpp"]
+[ext_resource type="Script" uid="uid://5oiwcutjml3v" path="res://scripts/save_dialog.gd" id="15_qmy37"]
+[ext_resource type="PackedScene" uid="uid://jygsbdchwydl" path="res://scenes/ui_components/manipulator_gizmo.tscn" id="18_ku3x0"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ku3x0"]
+material = ExtResource("6_4gu3m")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ku3x0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_25qjk"]
+bg_color = Color(0.23031491, 0.23031494, 0.23031485, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_86miu"]
+bg_color = Color(0.23031491, 0.23031494, 0.23031485, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s0hyv"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_24b5v"]
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fukwi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_34m18"]
+bg_color = Color(0.74558026, 0.7455802, 0.74558014, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a1b3o"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_24b5v"]
+font_names = PackedStringArray("Monospace")
+subpixel_positioning = 0
+
+[sub_resource type="SphereMesh" id="SphereMesh_ku3x0"]
+
+[sub_resource type="Environment" id="Environment_ccjli"]
+background_energy_multiplier = 0.38
+ambient_light_color = Color(0.24840015, 0.24840018, 0.24840015, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q8x2j"]
+albedo_texture = ExtResource("4_a4htx")
+uv1_scale = Vector3(200, 200, 200)
+texture_filter = 4
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_hywr1"]
+material = SubResource("StandardMaterial3D_q8x2j")
+size = Vector2(1000, 1000)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qmy37"]
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s1rv2"]
+material = SubResource("StandardMaterial3D_qmy37")
+flip_faces = true
+size = Vector3(1000, 1000, 1000)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hsaqs"]
+shading_mode = 0
+albedo_color = Color(0, 1, 0, 1)
+disable_receive_shadows = true
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_a4htx"]
+material = SubResource("StandardMaterial3D_hsaqs")
+top_radius = 0.3
+bottom_radius = 0.3
+height = 1.0
+radial_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a4htx"]
+shading_mode = 0
+albedo_color = Color(0, 0, 1, 1)
+disable_receive_shadows = true
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ccjli"]
+material = SubResource("StandardMaterial3D_a4htx")
+top_radius = 0.3
+bottom_radius = 0.3
+height = 1.0
+radial_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hywr1"]
+shading_mode = 0
+albedo_color = Color(1, 0, 0, 1)
+disable_receive_shadows = true
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_xtm48"]
+material = SubResource("StandardMaterial3D_hywr1")
+top_radius = 0.3
+bottom_radius = 0.3
+height = 1.0
+radial_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s1rv2"]
+shading_mode = 0
+albedo_color = Color(0, 1, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_i31ge"]
+material = SubResource("StandardMaterial3D_s1rv2")
+
+[node name="Carto" type="Node3D" unique_id=557453807]
+script = ExtResource("1_a4htx")
+
+[node name="FilterAreas" type="Node3D" parent="." unique_id=1383953183]
+unique_name_in_owner = true
+script = ExtResource("2_i46el")
+
+[node name="CropRegionContainer" type="Node3D" parent="FilterAreas" unique_id=1703344049]
+unique_name_in_owner = true
+script = ExtResource("4_ku3x0")
+
+[node name="CropRegion" type="MeshInstance3D" parent="FilterAreas/CropRegionContainer" unique_id=1417114988 groups=["filter_areas"]]
+unique_name_in_owner = true
+transform = Transform3D(5, 0, 0, 0, 2, 0, 0, 0, 5, 2.5, 1, 2.5)
+mesh = SubResource("BoxMesh_ku3x0")
+script = ExtResource("2_xtm48")
+
+[node name="CropRegionArea3D" type="Area3D" parent="FilterAreas/CropRegionContainer/CropRegion" unique_id=675522326]
+unique_name_in_owner = true
+input_ray_pickable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FilterAreas/CropRegionContainer/CropRegion/CropRegionArea3D" unique_id=289722169]
+visible = false
+shape = SubResource("BoxShape3D_ku3x0")
+
+[node name="OrbbecDevices" type="OrbbecDevices" parent="." unique_id=1197585588]
+unique_name_in_owner = true
+
+[node name="ManipulatorGizmo" parent="." unique_id=1159002895 instance=ExtResource("18_ku3x0")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 130)
+anchors_preset = -1
+offset_left = 1.0
+offset_top = 56.0
+offset_right = 131.0
+offset_bottom = 186.0
+metadata/_edit_use_anchors_ = true
+
+[node name="ViewButtonsContainer" type="HBoxContainer" parent="." unique_id=1024709046]
+offset_left = 13.0
+offset_top = 11.0
+offset_right = 249.0
+offset_bottom = 54.0
+
+[node name="MenuBar" type="MenuBar" parent="ViewButtonsContainer" unique_id=225704752]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="FilePopupMenu" type="PopupMenu" parent="ViewButtonsContainer/MenuBar" unique_id=1654388701]
+title = "File"
+item_count = 3
+item_0/text = "Save"
+item_0/id = 0
+item_1/text = "Save As"
+item_1/id = 1
+item_2/text = "Load"
+item_2/id = 2
+
+[node name="ShortcutsButton" type="Button" parent="ViewButtonsContainer" unique_id=1581739752]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 19
+text = " ? "
+
+[node name="SettingsButton" type="Button" parent="ViewButtonsContainer" unique_id=433726816]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_vertical = 0
+icon = ExtResource("8_s1rv2")
+
+[node name="LogsButton" type="Button" parent="ViewButtonsContainer" unique_id=51968534]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_vertical = 0
+icon = ExtResource("9_a1b3o")
+
+[node name="CameraViewMenuBar" type="MenuBar" parent="ViewButtonsContainer" unique_id=2032857152]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="CameraViewMenu" type="PopupMenu" parent="ViewButtonsContainer/CameraViewMenuBar" unique_id=1247906556]
+unique_name_in_owner = true
+oversampling_override = 1.0
+title = "Perspective"
+size = Vector2i(186, 197)
+item_count = 7
+item_0/text = "Perspective"
+item_0/id = 0
+item_1/text = "Left Orthographic"
+item_1/id = 1
+item_2/text = "Right Orthographic"
+item_2/id = 2
+item_3/text = "Front Orthographic"
+item_3/id = 3
+item_4/text = "Back Orthographic"
+item_4/id = 4
+item_5/text = "Top Orthographic"
+item_5/id = 5
+item_6/text = "Bottom Orthographic"
+item_6/id = 6
+script = ExtResource("9_24b5v")
+
+[node name="SideBarUI" type="TabContainer" parent="." unique_id=1301982972]
+unique_name_in_owner = true
+anchors_preset = -1
+anchor_left = 0.859375
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("8_i31ge")
+theme_override_constants/side_margin = 0
+theme_override_font_sizes/font_size = 13
+current_tab = 2
+use_hidden_tabs_for_min_size = true
+
+[node name="Cameras" type="MarginContainer" parent="SideBarUI" unique_id=1741535256]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 6
+metadata/_tab_index = 0
+
+[node name="Add Cameras" type="VBoxContainer" parent="SideBarUI/Cameras" unique_id=1820435088]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="AddButtonsContainer" type="HBoxContainer" parent="SideBarUI/Cameras/Add Cameras" unique_id=397793770]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SideBarUI/Cameras/Add Cameras/AddButtonsContainer" unique_id=622732954]
+layout_mode = 2
+text = "Add"
+
+[node name="AddButton" type="Button" parent="SideBarUI/Cameras/Add Cameras/AddButtonsContainer" unique_id=890240824]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "+"
+
+[node name="RemoveButton" type="Button" parent="SideBarUI/Cameras/Add Cameras/AddButtonsContainer" unique_id=1482572340]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "-"
+
+[node name="CameraScrollContainer" type="ScrollContainer" parent="SideBarUI/Cameras/Add Cameras" unique_id=504584596]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="SideBarUI/Cameras/Add Cameras/CameraScrollContainer" unique_id=1331630085]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_right = 4
+
+[node name="CamerasContainer" type="VBoxContainer" parent="SideBarUI/Cameras/Add Cameras/CameraScrollContainer/MarginContainer" unique_id=144750037]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Crop Region" type="MarginContainer" parent="SideBarUI" unique_id=1717464556]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+metadata/_tab_index = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SideBarUI/Crop Region" unique_id=1249087036]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SideBarUI/Crop Region/VBoxContainer" unique_id=1087545842]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer" unique_id=5034250]
+layout_mode = 2
+
+[node name="CropGizmoSelectButton" type="Button" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/PanelContainer" unique_id=906866964]
+layout_mode = 2
+
+[node name="CropGizmoLabel" type="Label" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/PanelContainer" unique_id=2137071661]
+layout_mode = 2
+text = "gizmo"
+
+[node name="GridContainer" type="GridContainer" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer" unique_id=573068571]
+layout_mode = 2
+columns = 2
+
+[node name="CropActiveLabel" type="Label" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=173775699]
+layout_mode = 2
+text = "Crop Active"
+
+[node name="CropActive" type="CheckButton" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=348408860]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+button_pressed = true
+
+[node name="CropShapeLabel" type="Label" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=778179335]
+layout_mode = 2
+text = "Crop Shape"
+
+[node name="CropShape" type="OptionButton" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=501597759]
+layout_mode = 2
+
+[node name="ScaleLabel" type="Label" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=1265637747]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Scale XYZ"
+
+[node name="Scale" type="HBoxContainer" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=1800133361]
+layout_mode = 2
+
+[node name="CropScaleX" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale" unique_id=1892772211]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.2
+step = 0.001
+value = 0.2
+
+[node name="CropScaleY" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale" unique_id=1127724113]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 0.2
+step = 0.001
+value = 0.2
+
+[node name="CropScaleZ" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale" unique_id=351596495]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 0.2
+step = 0.001
+value = 0.2
+
+[node name="TranslateLabel" type="Label" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=1555341285]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Translate XYZ"
+
+[node name="Translate" type="HBoxContainer" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=1006358472]
+layout_mode = 2
+
+[node name="CropTranslateX" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate" unique_id=2063906439]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -100.0
+step = 0.001
+
+[node name="CropTranslateY" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate" unique_id=602664863]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = -100.0
+step = 0.001
+
+[node name="CropTranslateZ" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate" unique_id=2037759857]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = -100.0
+step = 0.001
+
+[node name="RotateLabel" type="Label" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=872040980]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Rotate XYZ"
+
+[node name="Rotate" type="HBoxContainer" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=894881112]
+layout_mode = 2
+
+[node name="CropRotateX" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate" unique_id=2139017354]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = -360.0
+max_value = 360.0
+step = 0.01
+
+[node name="CropRotateY" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate" unique_id=832994301]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = -360.0
+max_value = 360.0
+step = 0.01
+
+[node name="CropRotateZ" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate" unique_id=40454180]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = -360.0
+max_value = 360.0
+step = 0.01
+
+[node name="TODO _ Global transform" type="Node" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=281173981]
+
+[node name="Network Outputs" type="MarginContainer" parent="SideBarUI" unique_id=1073534318]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 6
+metadata/_tab_index = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SideBarUI/Network Outputs" unique_id=665993129]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="SideBarUI/Network Outputs/ScrollContainer" unique_id=526060356]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_right = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer" unique_id=475217319]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="NDIOutsLabel" type="Label" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=2045536936]
+layout_mode = 2
+text = "NDI Outputs"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1102226627]
+layout_mode = 2
+
+[node name="AddNDIOutsLabel" type="Label" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1626906080]
+layout_mode = 2
+text = "Add"
+
+[node name="AddNDIOutButton" type="Button" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=383593699]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "+"
+
+[node name="MarginContainer2" type="MarginContainer" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=275878650]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = -4
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+
+[node name="NDIOutputs" type="VBoxContainer" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer2" unique_id=149395688]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PointCloudOutsLabel" type="Label" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=731018793]
+layout_mode = 2
+text = "Point Cloud Outputs"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1887210641]
+layout_mode = 2
+
+[node name="AddPointCloudOutsLabel" type="Label" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=979956294]
+layout_mode = 2
+text = "Add"
+
+[node name="AddNetworkOutButton" type="Button" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1817229923]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "+"
+
+[node name="RemoveNetworkOutButton" type="Button" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1345634346]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "-"
+
+[node name="MarginContainer" type="MarginContainer" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1651738307]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = -4
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+
+[node name="NetworkDestinations" type="VBoxContainer" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer" unique_id=1879448514]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ShortcutsWindow" type="MarginContainer" parent="." unique_id=1038772920 groups=["modals"]]
+unique_name_in_owner = true
+visible = false
+anchors_preset = -1
+anchor_left = 0.14322917
+anchor_top = 0.16666667
+anchor_right = 0.8498264
+anchor_bottom = 0.8217647
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="ShortcutsWindow" unique_id=1084423542]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_25qjk")
+
+[node name="MarginContainer" type="MarginContainer" parent="ShortcutsWindow/Panel" unique_id=1852083870]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TODO Generate the keybindings" type="Node" parent="ShortcutsWindow/Panel/MarginContainer" unique_id=1559838305]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ShortcutsWindow/Panel/MarginContainer" unique_id=366368502]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer" unique_id=1330352704]
+layout_mode = 2
+
+[node name="ShortcutsExitButton" type="Button" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1922970501]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = " X "
+
+[node name="Label" type="Label" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1083972512]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+text = "Keyboard shortcuts"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer" unique_id=316753298]
+layout_mode = 2
+
+[node name="GeneralCommandsVBoxContainer" type="VBoxContainer" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1953122384]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Spacer" type="Control" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/GeneralCommandsVBoxContainer" unique_id=857725975]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/GeneralCommandsVBoxContainer" unique_id=412067504]
+layout_mode = 2
+text = "General Commands"
+
+[node name="Spacer2" type="Control" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/GeneralCommandsVBoxContainer" unique_id=281139414]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="SaveKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/GeneralCommandsVBoxContainer" unique_id=619940805 instance=ExtResource("10_i31ge")]
+layout_mode = 2
+keybinding_text = "Ctrl+S"
+help_text = "Save/Save As"
+
+[node name="OpenKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/GeneralCommandsVBoxContainer" unique_id=954457331 instance=ExtResource("10_i31ge")]
+layout_mode = 2
+keybinding_text = "Ctrl+O"
+help_text = "Open"
+
+[node name="AddGizmoKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/GeneralCommandsVBoxContainer" unique_id=1083184756 instance=ExtResource("10_i31ge")]
+layout_mode = 2
+keybinding_text = "Ctrl+Left Click"
+help_text = "Add camera to selection"
+
+[node name="CameraControlsVBoxContainer" type="VBoxContainer" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1046965271]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="Spacer" type="Control" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=174007652]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=1596555625]
+layout_mode = 2
+text = "Camera Controls"
+
+[node name="Spacer2" type="Control" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=10079091]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="LClickKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=2124777552 instance=ExtResource("10_i31ge")]
+layout_mode = 2
+keybinding_text = "Left Click"
+help_text = "Rotate Camera"
+
+[node name="RClickKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=1571269697 instance=ExtResource("10_i31ge")]
+layout_mode = 2
+keybinding_text = "Right Click"
+help_text = "Move Camera"
+
+[node name="ScrollWheelKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=735938023 instance=ExtResource("10_i31ge")]
+layout_mode = 2
+keybinding_text = "Scroll Wheel"
+help_text = "Zoom"
+
+[node name="WKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=959544281 instance=ExtResource("10_i31ge")]
+layout_mode = 2
+keybinding_text = "W"
+help_text = "Move forward"
+
+[node name="AKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=1411989067 instance=ExtResource("10_i31ge")]
+layout_mode = 2
+keybinding_text = "A"
+help_text = "Move left"
+
+[node name="SKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=2126285381 instance=ExtResource("10_i31ge")]
+layout_mode = 2
+keybinding_text = "S"
+help_text = "Move Right"
+
+[node name="DKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=908578589 instance=ExtResource("10_i31ge")]
+layout_mode = 2
+keybinding_text = "D"
+help_text = "Move backwards"
+
+[node name="QKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=1361285367 instance=ExtResource("10_i31ge")]
+layout_mode = 2
+keybinding_text = "Q"
+help_text = "Move down"
+
+[node name="EKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=32986103 instance=ExtResource("10_i31ge")]
+layout_mode = 2
+keybinding_text = "E"
+help_text = "Move up"
+
+[node name="RKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=919343502 instance=ExtResource("10_i31ge")]
+layout_mode = 2
+keybinding_text = "R"
+help_text = "Reset camera position"
+
+[node name="SettingsWindow" type="MarginContainer" parent="." unique_id=258761737 groups=["modals"]]
+unique_name_in_owner = true
+visible = false
+anchors_preset = -1
+anchor_left = 0.14322917
+anchor_top = 0.16666667
+anchor_right = 0.8498264
+anchor_bottom = 0.8217647
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="SettingsWindow" unique_id=630263495]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_86miu")
+
+[node name="MarginContainer" type="MarginContainer" parent="SettingsWindow/Panel" unique_id=500238277]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TODO Generate the keybindings" type="Node" parent="SettingsWindow/Panel/MarginContainer" unique_id=785842121]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SettingsWindow/Panel/MarginContainer" unique_id=737749183]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer" unique_id=941149662]
+layout_mode = 2
+
+[node name="ShortcutsExitButton" type="Button" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=797038658]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = " X "
+
+[node name="Title" type="Label" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=475182536]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+text = "Configs"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer" unique_id=1105368166]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1796882923]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Spacer" type="Control" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=851453878]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=216623855]
+layout_mode = 2
+text = "Camera settings"
+
+[node name="Spacer2" type="Control" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=1249447247]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="CamSpeedHBoxContainer" type="HBoxContainer" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2" unique_id=74685850]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/CamSpeedHBoxContainer" unique_id=1967313396]
+layout_mode = 2
+text = "Camera Speed"
+
+[node name="CameraSpeedSpinBox" type="SpinBox" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/CamSpeedHBoxContainer" unique_id=1072101057]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+max_value = 16.0
+step = 0.2
+value = 4.0
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=931819326]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="Spacer" type="Control" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3" unique_id=910920585]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3" unique_id=821515525]
+layout_mode = 2
+text = "Display settings"
+
+[node name="Spacer2" type="Control" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3" unique_id=565605170]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="CamSpeedHBoxContainer" type="HBoxContainer" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3" unique_id=1687923543]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/CamSpeedHBoxContainer" unique_id=1403570830]
+layout_mode = 2
+text = "UI Scaling"
+
+[node name="UIScalingSpinBox" type="SpinBox" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/CamSpeedHBoxContainer" unique_id=137418007]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 0.75
+max_value = 2.0
+step = 0.01
+value = 1.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1098430053]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="LogsWindow" type="MarginContainer" parent="." unique_id=1365333506 groups=["modals"]]
+unique_name_in_owner = true
+visible = false
+anchors_preset = -1
+anchor_left = 0.14322917
+anchor_top = 0.16666667
+anchor_right = 0.8498264
+anchor_bottom = 0.8217647
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="LogsWindow" unique_id=1965435944]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_s0hyv")
+
+[node name="MarginContainer" type="MarginContainer" parent="LogsWindow/Panel" unique_id=1863391539]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LogsWindow/Panel/MarginContainer" unique_id=1893707374]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="LogsWindow/Panel/MarginContainer/VBoxContainer" unique_id=1036159239]
+layout_mode = 2
+
+[node name="LogsExitButton" type="Button" parent="LogsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=729208208]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.18717614, 0.18717614, 0.18717614, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_24b5v")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fukwi")
+theme_override_styles/hover = SubResource("StyleBoxFlat_34m18")
+text = " X "
+
+[node name="Title" type="Label" parent="LogsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=920166300]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 0
+text = "Logs"
+
+[node name="MarginContainer" type="MarginContainer" parent="LogsWindow/Panel/MarginContainer/VBoxContainer" unique_id=2112443367]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="LogsWindow/Panel/MarginContainer/VBoxContainer/MarginContainer" unique_id=1179912656]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_a1b3o")
+
+[node name="LogsRichTextLabel" type="RichTextLabel" parent="LogsWindow/Panel/MarginContainer/VBoxContainer/MarginContainer/PanelContainer" unique_id=1274055785]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 2
+theme_override_fonts/normal_font = SubResource("SystemFont_24b5v")
+bbcode_enabled = true
+scroll_following = true
+selection_enabled = true
+
+[node name="FreeCamera" type="Camera3D" parent="." unique_id=1166000845]
+unique_name_in_owner = true
+transform = Transform3D(0.99961793, -0.023006774, 0.015316316, 0.006382184, 0.73132586, 0.6819984, -0.0268918, -0.68164, 0.7311933, 4.429, 6.301, 8.784)
+cull_mask = 524279
+script = ExtResource("3_hsaqs")
+
+[node name="FreeCameraPivot" type="MeshInstance3D" parent="FreeCamera" unique_id=1666518350]
+unique_name_in_owner = true
+transform = Transform3D(0.99985874, 0.0077288523, 0.014924537, 0.005544372, 0.68660617, -0.72700846, -0.015866222, 0.72698855, 0.6864663, -4.211, 1.946, -22.309)
+visible = false
+mesh = SubResource("SphereMesh_ku3x0")
+
+[node name="TopCamera" parent="." unique_id=187597146 instance=ExtResource("11_s1rv2")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 2.5, 4.5, 2.5)
+cull_mask = 524278
+ndi_stream_name = "Carto Top View"
+
+[node name="SideCamera" parent="." unique_id=178140328 instance=ExtResource("11_s1rv2")]
+unique_name_in_owner = true
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 7.5728235, 1.5043974, 2.5)
+cull_mask = 524278
+ndi_stream_name = "Carto Side View"
+
+[node name="FrontCamera" parent="." unique_id=793988782 instance=ExtResource("11_s1rv2")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1, 9.5)
+cull_mask = 524278
+ndi_stream_name = "Carto Front View"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=180518221]
+environment = SubResource("Environment_ccjli")
+
+[node name="Floor" type="MeshInstance3D" parent="." unique_id=1496180754]
+mesh = SubResource("PlaneMesh_hywr1")
+metadata/_edit_lock_ = true
+
+[node name="NDIBox" type="MeshInstance3D" parent="." unique_id=2042122560]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 444.275, 0)
+layers = 524288
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("BoxMesh_s1rv2")
+metadata/_edit_lock_ = true
+
+[node name="axes" type="Node3D" parent="." unique_id=461573030]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+metadata/_edit_lock_ = true
+
+[node name="Y" type="MeshInstance3D" parent="axes" unique_id=816556741]
+transform = Transform3D(1, 0, 0, 0, 1000, 0, 0, 0, 1, 0, 1, 0)
+layers = 3
+mesh = SubResource("CylinderMesh_a4htx")
+metadata/_edit_lock_ = true
+
+[node name="Z" type="MeshInstance3D" parent="axes" unique_id=1667904182]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-05, 1, 0, -1000, -4.371139e-08, 0, 0, 0)
+layers = 3
+mesh = SubResource("CylinderMesh_ccjli")
+metadata/_edit_lock_ = true
+
+[node name="X" type="MeshInstance3D" parent="axes" unique_id=1546949812]
+transform = Transform3D(-4.371139e-08, 1000, 4.371139e-08, 0, -4.371139e-05, 1, 1, 4.371139e-05, 1.9106855e-15, 0, 0, 0)
+layers = 3
+mesh = SubResource("CylinderMesh_xtm48")
+metadata/_edit_lock_ = true
+
+[node name="PointClouds" type="Node3D" parent="." unique_id=2147016225]
+unique_name_in_owner = true
+
+[node name="PointCloudCameras" type="Node3D" parent="." unique_id=2042626713]
+unique_name_in_owner = true
+
+[node name="TCPOutput" type="Node" parent="." unique_id=1557318940]
+unique_name_in_owner = true
+script = ExtResource("10_5wrc5")
+
+[node name="Gizmo3D" type="Node3D" parent="." unique_id=2026745209]
+unique_name_in_owner = true
+script = ExtResource("10_i46el")
+metadata/_custom_type_script = "uid://e3f1ox6y6cvg"
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=558224296]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.7214804, 0)
+light_energy = 0.868
+light_indirect_energy = 0.0
+light_specular = 2.287
+light_bake_mode = 1
+omni_range = 120.041
+
+[node name="ConfirmDialog" type="ConfirmationDialog" parent="." unique_id=160446993]
+unique_name_in_owner = true
+oversampling_override = 1.0
+title = "Autosave data found"
+initial_position = 2
+size = Vector2i(518, 158)
+ok_button_text = "Yes"
+dialog_close_on_escape = false
+script = ExtResource("14_3ukpp")
+
+[node name="SaveDialog" type="FileDialog" parent="." unique_id=917884427]
+unique_name_in_owner = true
+oversampling_override = 1.0
+position = Vector2i(0, 36)
+dialog_hide_on_ok = true
+access = 2
+filters = PackedStringArray("*.ptmap", "*.carto")
+use_native_dialog = true
+script = ExtResource("15_qmy37")
+
+[node name="LoadDialog" type="FileDialog" parent="." unique_id=2015867523]
+unique_name_in_owner = true
+oversampling_override = 1.0
+title = "Open a File"
+position = Vector2i(0, 36)
+dialog_hide_on_ok = true
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.ptmap", "*.carto")
+use_native_dialog = true
+
+[node name="CameraDiscoveryTimer" type="Timer" parent="." unique_id=1067480492]
+wait_time = 5.0
+autostart = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=598190561]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5467887, 0.6659975, 2.0768986)
+visible = false
+layers = 7
+mesh = SubResource("BoxMesh_i31ge")
+
+[node name="AutosaveTimer" type="Timer" parent="." unique_id=1061200048]
+wait_time = 5.0
+autostart = true
+
+[connection signal="forward_input_event" from="." to="FreeCamera" method="process_input"]
+[connection signal="forward_input_event" from="." to="Gizmo3D" method="process_input"]
+[connection signal="transform_changed" from="FilterAreas/CropRegionContainer/CropRegion" to="FilterAreas/CropRegionContainer" method="_on_crop_region_transform_changed"]
+[connection signal="coordinate_change" from="ManipulatorGizmo" to="FreeCamera" method="_on_manipulator_gizmo_coordinate_change"]
+[connection signal="orthographic_requested" from="ManipulatorGizmo" to="ViewButtonsContainer/CameraViewMenuBar/CameraViewMenu" method="_on_manipulator_gizmo_orthographic_requested"]
+[connection signal="orthographic_requested" from="ManipulatorGizmo" to="FreeCamera" method="_on_manipulator_gizmo_orthographic_requested"]
+[connection signal="id_pressed" from="ViewButtonsContainer/MenuBar/FilePopupMenu" to="." method="_on_file_popup_menu_id_pressed"]
+[connection signal="pressed" from="ViewButtonsContainer/ShortcutsButton" to="." method="_on_shortcuts_button_pressed"]
+[connection signal="pressed" from="ViewButtonsContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="ViewButtonsContainer/LogsButton" to="." method="_on_logs_button_pressed"]
+[connection signal="id_pressed" from="ViewButtonsContainer/CameraViewMenuBar/CameraViewMenu" to="." method="_on_camera_view_menu_id_pressed"]
+[connection signal="pressed" from="SideBarUI/Cameras/Add Cameras/AddButtonsContainer/AddButton" to="." method="_on_add_camera_button_pressed"]
+[connection signal="pressed" from="SideBarUI/Cameras/Add Cameras/AddButtonsContainer/RemoveButton" to="." method="_on_remove_camera_button_pressed"]
+[connection signal="pressed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/PanelContainer/CropGizmoSelectButton" to="." method="_on_crop_gizmo_select_pressed"]
+[connection signal="toggled" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/CropActive" to="." method="_on_crop_active_toggled"]
+[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale/CropScaleX" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_scale_x_value_changed"]
+[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale/CropScaleY" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_scale_y_value_changed"]
+[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale/CropScaleZ" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_scale_z_value_changed"]
+[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate/CropTranslateX" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_translate_x_value_changed"]
+[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate/CropTranslateY" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_translate_y_value_changed"]
+[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate/CropTranslateZ" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_translate_z_value_changed"]
+[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate/CropRotateX" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_rotate_x_value_changed"]
+[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate/CropRotateY" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_rotate_y_value_changed"]
+[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate/CropRotateZ" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_rotate_z_value_changed"]
+[connection signal="pressed" from="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer2/AddNDIOutButton" to="." method="_on_add_ndi_out_button_pressed"]
+[connection signal="pressed" from="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/AddNetworkOutButton" to="." method="_on_add_network_out_button_pressed"]
+[connection signal="pressed" from="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveNetworkOutButton" to="." method="_on_remove_network_out_button_pressed"]
+[connection signal="pressed" from="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer2/ShortcutsExitButton" to="." method="_on_close_modal_window_pressed"]
+[connection signal="pressed" from="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer2/ShortcutsExitButton" to="." method="_on_close_modal_window_pressed"]
+[connection signal="value_changed" from="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/CamSpeedHBoxContainer/CameraSpeedSpinBox" to="." method="_on_camera_speed_spin_box_value_changed"]
+[connection signal="value_changed" from="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer3/CamSpeedHBoxContainer/UIScalingSpinBox" to="." method="_on_ui_scaling_spin_box_value_changed"]
+[connection signal="pressed" from="LogsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer2/LogsExitButton" to="." method="_on_close_modal_window_pressed"]
+[connection signal="canceled" from="ConfirmDialog" to="ConfirmDialog" method="_on_canceled"]
+[connection signal="close_requested" from="ConfirmDialog" to="ConfirmDialog" method="_on_close_requested"]
+[connection signal="confirmed" from="ConfirmDialog" to="ConfirmDialog" method="_on_confirmed"]
+[connection signal="custom_action" from="ConfirmDialog" to="ConfirmDialog" method="_on_custom_action"]
+[connection signal="visibility_changed" from="ConfirmDialog" to="ConfirmDialog" method="_on_visibility_changed"]
+[connection signal="canceled" from="SaveDialog" to="SaveDialog" method="_on_canceled"]
+[connection signal="close_requested" from="SaveDialog" to="SaveDialog" method="_on_close_requested"]
+[connection signal="confirmed" from="SaveDialog" to="SaveDialog" method="_on_confirmed"]
+[connection signal="file_selected" from="SaveDialog" to="." method="_on_save_settings_dialog_file_selected"]
+[connection signal="file_selected" from="SaveDialog" to="SaveDialog" method="_on_file_selected"]
+[connection signal="file_selected" from="LoadDialog" to="." method="_on_load_dialog_file_selected"]
+[connection signal="timeout" from="CameraDiscoveryTimer" to="." method="_on_camera_discovery_timer_timeout"]
+[connection signal="timeout" from="AutosaveTimer" to="." method="_on_autosave_timer_timeout"]

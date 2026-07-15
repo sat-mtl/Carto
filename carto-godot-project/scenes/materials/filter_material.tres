@@ -1,0 +1,12 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://c4ht70wksvn1h"]
+
+[resource]
+transparency = 1
+shading_mode = 0
+specular_mode = 2
+disable_specular_occlusion = true
+albedo_color = Color(1, 1, 1, 0.015686275)
+heightmap_enabled = true
+disable_receive_shadows = true
+stencil_flags = 2
+stencil_outline_thickness = 0.017

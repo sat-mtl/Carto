@@ -1,0 +1,441 @@
+[gd_scene load_steps=7 format=3 uid="uid://b5ewc0bedkebp"]
+
+[ext_resource type="Theme" uid="uid://bl51ay8kbmrp" path="res://themes/controls_theme.tres" id="1_53lqp"]
+[ext_resource type="Script" uid="uid://cpu76nvmtmb4b" path="res://scripts/camera_settings.gd" id="1_111k5"]
+[ext_resource type="Texture2D" uid="uid://jyfcrxfr0c4q" path="res://assets/gizmo_icon.svg" id="2_gua5t"]
+[ext_resource type="ButtonGroup" uid="uid://mrdetrmnuiqs" path="res://rotation_pivot_button_group.tres" id="4_53lqp"]
+[ext_resource type="PackedScene" uid="uid://8fcl5673v366" path="res://scenes/ui_components/IPLineEdit.tscn" id="4_358hx"]
+[ext_resource type="Texture2D" uid="uid://byycs8fwgc4pj" path="res://assets/Reload.svg" id="7_idib6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fnxuk"]
+bg_color = Color(1, 1, 1, 0)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="CameraSettings" type="PanelContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 387.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_53lqp")
+theme_override_styles/panel = SubResource("StyleBoxFlat_fnxuk")
+script = ExtResource("1_111k5")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="BackgroundPanelContainer" type="PanelContainer" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="MainPanelContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="SidePannel" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 6
+
+[node name="CameraNum" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/PanelContainer/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 12
+text = "1"
+horizontal_alignment = 1
+
+[node name="GizmoSelectButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+icon = ExtResource("2_gua5t")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 7
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CameraNameLineEdit" type="LineEdit" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Camera 1"
+
+[node name="DeleteButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "  X  "
+
+[node name="DeviceActivityLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ActiveLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DeviceActivityLine"]
+layout_mode = 2
+text = "Active"
+
+[node name="ActiveSwitch" type="CheckButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DeviceActivityLine"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(-3.02, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+button_pressed = true
+
+[node name="FPSLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DeviceActivityLine"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "0 FPS"
+
+[node name="DeviceControlsFold" type="FoldableContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+title = "Device Controls"
+
+[node name="GridContainer" type="VBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DeviceTypeLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+layout_mode = 2
+
+[node name="DeviceLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/DeviceTypeLine"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Device"
+
+[node name="DeviceOptionButton" type="OptionButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/DeviceTypeLine"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 3
+popup/item_0/text = "Orbbec"
+popup/item_0/id = 0
+popup/item_1/text = "Hesai"
+popup/item_1/id = 1
+popup/item_2/text = "Debug"
+popup/item_2/id = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 74
+theme_override_constants/margin_right = 75
+
+[node name="RefreshButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Refresh"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+layout_mode = 2
+
+[node name="OrbbecIPLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="IPLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecIPLine"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "IP"
+
+[node name="OrbbecIPOptionButton" type="OptionButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecIPLine"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 1
+popup/item_0/text = "None"
+popup/item_0/id = 0
+
+[node name="OrbbecResolutionLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ResolutionLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecResolutionLine"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "Resolution"
+
+[node name="OrbbecResolutionOptionButton" type="OptionButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecResolutionLine"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OrbbecFPSLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="OrbbecFPSLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecFPSLine"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "FPS"
+
+[node name="OrbbecFPSOptionButton" type="OptionButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecFPSLine"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HesaiIPLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="IPLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HesaiIPLine"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "IP"
+
+[node name="HesaiIPLineEdit" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HesaiIPLine" instance=ExtResource("4_358hx")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+last_valid_ip = "192.168.1.201"
+
+[node name="HesaiWebUILine" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 74
+theme_override_constants/margin_right = 75
+
+[node name="HesaiWebUIButton" type="LinkButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HesaiWebUILine"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Open Web UI"
+uri = "http://192.168.1.201/setting.html"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+layout_mode = 2
+
+[node name="ThinningLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+text = "Thinning"
+
+[node name="ThinningSlider" type="HSlider" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 0.998
+step = 0.01
+value = 0.75
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 74
+theme_override_constants/margin_right = 75
+
+[node name="PointCloudControlsFold" type="FoldableContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer"]
+layout_mode = 2
+folded = true
+title = "Point Cloud Controls"
+
+[node name="GridContainer" type="VBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer"]
+layout_mode = 2
+
+[node name="ColorLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "RGB Color"
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer4" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 104
+theme_override_constants/margin_right = 75
+
+[node name="CentroidButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Calibrate Centroid"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer"]
+layout_mode = 2
+
+[node name="RotationPivotLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Rotation Pivot"
+
+[node name="PivotToCentroidButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_pressed = true
+button_group = ExtResource("4_53lqp")
+text = "Centroid"
+
+[node name="PivotToCameraButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+button_group = ExtResource("4_53lqp")
+text = "Camera"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 104
+theme_override_constants/margin_right = 75
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer"]
+layout_mode = 2
+
+[node name="TranslateLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Translate XYZ"
+
+[node name="ResetTranslationButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+icon = ExtResource("7_idib6")
+flat = true
+
+[node name="Translate" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TranslateX" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5/Translate"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -100.0
+step = 0.001
+
+[node name="TranslateY" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5/Translate"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -100.0
+step = 0.001
+
+[node name="TranslateZ" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5/Translate"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -100.0
+step = 0.001
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer"]
+layout_mode = 2
+
+[node name="RotateLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Rotate XYZ"
+
+[node name="ResetRotationButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+icon = ExtResource("7_idib6")
+flat = true
+
+[node name="Rotate" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RotateX" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6/Rotate"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -360.0
+max_value = 360.0
+step = 0.01
+
+[node name="RotateY" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6/Rotate"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -360.0
+max_value = 360.0
+step = 0.01
+
+[node name="RotateZ" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6/Rotate"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -360.0
+max_value = 360.0
+step = 0.01
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[connection signal="mouse_entered" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/PanelContainer/GizmoSelectButton" to="." method="_on_gizmo_select_button_mouse_entered"]
+[connection signal="mouse_exited" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/PanelContainer/GizmoSelectButton" to="." method="_on_gizmo_select_button_mouse_exited"]
+[connection signal="pressed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/PanelContainer/GizmoSelectButton" to="." method="_on_gizmo_select_button_pressed"]
+[connection signal="text_changed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/CameraNameLineEdit" to="." method="_on_camera_name_line_edit_text_changed"]
+[connection signal="pressed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/DeleteButton" to="." method="_on_delete_button_pressed"]
+[connection signal="toggled" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DeviceActivityLine/ActiveSwitch" to="." method="_on_active_switch_toggled"]
+[connection signal="item_selected" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/DeviceTypeLine/DeviceOptionButton" to="." method="_on_device_option_button_item_selected"]
+[connection signal="pressed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/MarginContainer/RefreshButton" to="." method="_on_refresh_button_pressed"]
+[connection signal="item_selected" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecIPLine/OrbbecIPOptionButton" to="." method="_on_ip_option_button_item_selected"]
+[connection signal="item_selected" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecResolutionLine/OrbbecResolutionOptionButton" to="." method="_on_resolution_option_button_item_selected"]
+[connection signal="item_selected" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecFPSLine/OrbbecFPSOptionButton" to="." method="_on_fps_option_button_item_selected"]
+[connection signal="valid_change" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HesaiIPLine/HesaiIPLineEdit" to="." method="_on_hesai_ip_line_edit_valid_change"]
+[connection signal="value_changed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HBoxContainer4/ThinningSlider" to="." method="_on_thinning_slider_value_changed"]
+[connection signal="color_changed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer/ColorPickerButton" to="." method="_on_color_picker_button_color_changed"]
+[connection signal="pressed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer4/CentroidButton" to="." method="_on_centroid_button_pressed"]
+[connection signal="toggled" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer3/PivotToCentroidButton" to="." method="_on_pivot_to_centroid_button_toggled"]
+[connection signal="pressed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5/ResetTranslationButton" to="." method="_on_reset_translation_button_pressed"]
+[connection signal="value_changed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5/Translate/TranslateX" to="." method="_on_translate_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5/Translate/TranslateY" to="." method="_on_translate_y_value_changed"]
+[connection signal="value_changed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5/Translate/TranslateZ" to="." method="_on_translate_z_value_changed"]
+[connection signal="pressed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6/ResetRotationButton" to="." method="_on_reset_rotation_button_pressed"]
+[connection signal="value_changed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6/Rotate/RotateX" to="." method="_on_rotate_x_value_changed"]
+[connection signal="value_changed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6/Rotate/RotateY" to="." method="_on_rotate_y_value_changed"]
+[connection signal="value_changed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6/Rotate/RotateZ" to="." method="_on_rotate_z_value_changed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

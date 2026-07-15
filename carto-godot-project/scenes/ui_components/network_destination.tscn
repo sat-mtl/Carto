@@ -1,0 +1,79 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3rh61ypcb7h3"]
+
+[ext_resource type="Script" uid="uid://d2vcpblbqywj5" path="res://scripts/network_destination.gd" id="1_3b125"]
+[ext_resource type="PackedScene" uid="uid://8fcl5673v366" path="res://scenes/ui_components/IPLineEdit.tscn" id="2_51lqn"]
+
+[node name="NetworkDestination" type="MarginContainer"]
+offset_right = 463.0
+offset_bottom = 94.0
+script = ExtResource("1_3b125")
+
+[node name="SidePannel" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="SidePannel"]
+layout_mode = 2
+
+[node name="OutputNum" type="Label" parent="SidePannel/PanelContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 12
+text = "1"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="SidePannel"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 21
+columns = 2
+
+[node name="ActiveLabel" type="Label" parent="SidePannel/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Active"
+
+[node name="ActiveToggle" type="CheckButton" parent="SidePannel/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 12
+
+[node name="IPLabel" type="Label" parent="SidePannel/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "IP"
+
+[node name="IPLineEdit" parent="SidePannel/GridContainer" instance=ExtResource("2_51lqn")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PortLabel" type="Label" parent="SidePannel/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Port"
+
+[node name="PortSpinBoxEdit" type="SpinBox" parent="SidePannel/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1024.0
+max_value = 65535.0
+value = 9898.0
+rounded = true
+
+[node name="StatusLabel" type="Label" parent="SidePannel/GridContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Status"
+
+[node name="StatusLed" type="ColorRect" parent="SidePannel/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(25, 20)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[connection signal="toggled" from="SidePannel/GridContainer/ActiveToggle" to="." method="_on_active_toggle_toggled"]
+[connection signal="valid_change" from="SidePannel/GridContainer/IPLineEdit" to="." method="_on_ip_line_edit_valid_change"]
+[connection signal="value_changed" from="SidePannel/GridContainer/PortSpinBoxEdit" to="." method="_on_port_spinbox_value_changed"]
