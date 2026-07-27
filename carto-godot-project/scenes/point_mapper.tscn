@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://bcpis2ryug32f" path="res://scripts/tcp_output.gd" id="10_5wrc5"]
 [ext_resource type="PackedScene" uid="uid://d1knnhn22cjyc" path="res://scenes/ui_components/keybinding_display.tscn" id="10_i31ge"]
 [ext_resource type="Script" uid="uid://cd6aaethcy4un" path="res://scripts/gizmo_3d_overrides.gd" id="10_i46el"]
+[ext_resource type="Script" uid="uid://nnrqennx3787" path="res://scripts/side_bar_ui.gd" id="11_24b5v"]
 [ext_resource type="PackedScene" uid="uid://tq6uf5kjby7t" path="res://scenes/orthographic_camera.tscn" id="11_s1rv2"]
 [ext_resource type="Script" uid="uid://halhuefrfjby" path="res://scripts/accept_dialog.gd" id="14_3ukpp"]
 [ext_resource type="Script" uid="uid://5oiwcutjml3v" path="res://scripts/save_dialog.gd" id="15_qmy37"]
@@ -240,6 +241,7 @@ theme_override_constants/side_margin = 0
 theme_override_font_sizes/font_size = 13
 current_tab = 2
 use_hidden_tabs_for_min_size = true
+script = ExtResource("11_24b5v")
 
 [node name="Cameras" type="MarginContainer" parent="SideBarUI" unique_id=1741535256]
 visible = false
@@ -996,6 +998,8 @@ autostart = true
 [connection signal="pressed" from="ViewButtonsContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="ViewButtonsContainer/LogsButton" to="." method="_on_logs_button_pressed"]
 [connection signal="id_pressed" from="ViewButtonsContainer/CameraViewMenuBar/CameraViewMenu" to="." method="_on_camera_view_menu_id_pressed"]
+[connection signal="mouse_entered" from="SideBarUI" to="." method="_on_side_bar_ui_mouse_entered"]
+[connection signal="mouse_exited" from="SideBarUI" to="." method="_on_side_bar_ui_mouse_exited"]
 [connection signal="pressed" from="SideBarUI/Cameras/Add Cameras/AddButtonsContainer/AddButton" to="." method="_on_add_camera_button_pressed"]
 [connection signal="pressed" from="SideBarUI/Cameras/Add Cameras/AddButtonsContainer/RemoveButton" to="." method="_on_remove_camera_button_pressed"]
 [connection signal="pressed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/PanelContainer/CropGizmoSelectButton" to="." method="_on_crop_gizmo_select_pressed"]
