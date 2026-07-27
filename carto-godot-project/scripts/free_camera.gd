@@ -12,6 +12,8 @@ var left_click_sensitivity: float = 0.15
 # Mouse state
 var _mouse_impulse = Vector2(0.0, 0.0)
 
+var disable_zoom = false
+
 # Movement state
 var _direction = Vector3(0.0, 0.0, 0.0)
 var _velocity = Vector3(0.0, 0.0, 0.0)
@@ -138,9 +140,11 @@ func process_input(event: InputEvent):
 			MOUSE_BUTTON_WHEEL_DOWN:
 				# prevent zoom in/out when
 				# editing a value in the gui
-				zoom(1)
+				if not disable_zoom:
+					zoom(1)
 			MOUSE_BUTTON_WHEEL_UP:
-				zoom(-1)
+				if not disable_zoom:
+					zoom(-1)
 	elif event is InputEventPanGesture:
 		zoom(event.delta.y)
 
