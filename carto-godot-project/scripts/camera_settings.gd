@@ -60,6 +60,7 @@ func _on_pointcloud_connecting():
 	%OrbbecFPSOptionButton.disabled = true
 	%OrbbecResolutionOptionButton.disabled = true
 	%HesaiIPLineEdit.editable = false
+	%HesaiPortSpinBox.editable = false
 	%DeviceOptionButton.disabled = true
 	%ActiveSwitch.disabled = true
 	%RefreshButton.disabled = true
@@ -70,6 +71,7 @@ func _on_pointcloud_end_connecting():
 	%OrbbecFPSOptionButton.disabled = false
 	%OrbbecResolutionOptionButton.disabled = false
 	%HesaiIPLineEdit.editable = true
+	%HesaiPortSpinBox.editable = true
 	%DeviceOptionButton.disabled = false
 	%ActiveSwitch.disabled = false
 	%RefreshButton.disabled = false
