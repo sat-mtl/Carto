@@ -9,6 +9,8 @@ Les Orbbec Femto Mega ont été les premières caméras à être intégrées à 
 
 L'utilisation d'une Orbbec est très simple: une fois branchée à un commutateur réseau PoE, la caméra annonce son identité sur le réseau, ce qui permet à Carto de l'auto-découvrir.
 
+### Paramètres des Orbbec Femto Mega dans Carto
+
 Cette capture d'écran annotée montre les différents contrôles liés à une orbbec femto mega ainsi que les contrôles génériques d'un dispositif.
 
 ![ui orbbec femto mega](./imgs/carto-device-controls.png)
@@ -24,6 +26,18 @@ Cette capture d'écran annotée montre les différents contrôles liés à une o
 9. Menu déroulant des résolutions. Permet de sélectionner une des résolutions valides pour les Orbbec femto mega.
 10. Menu déroulant des taux d'envois. Permet de sélectionner le taux d'envois demandé à la Orbbec. Se met à jour automatiquement si une résolution demandée n'est pas compatible avec le taux d'envois demandé.
 11. Menu du "thinning". Disponible pour tous les dispositifs, permet d'amincir le nuage de point affiché.
+
+### Bande passante utilisée selon les configurations d'une Orbbec Femto Mega
+
+Voici un tableau qui pourra vous aider à planifier l'infrastructure réseau nécessaire à votre installation.
+
+| Débit en Mibps en fonction de la résolution et du taux d'envois | 320x288    | 512x512   | 640x576   | 1024x1024 |
+|-----------------------------------------------------------------|------------|-----------|-----------|-----------|
+| 30 fps                                                          |44.4 Mibps  |125 Mibps  |178 Mibps  |N/A        |
+| 25 fps                                                          |37.0 Mibps  |106 Mibps  |148 Mibps  |N/A        |
+| 15 fps                                                          |22.5 Mibps  |64.2 Mibps |90.1 Mibps |253 Mibps  |
+|  5 fps                                                          |7.44 Mibps  |21.2 Mibps |30.1 Mibps |85.1 Mibps |
+
 
 ## Hesai Pandar 40P
 
@@ -42,6 +56,8 @@ Voici une capture d'écran montrant les contrôles propres aux dispositifs de ty
 ## Contrôle de nuage de point
 
 Ces contrôles sont disponibles pour tous types de dispositifs et permettent de contrôler l'affichage des points dans la vue 3D.
+
+![ui orbbec femto mega](./imgs/carto-point-cloud-controls.png)
 
 1. RGB Color. Couleur RGBA des points affichés.
 2. Calibrate Centroid. Cliquer sur ce bouton déclenche un calcul du centroïde du nuage de point. Ce calcul est fait automatiquement lors de la première réception de points mais si la caméra a été déplacée ou si l'environemment change beaucoup il peut être préférable de recalculer le centroïde.
