@@ -152,16 +152,6 @@ popup/item_1/id = 1
 popup/item_2/text = "Debug"
 popup/item_2/id = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer" unique_id=1448574414]
-layout_mode = 2
-theme_override_constants/margin_left = 74
-theme_override_constants/margin_right = 75
-
-[node name="RefreshButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/MarginContainer" unique_id=7558647]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Refresh"
-
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer" unique_id=2139750547]
 layout_mode = 2
 
@@ -225,7 +215,8 @@ text = "IP"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-last_valid_ip = "192.168.1.201"
+last_valid_ip = "None"
+allow_none = true
 
 [node name="HesaiPortLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer" unique_id=884251747]
 unique_name_in_owner = true
@@ -245,6 +236,16 @@ min_value = 1024.0
 max_value = 65535.0
 value = 2368.0
 
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer" unique_id=1448574414]
+layout_mode = 2
+theme_override_constants/margin_left = 74
+theme_override_constants/margin_right = 75
+
+[node name="ConnectButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/MarginContainer" unique_id=7558647]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Connect"
+
 [node name="HesaiWebUILine" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer" unique_id=2133073759]
 unique_name_in_owner = true
 layout_mode = 2
@@ -255,6 +256,7 @@ theme_override_constants/margin_right = 75
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
+disabled = true
 text = "Open Web UI"
 uri = "http://192.168.1.201/setting.html"
 
@@ -439,12 +441,12 @@ autostart = true
 [connection signal="pressed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/DeleteButton" to="." method="_on_delete_button_pressed"]
 [connection signal="toggled" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DeviceActivityLine/ActiveSwitch" to="." method="_on_active_switch_toggled"]
 [connection signal="item_selected" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/DeviceTypeLine/DeviceOptionButton" to="." method="_on_device_option_button_item_selected"]
-[connection signal="pressed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/MarginContainer/RefreshButton" to="." method="_on_refresh_button_pressed"]
 [connection signal="item_selected" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecIPLine/OrbbecIPOptionButton" to="." method="_on_ip_option_button_item_selected"]
 [connection signal="item_selected" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecResolutionLine/OrbbecResolutionOptionButton" to="." method="_on_resolution_option_button_item_selected"]
 [connection signal="item_selected" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecFPSLine/OrbbecFPSOptionButton" to="." method="_on_fps_option_button_item_selected"]
 [connection signal="valid_change" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HesaiIPLine/HesaiIPLineEdit" to="." method="_on_hesai_ip_line_edit_valid_change"]
 [connection signal="value_changed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HesaiPortLine/HesaiPortSpinBox" to="." method="_on_hesai_port_spin_box_value_changed"]
+[connection signal="pressed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/MarginContainer/ConnectButton" to="." method="_on_refresh_button_pressed"]
 [connection signal="value_changed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HBoxContainer4/ThinningSlider" to="." method="_on_thinning_slider_value_changed"]
 [connection signal="color_changed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer/ColorPickerButton" to="." method="_on_color_picker_button_color_changed"]
 [connection signal="pressed" from="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer4/CentroidButton" to="." method="_on_centroid_button_pressed"]

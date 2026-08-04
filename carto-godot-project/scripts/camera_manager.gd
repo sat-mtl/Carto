@@ -148,7 +148,7 @@ func add_camera(camera_nodes, idx=null):
 	add_to_ui(camera_nodes, idx)
 	add(camera_nodes, idx)
 	# tries to restart the camera if the add_camera was called from a redo.
-	camera_nodes["camera_settings"].select_orbbec_ip(camera_nodes["camera_settings"].get_current_orbbec_ip())
+	camera_nodes["camera_settings"].start_device()
 	update_orbbec_ip_lists()
 
 func request_redraw():

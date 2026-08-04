@@ -63,7 +63,7 @@ func _on_pointcloud_connecting():
 	%HesaiPortSpinBox.editable = false
 	%DeviceOptionButton.disabled = true
 	%ActiveSwitch.disabled = true
-	%RefreshButton.disabled = true
+	%ConnectButton.disabled = true
 	%DeviceOptionButton.disabled = true
 
 func _on_pointcloud_end_connecting():
@@ -74,7 +74,7 @@ func _on_pointcloud_end_connecting():
 	%HesaiPortSpinBox.editable = true
 	%DeviceOptionButton.disabled = false
 	%ActiveSwitch.disabled = false
-	%RefreshButton.disabled = false
+	%ConnectButton.disabled = false
 	%DeviceOptionButton.disabled = false
 
 func _on_timer_timeout() -> void:
@@ -168,7 +168,7 @@ func start_orbbec_device():
 		camera.start_orbbec_device(ip, resolution[0], resolution[1], fps)
 
 func start_hesai_device():
-	if active_state == false:
+	if active_state == false or get_current_hesai_ip() == "None":
 		camera.stop_device()
 	else:
 		camera.start_hesai_device(get_current_hesai_ip(), current_hesai_port)
@@ -560,16 +560,22 @@ func _on_pivot_to_centroid_button_toggled(toggled_on: bool) -> void:
 	camera.set_centroid_toggled(toggled_on)
 
 func set_hesai_webui_url(ip):
-	%HesaiWebUIButton.uri = "http://"+ip+"/setting.html"
+	if ip != "None":
+		%HesaiWebUIButton.uri = "http://"+ip+"/setting.html"
+		%HesaiWebUIButton.disabled = false
+	else:
+		%HesaiWebUIButton.disabled = true
 
 func _on_hesai_ip_line_edit_valid_change(ip: String) -> void:
 	var last_ip := current_hesai_ip
 	UndoManager.add_to_stack(
 		"start_device cam " + str(camera_num),
 		func():
-			set_hesai_ip(ip),
+			set_hesai_ip(ip)
+			start_device(),
 		func():
 			set_hesai_ip(last_ip)
+			start_device()
 	)
 
 func _on_hesai_port_spin_box_value_changed(port: float) -> void:
@@ -578,7 +584,9 @@ func _on_hesai_port_spin_box_value_changed(port: float) -> void:
 		"start_device cam " + str(camera_num),
 		func():
 			@warning_ignore("narrowing_conversion")
-			set_hesai_port(port),
+			set_hesai_port(port)
+			start_device(),
 		func():
 			set_hesai_port(last_port)
+			start_device()
 	)
