@@ -13,3 +13,7 @@ Si personne d'autre n'utilise le réseau et que le taux d'envois est toujours tr
 ### Hesai
 
 Si vous utilisez des hesai, la cible de taux d'envois dans Carto assume que le lidar est configuré à 1200 rpm. Si votre lidar est configuré à 600 rpm vous aurez la moitié du taux d'envois
+
+## Mes caméras orbbec se retrouve à 0FPS après un certain temps
+
+Nous avons remarqué que les Orbbecs ont tendance à se déconnecter après un certain temps lorsqu'elles ne sont pas connectées sur un réseau dédié. Si vos orbbec sont connectés sur un réseau sur lequel d'autres utilisateurs génère du trafic, tentez de créer un réseau dédié pour vos Orbbecs.
