@@ -382,7 +382,8 @@ func save_savefile(path:String, store_current_path=true):
 			"resolution": camera["camera_settings"].get_current_orbbec_resolution(),
 		}
 		var hesai_settings := {
-			"ip": camera["camera_settings"].get_current_hesai_ip()
+			"ip": camera["camera_settings"].get_current_hesai_ip(),
+			"port": camera["camera_settings"].current_hesai_port
 		}
 		var cam_data := {
 			"device_type": camera["camera"].enum_to_device_str(camera["camera"].current_device_type),
@@ -529,6 +530,7 @@ func load_savefile(path: String, look_for_autosave: bool = true):
 			cam_nodes["camera_settings"].select_orbbec_fps(cam["orbbec_settings"]["fps"])
 			cam_nodes["camera_settings"].select_orbbec_resolution(cam["orbbec_settings"]["resolution"])
 			cam_nodes["camera_settings"].set_hesai_ip(cam["hesai_settings"].get("ip", "192.168.1.201"))
+			cam_nodes["camera_settings"].set_hesai_port(cam["hesai_settings"].get("port", 2368))
 		cam_nodes["camera"].current_device_type = device_type_enum
 		cam_nodes["camera_settings"].start_device()
 		cam_nodes["camera_settings"].active_state = cam.get("active_state", true)
