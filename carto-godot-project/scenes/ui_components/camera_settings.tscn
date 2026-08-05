@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://b5ewc0bedkebp"]
+[gd_scene format=3 uid="uid://b5ewc0bedkebp"]
 
 [ext_resource type="Theme" uid="uid://bl51ay8kbmrp" path="res://themes/controls_theme.tres" id="1_53lqp"]
 [ext_resource type="Script" uid="uid://cpu76nvmtmb4b" path="res://scripts/camera_settings.gd" id="1_111k5"]
@@ -14,7 +14,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="CameraSettings" type="PanelContainer"]
+[node name="CameraSettings" type="PanelContainer" unique_id=1599977611]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 387.0
@@ -24,18 +24,18 @@ theme = ExtResource("1_53lqp")
 theme_override_styles/panel = SubResource("StyleBoxFlat_fnxuk")
 script = ExtResource("1_111k5")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=616058411]
 layout_mode = 2
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_right = 2
 theme_override_constants/margin_bottom = 2
 
-[node name="BackgroundPanelContainer" type="PanelContainer" parent="MarginContainer"]
+[node name="BackgroundPanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=1503934284]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="MainPanelContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer"]
+[node name="MainPanelContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer" unique_id=1804744187]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/margin_left = 5
@@ -43,17 +43,17 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="SidePannel" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer"]
+[node name="SidePannel" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer" unique_id=1151693076]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel" unique_id=746051204]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/PanelContainer" unique_id=1782636814]
 layout_mode = 2
 theme_override_constants/margin_top = 6
 
-[node name="CameraNum" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/PanelContainer/MarginContainer"]
+[node name="CameraNum" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/PanelContainer/MarginContainer" unique_id=878993299]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
@@ -63,83 +63,83 @@ theme_override_font_sizes/font_size = 12
 text = "1"
 horizontal_alignment = 1
 
-[node name="GizmoSelectButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/PanelContainer"]
+[node name="GizmoSelectButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/PanelContainer" unique_id=998390221]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 icon = ExtResource("2_gua5t")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel" unique_id=1505759261]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer" unique_id=603107420]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer" unique_id=567397949]
 layout_mode = 2
 theme_override_constants/margin_left = 7
 theme_override_constants/margin_top = 7
 theme_override_constants/margin_right = 7
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer" unique_id=524798315]
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=919692717]
 layout_mode = 2
 
-[node name="CameraNameLineEdit" type="LineEdit" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="CameraNameLineEdit" type="LineEdit" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1480957887]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Camera 1"
 
-[node name="DeleteButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="DeleteButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=2139977473]
 unique_name_in_owner = true
 layout_mode = 2
 text = "  X  "
 
-[node name="DeviceActivityLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="DeviceActivityLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=1989913466]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ActiveLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DeviceActivityLine"]
+[node name="ActiveLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DeviceActivityLine" unique_id=312675870]
 layout_mode = 2
 text = "Active"
 
-[node name="ActiveSwitch" type="CheckButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DeviceActivityLine"]
+[node name="ActiveSwitch" type="CheckButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DeviceActivityLine" unique_id=1426879061]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(-3.02, 0)
 layout_mode = 2
 size_flags_horizontal = 2
 button_pressed = true
 
-[node name="FPSLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DeviceActivityLine"]
+[node name="FPSLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/DeviceActivityLine" unique_id=446497529]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "0 FPS"
 
-[node name="DeviceControlsFold" type="FoldableContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer"]
+[node name="DeviceControlsFold" type="FoldableContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer" unique_id=1906107208]
 layout_mode = 2
 size_flags_horizontal = 3
 title = "Device Controls"
 
-[node name="GridContainer" type="VBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold"]
+[node name="GridContainer" type="VBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold" unique_id=1403616624]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="DeviceTypeLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+[node name="DeviceTypeLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer" unique_id=1252882554]
 layout_mode = 2
 
-[node name="DeviceLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/DeviceTypeLine"]
+[node name="DeviceLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/DeviceTypeLine" unique_id=2098760682]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Device"
 
-[node name="DeviceOptionButton" type="OptionButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/DeviceTypeLine"]
+[node name="DeviceOptionButton" type="OptionButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/DeviceTypeLine" unique_id=27372352]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -152,29 +152,29 @@ popup/item_1/id = 1
 popup/item_2/text = "Debug"
 popup/item_2/id = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer" unique_id=398097485]
 layout_mode = 2
 theme_override_constants/margin_left = 74
 theme_override_constants/margin_right = 75
 
-[node name="RefreshButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/MarginContainer"]
+[node name="RefreshButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/MarginContainer" unique_id=1134097027]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Refresh"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer" unique_id=2118391823]
 layout_mode = 2
 
-[node name="OrbbecIPLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+[node name="OrbbecIPLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer" unique_id=1588894599]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="IPLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecIPLine"]
+[node name="IPLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecIPLine" unique_id=1667317186]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "IP"
 
-[node name="OrbbecIPOptionButton" type="OptionButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecIPLine"]
+[node name="OrbbecIPOptionButton" type="OptionButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecIPLine" unique_id=1584920713]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -183,72 +183,72 @@ item_count = 1
 popup/item_0/text = "None"
 popup/item_0/id = 0
 
-[node name="OrbbecResolutionLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+[node name="OrbbecResolutionLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer" unique_id=1900040656]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="ResolutionLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecResolutionLine"]
+[node name="ResolutionLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecResolutionLine" unique_id=219673036]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Resolution"
 
-[node name="OrbbecResolutionOptionButton" type="OptionButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecResolutionLine"]
+[node name="OrbbecResolutionOptionButton" type="OptionButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecResolutionLine" unique_id=1530106492]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="OrbbecFPSLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+[node name="OrbbecFPSLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer" unique_id=155061524]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="OrbbecFPSLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecFPSLine"]
+[node name="OrbbecFPSLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecFPSLine" unique_id=268030882]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "FPS"
 
-[node name="OrbbecFPSOptionButton" type="OptionButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecFPSLine"]
+[node name="OrbbecFPSOptionButton" type="OptionButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/OrbbecFPSLine" unique_id=857473354]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HesaiIPLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+[node name="HesaiIPLine" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer" unique_id=2051561779]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="IPLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HesaiIPLine"]
+[node name="IPLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HesaiIPLine" unique_id=1846802490]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "IP"
 
-[node name="HesaiIPLineEdit" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HesaiIPLine" instance=ExtResource("4_358hx")]
+[node name="HesaiIPLineEdit" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HesaiIPLine" unique_id=1541402509 instance=ExtResource("4_358hx")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 last_valid_ip = "192.168.1.201"
 
-[node name="HesaiWebUILine" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+[node name="HesaiWebUILine" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer" unique_id=1894184649]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/margin_left = 74
 theme_override_constants/margin_right = 75
 
-[node name="HesaiWebUIButton" type="LinkButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HesaiWebUILine"]
+[node name="HesaiWebUIButton" type="LinkButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HesaiWebUILine" unique_id=1172017851]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Open Web UI"
 uri = "http://192.168.1.201/setting.html"
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer" unique_id=1369744713]
 layout_mode = 2
 
-[node name="ThinningLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HBoxContainer4"]
+[node name="ThinningLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HBoxContainer4" unique_id=1358570133]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 text = "Thinning"
 
-[node name="ThinningSlider" type="HSlider" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HBoxContainer4"]
+[node name="ThinningSlider" type="HSlider" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer/HBoxContainer4" unique_id=1732471718]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -256,54 +256,54 @@ max_value = 0.998
 step = 0.01
 value = 0.75
 
-[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/DeviceControlsFold/GridContainer" unique_id=1458184663]
 layout_mode = 2
 theme_override_constants/margin_left = 74
 theme_override_constants/margin_right = 75
 
-[node name="PointCloudControlsFold" type="FoldableContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer"]
+[node name="PointCloudControlsFold" type="FoldableContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer" unique_id=1217327587]
 layout_mode = 2
 folded = true
 title = "Point Cloud Controls"
 
-[node name="GridContainer" type="VBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold"]
+[node name="GridContainer" type="VBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold" unique_id=398547798]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer" unique_id=369273647]
 layout_mode = 2
 
-[node name="ColorLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer"]
+[node name="ColorLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer" unique_id=1571040714]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "RGB Color"
 
-[node name="ColorPickerButton" type="ColorPickerButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer"]
+[node name="ColorPickerButton" type="ColorPickerButton" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer" unique_id=344505742]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer4" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer"]
+[node name="HBoxContainer4" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer" unique_id=2123241889]
 layout_mode = 2
 theme_override_constants/margin_left = 104
 theme_override_constants/margin_right = 75
 
-[node name="CentroidButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer4"]
+[node name="CentroidButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer4" unique_id=994613980]
 layout_mode = 2
 text = "Calibrate Centroid"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer" unique_id=1554907492]
 layout_mode = 2
 
-[node name="RotationPivotLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer3"]
+[node name="RotationPivotLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer3" unique_id=1698676543]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Rotation Pivot"
 
-[node name="PivotToCentroidButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer3"]
+[node name="PivotToCentroidButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer3" unique_id=2082088882]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -312,7 +312,7 @@ button_pressed = true
 button_group = ExtResource("4_53lqp")
 text = "Centroid"
 
-[node name="PivotToCameraButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer3"]
+[node name="PivotToCameraButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer3" unique_id=1876379115]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -320,73 +320,73 @@ toggle_mode = true
 button_group = ExtResource("4_53lqp")
 text = "Camera"
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer" unique_id=623618501]
 layout_mode = 2
 theme_override_constants/margin_left = 104
 theme_override_constants/margin_right = 75
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer" unique_id=1828108428]
 layout_mode = 2
 
-[node name="TranslateLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5"]
+[node name="TranslateLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5" unique_id=987611572]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Translate XYZ"
 
-[node name="ResetTranslationButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5"]
+[node name="ResetTranslationButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5" unique_id=55812448]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 icon = ExtResource("7_idib6")
 flat = true
 
-[node name="Translate" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5"]
+[node name="Translate" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5" unique_id=799447089]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TranslateX" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5/Translate"]
+[node name="TranslateX" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5/Translate" unique_id=2035831225]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = -100.0
 step = 0.001
 
-[node name="TranslateY" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5/Translate"]
+[node name="TranslateY" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5/Translate" unique_id=1580533131]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = -100.0
 step = 0.001
 
-[node name="TranslateZ" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5/Translate"]
+[node name="TranslateZ" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer5/Translate" unique_id=1542614943]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = -100.0
 step = 0.001
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer"]
+[node name="HBoxContainer6" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer" unique_id=945950409]
 layout_mode = 2
 
-[node name="RotateLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6"]
+[node name="RotateLabel" type="Label" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6" unique_id=606492095]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Rotate XYZ"
 
-[node name="ResetRotationButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6"]
+[node name="ResetRotationButton" type="Button" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6" unique_id=1718943313]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 icon = ExtResource("7_idib6")
 flat = true
 
-[node name="Rotate" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6"]
+[node name="Rotate" type="HBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6" unique_id=1798809743]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="RotateX" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6/Rotate"]
+[node name="RotateX" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6/Rotate" unique_id=1125122276]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -394,7 +394,7 @@ min_value = -360.0
 max_value = 360.0
 step = 0.01
 
-[node name="RotateY" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6/Rotate"]
+[node name="RotateY" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6/Rotate" unique_id=39127519]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -402,7 +402,7 @@ min_value = -360.0
 max_value = 360.0
 step = 0.01
 
-[node name="RotateZ" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6/Rotate"]
+[node name="RotateZ" type="SpinBox" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel/VBoxContainer/PointCloudControlsFold/GridContainer/HBoxContainer6/Rotate" unique_id=209786658]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -410,7 +410,7 @@ min_value = -360.0
 max_value = 360.0
 step = 0.01
 
-[node name="Timer" type="Timer" parent="."]
+[node name="Timer" type="Timer" parent="." unique_id=1464583127]
 wait_time = 0.5
 autostart = true
 
