@@ -168,7 +168,7 @@ func start_orbbec_device():
 		camera.start_orbbec_device(ip, resolution[0], resolution[1], fps)
 
 func start_hesai_device():
-	if active_state == false or get_current_hesai_ip() == "None":
+	if active_state == false or %HesaiPortSpinBox.value < 1024:
 		camera.stop_device()
 	else:
 		camera.start_hesai_device(get_current_hesai_ip(), current_hesai_port)
