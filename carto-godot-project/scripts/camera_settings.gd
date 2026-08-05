@@ -21,7 +21,7 @@ var current_orbbec_ip_idx := 0
 var current_orbbec_resolution_idx := 1
 var current_orbbec_fps_idx := 0
 var current_device_type_idx := 0
-var current_hesai_port := 2368
+var current_hesai_port := 0
 
 # the default hesai ip is the current ip.
 var current_hesai_ip := "192.168.1.201"
