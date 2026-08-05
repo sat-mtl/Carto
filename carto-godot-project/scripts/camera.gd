@@ -520,6 +520,7 @@ func setup_points_for_compute_shader():
 	multimesh.buffer = transform_buffer.slice(0, max_points*floats_per_raw_point)
 
 var last_ip = "None"
+var last_port = 0
 var last_xres = null
 
 var connecting = false
@@ -564,15 +565,17 @@ func _start_hesai_device(ip):
 	UndoManager.enable()
 	call_deferred("emit", end_connecting)
 
-func start_hesai_device(ip):
+func start_hesai_device(ip, port):
 	max_points = hesai_device.get_max_points()
 	if multimesh.instance_count != max_points:
 		setup_points_for_compute_shader()
-	if last_ip != ip and not has_centroid:
+	if (last_ip != ip or last_port != port) and not has_centroid:
 		last_ip = ip
+		last_port = port
 		has_centroid = false
 		centroid = Vector3.ZERO
 	hesai_device.correction_file_path = CameraManager.hesai_pandar_p40_correction_tmp_file.get_path_absolute()
+	hesai_device.udp_port = port
 	WorkerThreadPool.add_task(func():self._start_hesai_device(ip))
 
 func start_debug_device():
