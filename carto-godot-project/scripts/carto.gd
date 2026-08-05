@@ -43,7 +43,25 @@ func _ready() -> void:
 	else:
 		file = FileAccess.open(user_settings_path, FileAccess.READ)
 		user_settings_string = file.get_as_text()
+
 	user_settings = JSON.parse_string(user_settings_string)
+	var window_settings = user_settings.get("window_settings", {})
+	print(window_settings)
+	# persistent window location code adapted from https://docs.godotengine.org/en/stable/tutorials/ui/creating_applications.html
+	if not Engine.is_embedded_in_editor():
+		var window_screen = window_settings.get("screen", -1)
+		if window_screen > -1:
+			get_window().current_screen = window_screen
+		var window_mode = window_settings.get("mode", -1)
+		if window_mode > -1:
+			@warning_ignore("int_as_enum_without_cast")
+			get_window().mode = int(window_mode)
+		var window_position = window_settings.get("position", [])
+		if len(window_position) > 0:
+			get_window().position = SavefileUtils.deserialize_vec2i(window_position)
+		var window_size = window_settings.get("size", [])
+		if len(window_size):
+			get_window().size = SavefileUtils.deserialize_vec2i(window_size)
 	var ui_scale = user_settings.get("ui_scaling", 1.0)
 	%UIScalingSpinBox.set_value_no_signal(ui_scale)
 	scale_ui(ui_scale)
@@ -52,6 +70,17 @@ func _ready() -> void:
 		# if we specify a savefile at startup, we probably want that savefile to
 		# be loaded immediately without prompting for autosave stuff.
 		load_savefile(args[0], false)
+
+func store_window_location():
+	print(get_window().mode)
+	SavefileUtils.serialize_vec3(%FreeCameraPivot.global_position)
+	var window_conf := {
+		"screen" : get_window().current_screen,
+		"mode" : get_window().mode,
+		"position" : SavefileUtils.serialize_vec2i(get_window().position),
+		"size": SavefileUtils.serialize_vec2i(get_window().size)
+	}
+	user_settings["window_settings"] = window_conf
 
 func save_user_settings():
 	var file := FileAccess.open(user_settings_path, FileAccess.WRITE)
@@ -90,6 +119,7 @@ func _notification(what):
 		else:
 			should_quit = true
 		if should_quit:
+			store_window_location()
 			save_user_settings()
 			get_tree().quit()
 

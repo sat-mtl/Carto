@@ -2,6 +2,12 @@
 ## every other script.
 extends Node
 
+func serialize_vec2i(vector2i: Vector2i) -> Array:
+	return [vector2i[0], vector2i[1]]
+
+func deserialize_vec2i(vector2i_arr: Array) -> Vector2i:
+	return Vector2i(vector2i_arr[0], vector2i_arr[1])
+
 func serialize_vec3(vector3: Vector3) -> Array:
 	return [vector3[0], vector3[1], vector3[2]]
 
