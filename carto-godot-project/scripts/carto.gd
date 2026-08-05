@@ -393,6 +393,7 @@ func save_savefile(path:String, store_current_path=true):
 			"centroid_toggled": camera["camera"].centroid_toggled,
 			"has_centroid": camera["camera"].has_centroid,
 			"thinning": camera["camera"].thinning,
+			"point_size": camera["camera"].point_size,
 			"centroid": SavefileUtils.serialize_vec3(camera["camera"].centroid),
 			"transform": SavefileUtils.serialize_transform(camera["camera"].transform),
 			"active_state": camera["camera"].active,
@@ -506,6 +507,7 @@ func load_savefile(path: String, look_for_autosave: bool = true):
 		cam_nodes["camera"].centroid = SavefileUtils.deserialize_vec3(cam["centroid"])
 		cam_nodes["camera"].set_centroid_toggled(cam["centroid_toggled"])
 		cam_nodes["camera"].thinning = cam["thinning"]
+		cam_nodes["camera"].point_size = cam.get("point_size", 1.0)
 		var camera_transform = SavefileUtils.deserialize_transform(cam["transform"])
 		cam_nodes["point_cloud"].transform = camera_transform
 		cam_nodes["camera"].transform = camera_transform

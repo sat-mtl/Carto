@@ -96,6 +96,24 @@ func set_centroid_pivot_position(cent:Vector3, old_centroid:Vector3):
 			_set_centroid_position(old_pos)
 			centroid = old_centroid)
 
+var displayed: bool = true:
+	set(state):
+		displayed = state
+		%MultiMeshInstance3D.visible = state
+
+func update_solo_state(soloed_devices:Array):
+	print(soloed_devices)
+	if len(soloed_devices) > 0:
+		if soloed_devices.find(camera_num) > -1:
+			%MultiMeshInstance3D.visible = displayed
+		else:
+			%MultiMeshInstance3D.visible = false
+	else :
+		%MultiMeshInstance3D.visible = displayed
+
+func _on_displayed_change(state):
+	displayed = state
+
 var highlight_color:Color
 var color: Color:
 	set(col):
@@ -108,6 +126,14 @@ var color: Color:
 
 func _on_color_change(changed_color):
 	color = changed_color
+
+var point_size: float:
+	set(pt_size):
+		point_size = pt_size
+		material.point_size = pt_size
+
+func _on_point_size_change(pt_size):
+	self.point_size = pt_size
 
 func _on_centroid_change(cent, toggled_on, undoable):
 	toggle_centroid(cent, toggled_on, undoable)
