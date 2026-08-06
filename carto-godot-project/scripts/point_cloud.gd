@@ -96,19 +96,18 @@ func set_centroid_pivot_position(cent:Vector3, old_centroid:Vector3):
 			_set_centroid_position(old_pos)
 			centroid = old_centroid)
 
-var displayed: bool = true:
-	set(state):
-		displayed = state
-		%MultiMeshInstance3D.visible = state
+var displayed: bool = true
 
-func update_solo_state(soloed_devices:Array):
-	print(soloed_devices)
+func update_display_state(soloed_devices:Array):
+	## determines if the points should be displayed depending on the array
+	## of cameras which are currently soloed and the current display state
+	## of this camera.
 	if len(soloed_devices) > 0:
 		if soloed_devices.find(camera_num) > -1:
 			%MultiMeshInstance3D.visible = displayed
 		else:
 			%MultiMeshInstance3D.visible = false
-	else :
+	else:
 		%MultiMeshInstance3D.visible = displayed
 
 func _on_displayed_change(state):

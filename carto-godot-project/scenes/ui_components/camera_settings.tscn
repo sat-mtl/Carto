@@ -6,7 +6,7 @@
 [ext_resource type="ButtonGroup" uid="uid://mrdetrmnuiqs" path="res://rotation_pivot_button_group.tres" id="4_53lqp"]
 [ext_resource type="PackedScene" uid="uid://8fcl5673v366" path="res://scenes/ui_components/IPLineEdit.tscn" id="4_358hx"]
 [ext_resource type="Texture2D" uid="uid://brfgqbo06a45c" path="res://assets/eye_open.svg" id="4_xgjkh"]
-[ext_resource type="Texture2D" uid="uid://cx55ore5suk2k" path="res://assets/target.svg" id="5_jrx1s"]
+[ext_resource type="Texture2D" uid="uid://bec52dkwrqioa" path="res://assets/un_target.svg" id="5_xgjkh"]
 [ext_resource type="Texture2D" uid="uid://byycs8fwgc4pj" path="res://assets/Reload.svg" id="7_idib6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fnxuk"]
@@ -95,7 +95,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
-icon = ExtResource("5_jrx1s")
+icon = ExtResource("5_xgjkh")
 icon_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/BackgroundPanelContainer/MainPanelContainer/SidePannel" unique_id=1950347655]

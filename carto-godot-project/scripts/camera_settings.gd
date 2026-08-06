@@ -42,6 +42,16 @@ func set_display_button_no_signal(state):
 	else:
 		%DisplayButton.icon = eye_closed_texture
 
+static var target_texture := preload("res://assets/target.svg")
+static var untarget_texture := preload("res://assets/un_target.svg")
+
+func set_solo_button_no_signal(state):
+	%SoloButton.set_pressed_no_signal(state)
+	if state:
+		%SoloButton.icon = target_texture
+	else:
+		%SoloButton.icon = untarget_texture
+
 var displayed := true:
 	set(state):
 		displayed = state
@@ -53,10 +63,10 @@ func _on_displayed_change(state):
 var soloed := false:
 	set(state):
 		soloed = state
-		%SoloButton.set_pressed_no_signal(state)
+		set_solo_button_no_signal(state)
 
 func _on_soloed_changed(state):
-	%SoloButton.set_pressed_no_signal(state)
+	set_solo_button_no_signal(state)
 
 var stylebox = preload("res://themes/camera_settings_panel_stylebox.stylebox").duplicate()
 
@@ -634,7 +644,6 @@ func _on_point_size_slider_value_changed(value: float) -> void:
 		func(val): %PointSizeSlider.set_value_no_signal(val)
 	)
 
-
 func _on_display_button_toggled(toggled_on: bool) -> void:
 	var old_val = displayed
 	UndoManager.add_to_stack(
@@ -644,7 +653,6 @@ func _on_display_button_toggled(toggled_on: bool) -> void:
 		func():
 			camera.displayed = old_val
 	)
-
 
 func _on_solo_button_toggled(toggled_on: bool) -> void:
 	var old_val = soloed

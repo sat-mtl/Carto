@@ -54,6 +54,10 @@ var displayed: bool = true:
 	set(is_it):
 		displayed = is_it
 		displayed_change.emit(displayed)
+		# since the display state of a device's point cloud depends on the solo
+		# state of all of the other cameras, we need to pass through the
+		# CameraManager to determine wether the point cloud needs to be displayed.
+		CameraManager.update_point_visibility(device_num)
 
 static var debug_points := PackedVector3Array()
 static var transform_buffer: PackedFloat32Array
@@ -123,6 +127,7 @@ func _on_display_transform_changed(tform: Transform3D):
 var max_points := 1_048_576
 
 func _enter_tree() -> void:
+	setup_points_for_compute_shader()
 	init_compute_shader_buffers()
 
 func _exit_tree() -> void:

@@ -91,7 +91,11 @@ func update_solo(state, device_num):
 		soloed_devices.remove_at(device_idx_in_soloed_device)
 	# tell all the cameras
 	for cam in nodes:
-		cam["point_cloud"].update_solo_state(soloed_devices)
+		cam["point_cloud"].update_display_state(soloed_devices)
+
+func update_point_visibility(device_num):
+	var cam = get_node_from_num(device_num)
+	cam["point_cloud"].update_display_state(soloed_devices)
 
 func initialize_camera_nodes():
 	var cam_idx = get_lowest_available_id()
@@ -137,6 +141,9 @@ func remove_camera(camera_num=null):
 
 	var camera_nodes = get_node_from_num(camera_num)
 	update_solo(false, camera_num)
+	for cam in nodes:
+		update_point_visibility(cam["camera"].device_num)
+
 	# clear the gizmo selection to make sure there is no selected nodes that are not in the tree.
 	carto_node.clear_gizmo_selection()
 	remove_from_ui(camera_nodes)
@@ -162,7 +169,9 @@ func add_camera(camera_nodes, idx=null):
 	# tries to restart the camera if the add_camera was called from a redo.
 	camera_nodes["camera_settings"].start_device()
 	update_orbbec_ip_lists()
-	update_solo(camera_nodes["camera"].soloed, idx)
+	update_solo(camera_nodes["camera"].soloed, camera_nodes["camera"].device_num)
+	for cam in nodes:
+		update_point_visibility(cam["camera"].device_num)
 
 
 func request_redraw():
