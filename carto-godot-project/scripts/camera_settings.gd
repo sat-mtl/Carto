@@ -42,15 +42,14 @@ func set_display_button_no_signal(state):
 	else:
 		%DisplayButton.icon = eye_closed_texture
 
-static var target_texture := preload("res://assets/target.svg")
-static var untarget_texture := preload("res://assets/un_target.svg")
+var target_texture := preload("res://assets/target.svg").duplicate()
 
 func set_solo_button_no_signal(state):
 	%SoloButton.set_pressed_no_signal(state)
 	if state:
-		%SoloButton.icon = target_texture
+		%SoloButton.icon.color_map = {Color(0,0,0): Color(1,0,0)}
 	else:
-		%SoloButton.icon = untarget_texture
+		%SoloButton.icon.color_map = {Color(0,0,0): Color(1,1,1)}
 
 var displayed := true:
 	set(state):
@@ -74,6 +73,7 @@ var highlight_stylebox = preload("res://themes/camera_settings_panel_stylebox.st
 
 func _ready() -> void:
 	%GizmoSelectButton.icon = gizmo_icon
+	%SoloButton.icon = target_texture
 	%ColorPickerButton.color = color
 	highlight_stylebox.bg_color = Color(1,1,1,0)
 	# calls the set function of the color because if the color was set before ready,
@@ -645,21 +645,19 @@ func _on_point_size_slider_value_changed(value: float) -> void:
 	)
 
 func _on_display_button_toggled(toggled_on: bool) -> void:
-	var old_val = displayed
 	UndoManager.add_to_stack(
 		"display cam " + str(camera_num),
 		func():
 			camera.displayed = toggled_on,
 		func():
-			camera.displayed = old_val
+			camera.displayed = !toggled_on
 	)
 
 func _on_solo_button_toggled(toggled_on: bool) -> void:
-	var old_val = soloed
 	UndoManager.add_to_stack(
 		"display cam " + str(camera_num),
 		func():
 			camera.soloed = toggled_on,
 		func():
-			camera.soloed = old_val
+			camera.soloed = !toggled_on
 	)

@@ -100,10 +100,10 @@ var color: Color:
 		color_changed.emit(col)
 
 signal point_size_changed(pt_size)
-var point_size: float:
+var point_size: float = 1.0:
 	set(pt_size):
-		point_size = pt_size
-		point_size_changed.emit(pt_size)
+		point_size = clamp(pt_size, 1.0, 10.0)
+		point_size_changed.emit(point_size)
 
 func get_camera_color(idx):
 	var color_num = idx - 1

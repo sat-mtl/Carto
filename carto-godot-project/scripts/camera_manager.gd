@@ -49,6 +49,14 @@ func _init() -> void:
 	# need to flush or else the file will be empty.
 	hesai_pandar_p40_correction_tmp_file.flush()
 
+## resets the camera manager to the initial state. helpful when loading savefiles
+func reset():
+	while num_cameras > 0:
+		remove_camera()
+	transform_changes_to_stack = Array()
+	group_edit_linger_countdown = 0
+	var soloed_devices = []
+
 var transform_changes_to_stack: Array
 
 ## manages undo-redo for grouped camera transforms
@@ -80,7 +88,6 @@ func _process(_delta: float) -> void:
 			false,
 			UndoRedo.MERGE_ENDS)
 		transform_changes_to_stack = []
-
 
 var soloed_devices := []
 func update_solo(state, device_num):
