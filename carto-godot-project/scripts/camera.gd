@@ -42,6 +42,23 @@ var active = true
 var has_default_name = true
 var camera_name: String
 
+signal soloed_change(state)
+var soloed: bool = false:
+	set(is_it):
+		soloed = is_it
+		soloed_change.emit(soloed)
+		CameraManager.update_solo(soloed, device_num)
+
+signal displayed_change(state)
+var displayed: bool = true:
+	set(is_it):
+		displayed = is_it
+		displayed_change.emit(displayed)
+		# since the display state of a device's point cloud depends on the solo
+		# state of all of the other cameras, we need to pass through the
+		# CameraManager to determine wether the point cloud needs to be displayed.
+		CameraManager.update_point_visibility(device_num)
+
 static var debug_points := PackedVector3Array()
 static var transform_buffer: PackedFloat32Array
 static var max_transform_points = 1024*1024
@@ -82,6 +99,12 @@ var color: Color:
 		color = col
 		color_changed.emit(col)
 
+signal point_size_changed(pt_size)
+var point_size: float = 1.0:
+	set(pt_size):
+		point_size = clamp(pt_size, 1.0, 10.0)
+		point_size_changed.emit(point_size)
+
 func get_camera_color(idx):
 	var color_num = idx - 1
 	## returns a unique camera color for the camera number.
@@ -104,6 +127,7 @@ func _on_display_transform_changed(tform: Transform3D):
 var max_points := 1_048_576
 
 func _enter_tree() -> void:
+	setup_points_for_compute_shader()
 	init_compute_shader_buffers()
 
 func _exit_tree() -> void:
@@ -127,6 +151,7 @@ func _on_device_error_log(lg:String):
 func _on_device_success_log(lg:String):
 	call_deferred("log_success", lg)
 
+var device_num
 var ui_node
 var display_node
 func connect_device_log_signals(device_node):
@@ -134,14 +159,20 @@ func connect_device_log_signals(device_node):
 	device_node.error_log.connect(_on_device_error_log)
 	device_node.success_log.connect(_on_device_success_log)
 
-func _init(ui:Node, display:Node, idx:int) -> void:
+func _init(ui:Node, display:Node, num:int) -> void:
+	device_num = num
 	ui_node = ui
 	display_node = display
 	multimesh.transform_format = MultiMesh.TRANSFORM_3D
 	color_changed.connect(display_node._on_color_change)
 	color_changed.connect(ui._on_color_change)
+	point_size_changed.connect(display_node._on_point_size_change)
+	point_size_changed.connect(ui._on_point_size_change)
+	soloed_change.connect(ui._on_soloed_changed)
 	centroid_changed.connect(display_node._on_centroid_change)
 	centroid_changed.connect(ui._on_centroid_change)
+	displayed_change.connect(display_node._on_displayed_change)
+	displayed_change.connect(ui._on_displayed_change)
 	name_changed.connect(ui._on_name_change)
 	name_changed.connect(display_node._on_name_change)
 	display_node.transform_changed.connect(_on_display_transform_changed)
@@ -153,8 +184,8 @@ func _init(ui:Node, display:Node, idx:int) -> void:
 	connect_device_log_signals(hesai_device)
 	hesai_device.point_cloud_frame.connect(_on_device_point_frame)
 	setup_points_for_compute_shader()
-	set_camera_name("Camera " + str(idx), true)
-	color = get_camera_color(idx)
+	set_camera_name("Camera " + str(num), true)
+	color = get_camera_color(num)
 
 signal name_changed
 
