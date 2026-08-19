@@ -223,20 +223,7 @@ var rd = RenderingServer.get_rendering_device()
 var shader_file := load("res://shaders/point_cloud_filter.glsl")
 var shader_spirv: RDShaderSPIRV = shader_file.get_spirv()
 var shader := rd.shader_create_from_spirv(shader_spirv)
-# array of points that need to be computed for filter inclusions or exclusions
 var pipeline := rd.compute_pipeline_create(shader)
-
-# creates the necessary gpu resources needed to pass a byte buffer to a compute
-# shader. returns an array of [RDUniform, RID to a storage buffer].
-# You really need to call rd.free_rid(the_array_returned_by_this_function[1])
-# in order to free the resources on the GPU.
-func make_buffer_uniform(data_bytes:PackedByteArray, binding):
-	var data_storage_buffer := rd.storage_buffer_create(data_bytes.size(), data_bytes)
-	var data_uniform := RDUniform.new()
-	data_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	data_uniform.binding = binding
-	data_uniform.add_id(data_storage_buffer)
-	return [data_uniform, data_storage_buffer]
 
 var mock_buffer_rid: RID
 var point_cloud_buffer_rid: RID
@@ -245,7 +232,7 @@ var filter_transforms_gpu_resources: Array
 var filter_settings_gpu_resources: Array
 var multimesh_buffer_gpu_resources:= [RDUniform.new(), null]
 var valid_points_counter_gpu_resources: Array
-var network_output_gpu_resources: Array
+var filtered_points_gpu_resources: Array
 var thinning_mask_gpu_resources: Array
 
 const max_filters_num := 100
@@ -259,7 +246,7 @@ func free_compute_shader_buffers():
 	rd.free_rid(filter_settings_gpu_resources[1])
 	rd.free_rid(valid_points_counter_gpu_resources[1])
 	rd.free_rid(mock_buffer_rid)
-	rd.free_rid(network_output_gpu_resources[1])
+	rd.free_rid(filtered_points_gpu_resources[1])
 	rd.free_rid(thinning_mask_gpu_resources[1])
 	mock_buffer_rid = RID()
 
@@ -272,68 +259,24 @@ const max_network_size := 1024*1024*floats_per_points*bytes_per_float
 func init_compute_shader_buffers():
 	var empty_floats = PackedFloat32Array()
 	empty_floats.resize(max_filters_num * transforms_num_fields)
-	filter_transforms_gpu_resources = make_buffer_uniform(empty_floats.to_byte_array(), 0)
+	filter_transforms_gpu_resources = ComputeShaderUtils.make_buffer_uniform(rd, empty_floats.to_byte_array(), 0)
 	empty_floats.resize(max_filters_num * filter_settings_num_fields)
-	filter_settings_gpu_resources = make_buffer_uniform(empty_floats.to_byte_array(), 1)
-	empty_floats.resize(1)
+	filter_settings_gpu_resources = ComputeShaderUtils.make_buffer_uniform(rd, empty_floats.to_byte_array(), 1)
 	point_cloud_buffer_gpu_resources[0].uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 	point_cloud_buffer_gpu_resources[0].binding = 2
 	# we bind a RID to the uniform later
 	multimesh_buffer_gpu_resources[0].uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 	multimesh_buffer_gpu_resources[0].binding = 3
-	valid_points_counter_gpu_resources = make_buffer_uniform(empty_floats.to_byte_array(), 4)
+	empty_floats.resize(1)
+	valid_points_counter_gpu_resources = ComputeShaderUtils.make_buffer_uniform(rd, empty_floats.to_byte_array(), 4)
 	empty_floats.resize(max_network_size)
-	network_output_gpu_resources = make_buffer_uniform(empty_floats.to_byte_array(), 5)
+	filtered_points_gpu_resources = ComputeShaderUtils.make_buffer_uniform(rd, empty_floats.to_byte_array(), 5)
 	# create a thinning mask with random floats from 0 to 1.
 	empty_floats.resize(thinning_mask_size)
 	for i in range(thinning_mask_size):
 		empty_floats[i] = randf()
-	thinning_mask_gpu_resources = make_buffer_uniform(empty_floats.to_byte_array(), 6)
+	thinning_mask_gpu_resources = ComputeShaderUtils.make_buffer_uniform(rd, empty_floats.to_byte_array(), 6)
 	upload_mock_data()
-
-# flattens the transform and appends it to the array.
-# all work is done as side effect.
-func append_transform_to_float_array(tfm:Transform3D, array:PackedFloat32Array):
-	array.append(tfm.basis.x.x)
-	array.append(tfm.basis.x.y)
-	array.append(tfm.basis.x.z)
-	array.append(tfm.basis.y.x)
-	array.append(tfm.basis.y.y)
-	array.append(tfm.basis.y.z)
-	array.append(tfm.basis.z.x)
-	array.append(tfm.basis.z.y)
-	array.append(tfm.basis.z.z)
-	for i in range(3):
-		array.append(tfm.origin[i])
-
-func get_xyz_invocations(required_invocations:int) -> Vector3:
-	# number of workgroups in X,Y,Z.
-	# Algorithm adapted from https://github.com/ossia/score/blob/master/src/plugins/score-plugin-gfx/Gfx/Graph/RenderedCSFNode.cpp#L1372
-	# to compute the right size for the workgroup dimensions.
-	const threads_per_workgroup:= 64
-	# example : if we have 65 invocations, we need 2 workgroups. (65 + 63)/64 == 2
-	@warning_ignore("integer_division")
-	var total_workgroups := (required_invocations + threads_per_workgroup - 1) / threads_per_workgroup;
-	const max_workgroups := 65535
-	var dispatch = Vector3.ZERO
-	# the logic of those steps is that everytime we overflow max_workgroups on one dimension,
-	if(total_workgroups > max_workgroups * max_workgroups):
-		dispatch.x = max_workgroups;
-		@warning_ignore("integer_division")
-		var remaining := (total_workgroups + max_workgroups - 1) / max_workgroups;
-		dispatch.y = min(remaining, max_workgroups);
-		@warning_ignore("integer_division")
-		dispatch.z = (remaining + (max_workgroups - 1)) / max_workgroups;
-	elif(total_workgroups > max_workgroups):
-		dispatch.x = min(total_workgroups, max_workgroups);
-		@warning_ignore("integer_division")
-		dispatch.y = (total_workgroups + max_workgroups - 1) / max_workgroups;
-		dispatch.z = 1;
-	else:
-		dispatch.x = total_workgroups;
-		dispatch.y = 1;
-		dispatch.z = 1;
-	return dispatch
 
 func clear_network_output():
 	output_data.clear()
@@ -352,11 +295,13 @@ func set_network_output_data():
 		clear_network_output()
 		return
 	# TODO: maybe try buffer_get_data_async ? it introduces latency though.
-	rd.buffer_get_data_async(network_output_gpu_resources[1], on_data_got, 0, output_size)
+	rd.buffer_get_data_async(filtered_points_gpu_resources[1], on_data_got, 0, output_size)
 
 var uniform_set: RID
 
 func apply_compute_shader():
+	#if CameraManager.done:
+	#	return
 	if uniform_set.is_valid():
 		# we need to cleanup our uniform set, there seems to be no way to update it
 		# so we need to create one every frame and if we don't free we eventually crash
@@ -384,7 +329,7 @@ func apply_compute_shader():
 		filter_transform.origin = filter_transform.origin*Vector3.ONE*2
 		# we inverse the transformation matrix here so that we don't have to do it
 		# once per point on the gpu
-		append_transform_to_float_array(filter_transform.affine_inverse(), filter_transforms)
+		ComputeShaderUtils.append_transform_to_float_array(filter_transform.affine_inverse(), filter_transforms)
 	# upload our various buffers on the gpu.
 	var filter_transform_bytes = filter_transforms.to_byte_array()
 	rd.buffer_update(filter_transforms_gpu_resources[1], 0, len(filter_transform_bytes), filter_transform_bytes)
@@ -399,17 +344,14 @@ func apply_compute_shader():
 	multimesh_buffer_gpu_resources[0].add_id(multimesh_buffer_RID)
 
 	point_cloud_buffer_gpu_resources[0].clear_ids()
-	if current_device_type != device_types.DEBUG:
-		point_cloud_buffer_gpu_resources[0].add_id(point_cloud_buffer_rid)
-	else:
-		point_cloud_buffer_gpu_resources[0].add_id(mock_buffer_rid)
+	point_cloud_buffer_gpu_resources[0].add_id(get_points_buffer())
 	uniform_set = rd.uniform_set_create([
 		point_cloud_buffer_gpu_resources[0],
 		filter_settings_gpu_resources[0],
 		filter_transforms_gpu_resources[0],
 		multimesh_buffer_gpu_resources[0],
 		valid_points_counter_gpu_resources[0],
-		network_output_gpu_resources[0],
+		filtered_points_gpu_resources[0],
 		thinning_mask_gpu_resources[0],
 		], shader, 0
 	) # the last parameter (the 0) needs to match the "set" in our shader file
@@ -439,7 +381,7 @@ func apply_compute_shader():
 	var float_params = parameters.to_byte_array().to_float32_array()
 	float_params.append(thinning)
 	# Append the centroid compensated transform of this point cloud to the push constants.
-	append_transform_to_float_array(get_transform_centroid_compensated(), float_params)
+	ComputeShaderUtils.append_transform_to_float_array(get_transform_centroid_compensated(), float_params)
 	# This always need to be more than 16 bytes even if you use less. It also can't
 	# contain more than 128 bytes or something like that so we can't just shove
 	# everything in there. It also looks like this buffer needs to have a multiple
@@ -448,9 +390,8 @@ func apply_compute_shader():
 	# just use the whole 128 bytes, whatever.
 	parameter_bytes.resize(80)
 	rd.compute_list_set_push_constant(compute_list, parameter_bytes, parameter_bytes.size())
-	@warning_ignore("integer_division")
 	# we need to be called for max_points because we need to clear unused points.
-	var xyz_invoc = get_xyz_invocations(max_points)
+	var xyz_invoc = ComputeShaderUtils.get_xyz_invocations(max_points)
 	rd.compute_list_dispatch(compute_list, xyz_invoc.x, xyz_invoc.y, xyz_invoc.z)
 	rd.compute_list_end()
 	# if we have no active network ouput, we can skip reading from the GPU which is muuuuch
@@ -634,8 +575,20 @@ func upload_mock_data(data_bytes=null):
 	if data_bytes == null:
 		data_bytes = debug_points.to_byte_array()
 	if not mock_buffer_rid.is_valid():
-		mock_buffer_rid = rd.storage_buffer_create(data_bytes.size(), data_bytes)
+		mock_buffer_rid = ComputeShaderUtils.create_buffer_with_device_address(rd, data_bytes.size(), data_bytes)
 	rd.buffer_update(mock_buffer_rid, 0, len(data_bytes), data_bytes)
+
+func get_points_buffer(	) -> RID:
+	if current_device_type != device_types.DEBUG:
+		return point_cloud_buffer_rid
+	else:
+		return mock_buffer_rid
+
+func get_filtered_points_buffer() -> RID:
+	return filtered_points_gpu_resources[1]
+
+func get_filtered_points_size_buffer():
+	return valid_points_counter_gpu_resources[1]
 
 func _process(_delta: float) -> void:
 	var transformed_has_changed = transform != last_transform

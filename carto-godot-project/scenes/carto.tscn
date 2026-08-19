@@ -6,6 +6,7 @@
 [ext_resource type="Material" uid="uid://c4ht70wksvn1h" path="res://scenes/materials/filter_material.tres" id="4_gl0la"]
 [ext_resource type="Script" uid="uid://vwryfd5ch66d" path="res://scripts/crop_region.gd" id="5_l3b00"]
 [ext_resource type="PackedScene" uid="uid://jygsbdchwydl" path="res://scenes/ui_components/manipulator_gizmo.tscn" id="6_j5nj0"]
+[ext_resource type="ButtonGroup" uid="uid://tg2crk0ae87d" path="res://mode_button_group.tres" id="7_48igv"]
 [ext_resource type="Texture2D" uid="uid://bypv18pxw3k0m" path="res://assets/gear.svg" id="7_hth1k"]
 [ext_resource type="Texture2D" uid="uid://bk8yy82uqfvhn" path="res://assets/log_icon.svg" id="8_hyci1"]
 [ext_resource type="Script" uid="uid://bcydqv6jfkgjn" path="res://scripts/camera_view_menu.gd" id="9_jur1s"]
@@ -16,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://bgmbgqc1wd2p3" path="res://assets/grid.png" id="14_ws6x0"]
 [ext_resource type="Script" uid="uid://bcpis2ryug32f" path="res://scripts/tcp_output.gd" id="15_3aqgx"]
 [ext_resource type="Script" uid="uid://cd6aaethcy4un" path="res://scripts/gizmo_3d_overrides.gd" id="16_dkctx"]
+[ext_resource type="Script" uid="uid://j2icjxbhbo45" path="res://scenes/tracking_point_cloud.gd" id="16_dunih"]
 [ext_resource type="Script" uid="uid://halhuefrfjby" path="res://scripts/accept_dialog.gd" id="17_wy4cq"]
 [ext_resource type="Script" uid="uid://5oiwcutjml3v" path="res://scripts/save_dialog.gd" id="18_f16a8"]
 
@@ -160,6 +162,28 @@ offset_right = 131.0
 offset_bottom = 186.0
 metadata/_edit_use_anchors_ = true
 
+[node name="ModeSwitcherContainer" type="HBoxContainer" parent="." unique_id=754083103]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="CalibrationModeButton" type="Button" parent="ModeSwitcherContainer" unique_id=1590897528]
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = ExtResource("7_48igv")
+text = "Calibration"
+
+[node name="TrackingModeButton" type="Button" parent="ModeSwitcherContainer" unique_id=1299200509]
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("7_48igv")
+text = "Tracking"
+
 [node name="ViewButtonsContainer" type="HBoxContainer" parent="." unique_id=1024709046]
 offset_left = 13.0
 offset_top = 11.0
@@ -227,7 +251,7 @@ item_6/text = "Bottom Orthographic"
 item_6/id = 6
 script = ExtResource("9_jur1s")
 
-[node name="SideBarUI" type="TabContainer" parent="." unique_id=1301982972]
+[node name="CalibSideBarUI" type="TabContainer" parent="." unique_id=1301982972]
 unique_name_in_owner = true
 anchors_preset = -1
 anchor_left = 0.859375
@@ -238,10 +262,10 @@ grow_vertical = 2
 theme = ExtResource("10_oxl2k")
 theme_override_constants/side_margin = 0
 theme_override_font_sizes/font_size = 13
-current_tab = 2
+current_tab = 1
 use_hidden_tabs_for_min_size = true
 
-[node name="Cameras" type="MarginContainer" parent="SideBarUI" unique_id=1741535256]
+[node name="Cameras" type="MarginContainer" parent="CalibSideBarUI" unique_id=1741535256]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 6
@@ -250,44 +274,43 @@ theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 6
 metadata/_tab_index = 0
 
-[node name="Add Cameras" type="VBoxContainer" parent="SideBarUI/Cameras" unique_id=1820435088]
+[node name="Add Cameras" type="VBoxContainer" parent="CalibSideBarUI/Cameras" unique_id=1820435088]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="AddButtonsContainer" type="HBoxContainer" parent="SideBarUI/Cameras/Add Cameras" unique_id=397793770]
+[node name="AddButtonsContainer" type="HBoxContainer" parent="CalibSideBarUI/Cameras/Add Cameras" unique_id=397793770]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="SideBarUI/Cameras/Add Cameras/AddButtonsContainer" unique_id=622732954]
+[node name="Label" type="Label" parent="CalibSideBarUI/Cameras/Add Cameras/AddButtonsContainer" unique_id=622732954]
 layout_mode = 2
 text = "Add"
 
-[node name="AddButton" type="Button" parent="SideBarUI/Cameras/Add Cameras/AddButtonsContainer" unique_id=890240824]
+[node name="AddButton" type="Button" parent="CalibSideBarUI/Cameras/Add Cameras/AddButtonsContainer" unique_id=890240824]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "+"
 
-[node name="RemoveButton" type="Button" parent="SideBarUI/Cameras/Add Cameras/AddButtonsContainer" unique_id=1482572340]
+[node name="RemoveButton" type="Button" parent="CalibSideBarUI/Cameras/Add Cameras/AddButtonsContainer" unique_id=1482572340]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "-"
 
-[node name="CameraScrollContainer" type="ScrollContainer" parent="SideBarUI/Cameras/Add Cameras" unique_id=504584596]
+[node name="CameraScrollContainer" type="ScrollContainer" parent="CalibSideBarUI/Cameras/Add Cameras" unique_id=504584596]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="SideBarUI/Cameras/Add Cameras/CameraScrollContainer" unique_id=1331630085]
+[node name="MarginContainer" type="MarginContainer" parent="CalibSideBarUI/Cameras/Add Cameras/CameraScrollContainer" unique_id=1331630085]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_right = 4
 
-[node name="CamerasContainer" type="VBoxContainer" parent="SideBarUI/Cameras/Add Cameras/CameraScrollContainer/MarginContainer" unique_id=144750037]
+[node name="CamerasContainer" type="VBoxContainer" parent="CalibSideBarUI/Cameras/Add Cameras/CameraScrollContainer/MarginContainer" unique_id=144750037]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Crop Region" type="MarginContainer" parent="SideBarUI" unique_id=1717464556]
-visible = false
+[node name="Crop Region" type="MarginContainer" parent="CalibSideBarUI" unique_id=1717464556]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
@@ -295,52 +318,52 @@ theme_override_constants/margin_right = 6
 theme_override_constants/margin_bottom = 6
 metadata/_tab_index = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SideBarUI/Crop Region" unique_id=1249087036]
+[node name="VBoxContainer" type="VBoxContainer" parent="CalibSideBarUI/Crop Region" unique_id=1249087036]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SideBarUI/Crop Region/VBoxContainer" unique_id=1087545842]
+[node name="HBoxContainer" type="HBoxContainer" parent="CalibSideBarUI/Crop Region/VBoxContainer" unique_id=1087545842]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer" unique_id=5034250]
+[node name="PanelContainer" type="PanelContainer" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer" unique_id=5034250]
 layout_mode = 2
 
-[node name="CropGizmoSelectButton" type="Button" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/PanelContainer" unique_id=906866964]
+[node name="CropGizmoSelectButton" type="Button" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/PanelContainer" unique_id=906866964]
 layout_mode = 2
 
-[node name="CropGizmoLabel" type="Label" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/PanelContainer" unique_id=2137071661]
+[node name="CropGizmoLabel" type="Label" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/PanelContainer" unique_id=2137071661]
 layout_mode = 2
 text = "gizmo"
 
-[node name="GridContainer" type="GridContainer" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer" unique_id=573068571]
+[node name="GridContainer" type="GridContainer" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer" unique_id=573068571]
 layout_mode = 2
 columns = 2
 
-[node name="CropActiveLabel" type="Label" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=173775699]
+[node name="CropActiveLabel" type="Label" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=173775699]
 layout_mode = 2
 text = "Crop Active"
 
-[node name="CropActive" type="CheckButton" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=348408860]
+[node name="CropActive" type="CheckButton" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=348408860]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 button_pressed = true
 
-[node name="CropShapeLabel" type="Label" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=778179335]
+[node name="CropShapeLabel" type="Label" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=778179335]
 layout_mode = 2
 text = "Crop Shape"
 
-[node name="CropShape" type="OptionButton" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=501597759]
+[node name="CropShape" type="OptionButton" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=501597759]
 layout_mode = 2
 
-[node name="ScaleLabel" type="Label" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=1265637747]
+[node name="ScaleLabel" type="Label" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=1265637747]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Scale XYZ"
 
-[node name="Scale" type="HBoxContainer" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=1800133361]
+[node name="Scale" type="HBoxContainer" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=1800133361]
 layout_mode = 2
 
-[node name="CropScaleX" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale" unique_id=1892772211]
+[node name="CropScaleX" type="SpinBox" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale" unique_id=1892772211]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -348,79 +371,80 @@ min_value = 0.2
 step = 0.001
 value = 0.2
 
-[node name="CropScaleY" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale" unique_id=1127724113]
+[node name="CropScaleY" type="SpinBox" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale" unique_id=1127724113]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = 0.2
 step = 0.001
 value = 0.2
 
-[node name="CropScaleZ" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale" unique_id=351596495]
+[node name="CropScaleZ" type="SpinBox" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale" unique_id=351596495]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = 0.2
 step = 0.001
 value = 0.2
 
-[node name="TranslateLabel" type="Label" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=1555341285]
+[node name="TranslateLabel" type="Label" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=1555341285]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Translate XYZ"
 
-[node name="Translate" type="HBoxContainer" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=1006358472]
+[node name="Translate" type="HBoxContainer" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=1006358472]
 layout_mode = 2
 
-[node name="CropTranslateX" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate" unique_id=2063906439]
+[node name="CropTranslateX" type="SpinBox" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate" unique_id=2063906439]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = -100.0
 step = 0.001
 
-[node name="CropTranslateY" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate" unique_id=602664863]
+[node name="CropTranslateY" type="SpinBox" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate" unique_id=602664863]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = -100.0
 step = 0.001
 
-[node name="CropTranslateZ" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate" unique_id=2037759857]
+[node name="CropTranslateZ" type="SpinBox" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate" unique_id=2037759857]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = -100.0
 step = 0.001
 
-[node name="RotateLabel" type="Label" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=872040980]
+[node name="RotateLabel" type="Label" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=872040980]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Rotate XYZ"
 
-[node name="Rotate" type="HBoxContainer" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=894881112]
+[node name="Rotate" type="HBoxContainer" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=894881112]
 layout_mode = 2
 
-[node name="CropRotateX" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate" unique_id=2139017354]
+[node name="CropRotateX" type="SpinBox" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate" unique_id=2139017354]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = -360.0
 max_value = 360.0
 step = 0.01
 
-[node name="CropRotateY" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate" unique_id=832994301]
+[node name="CropRotateY" type="SpinBox" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate" unique_id=832994301]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = -360.0
 max_value = 360.0
 step = 0.01
 
-[node name="CropRotateZ" type="SpinBox" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate" unique_id=40454180]
+[node name="CropRotateZ" type="SpinBox" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate" unique_id=40454180]
 unique_name_in_owner = true
 layout_mode = 2
 min_value = -360.0
 max_value = 360.0
 step = 0.01
 
-[node name="TODO _ Global transform" type="Node" parent="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=281173981]
+[node name="TODO _ Global transform" type="Node" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=281173981]
 
-[node name="Network Outputs" type="MarginContainer" parent="SideBarUI" unique_id=1073534318]
+[node name="Network Outputs" type="MarginContainer" parent="CalibSideBarUI" unique_id=1073534318]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
@@ -428,37 +452,37 @@ theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 6
 metadata/_tab_index = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="SideBarUI/Network Outputs" unique_id=665993129]
+[node name="ScrollContainer" type="ScrollContainer" parent="CalibSideBarUI/Network Outputs" unique_id=665993129]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="SideBarUI/Network Outputs/ScrollContainer" unique_id=526060356]
+[node name="MarginContainer" type="MarginContainer" parent="CalibSideBarUI/Network Outputs/ScrollContainer" unique_id=526060356]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/margin_right = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer" unique_id=475217319]
+[node name="VBoxContainer" type="VBoxContainer" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer" unique_id=475217319]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="NDIOutsLabel" type="Label" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=2045536936]
+[node name="NDIOutsLabel" type="Label" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=2045536936]
 layout_mode = 2
 text = "NDI Outputs"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1102226627]
+[node name="HBoxContainer2" type="HBoxContainer" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1102226627]
 layout_mode = 2
 
-[node name="AddNDIOutsLabel" type="Label" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1626906080]
+[node name="AddNDIOutsLabel" type="Label" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=1626906080]
 layout_mode = 2
 text = "Add"
 
-[node name="AddNDIOutButton" type="Button" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=383593699]
+[node name="AddNDIOutButton" type="Button" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer2" unique_id=383593699]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "+"
 
-[node name="MarginContainer2" type="MarginContainer" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=275878650]
+[node name="MarginContainer2" type="MarginContainer" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=275878650]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -466,33 +490,33 @@ theme_override_constants/margin_left = -4
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 
-[node name="NDIOutputs" type="VBoxContainer" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer2" unique_id=149395688]
+[node name="NDIOutputs" type="VBoxContainer" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer2" unique_id=149395688]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="PointCloudOutsLabel" type="Label" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=731018793]
+[node name="PointCloudOutsLabel" type="Label" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=731018793]
 layout_mode = 2
 text = "Point Cloud Outputs"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1887210641]
+[node name="HBoxContainer" type="HBoxContainer" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1887210641]
 layout_mode = 2
 
-[node name="AddPointCloudOutsLabel" type="Label" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=979956294]
+[node name="AddPointCloudOutsLabel" type="Label" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=979956294]
 layout_mode = 2
 text = "Add"
 
-[node name="AddNetworkOutButton" type="Button" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1817229923]
+[node name="AddNetworkOutButton" type="Button" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1817229923]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "+"
 
-[node name="RemoveNetworkOutButton" type="Button" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1345634346]
+[node name="RemoveNetworkOutButton" type="Button" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=1345634346]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "-"
 
-[node name="MarginContainer" type="MarginContainer" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1651738307]
+[node name="MarginContainer" type="MarginContainer" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1651738307]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -500,7 +524,7 @@ theme_override_constants/margin_left = -4
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 
-[node name="NetworkDestinations" type="VBoxContainer" parent="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer" unique_id=1879448514]
+[node name="NetworkDestinations" type="VBoxContainer" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer" unique_id=1879448514]
 unique_name_in_owner = true
 layout_mode = 2
 
@@ -917,11 +941,15 @@ layers = 3
 mesh = SubResource("CylinderMesh_xtm48")
 metadata/_edit_lock_ = true
 
-[node name="PointClouds" type="Node3D" parent="." unique_id=2147016225]
+[node name="CalibPointClouds" type="Node3D" parent="." unique_id=2147016225]
 unique_name_in_owner = true
 
-[node name="PointCloudCameras" type="Node3D" parent="." unique_id=2042626713]
+[node name="PointCloudCameras" type="Node" parent="." unique_id=129504982]
 unique_name_in_owner = true
+
+[node name="TrackingPointCloud" type="MultiMeshInstance3D" parent="." unique_id=1135268503]
+unique_name_in_owner = true
+script = ExtResource("16_dunih")
 
 [node name="TCPOutput" type="Node" parent="." unique_id=1557318940]
 unique_name_in_owner = true
@@ -996,22 +1024,22 @@ autostart = true
 [connection signal="pressed" from="ViewButtonsContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="ViewButtonsContainer/LogsButton" to="." method="_on_logs_button_pressed"]
 [connection signal="id_pressed" from="ViewButtonsContainer/CameraViewMenuBar/CameraViewMenu" to="." method="_on_camera_view_menu_id_pressed"]
-[connection signal="pressed" from="SideBarUI/Cameras/Add Cameras/AddButtonsContainer/AddButton" to="." method="_on_add_camera_button_pressed"]
-[connection signal="pressed" from="SideBarUI/Cameras/Add Cameras/AddButtonsContainer/RemoveButton" to="." method="_on_remove_camera_button_pressed"]
-[connection signal="pressed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/PanelContainer/CropGizmoSelectButton" to="." method="_on_crop_gizmo_select_pressed"]
-[connection signal="toggled" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/CropActive" to="." method="_on_crop_active_toggled"]
-[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale/CropScaleX" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_scale_x_value_changed"]
-[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale/CropScaleY" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_scale_y_value_changed"]
-[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale/CropScaleZ" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_scale_z_value_changed"]
-[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate/CropTranslateX" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_translate_x_value_changed"]
-[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate/CropTranslateY" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_translate_y_value_changed"]
-[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate/CropTranslateZ" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_translate_z_value_changed"]
-[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate/CropRotateX" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_rotate_x_value_changed"]
-[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate/CropRotateY" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_rotate_y_value_changed"]
-[connection signal="value_changed" from="SideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate/CropRotateZ" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_rotate_z_value_changed"]
-[connection signal="pressed" from="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer2/AddNDIOutButton" to="." method="_on_add_ndi_out_button_pressed"]
-[connection signal="pressed" from="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/AddNetworkOutButton" to="." method="_on_add_network_out_button_pressed"]
-[connection signal="pressed" from="SideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveNetworkOutButton" to="." method="_on_remove_network_out_button_pressed"]
+[connection signal="pressed" from="CalibSideBarUI/Cameras/Add Cameras/AddButtonsContainer/AddButton" to="." method="_on_add_camera_button_pressed"]
+[connection signal="pressed" from="CalibSideBarUI/Cameras/Add Cameras/AddButtonsContainer/RemoveButton" to="." method="_on_remove_camera_button_pressed"]
+[connection signal="pressed" from="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/PanelContainer/CropGizmoSelectButton" to="." method="_on_crop_gizmo_select_pressed"]
+[connection signal="toggled" from="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/CropActive" to="." method="_on_crop_active_toggled"]
+[connection signal="value_changed" from="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale/CropScaleX" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_scale_x_value_changed"]
+[connection signal="value_changed" from="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale/CropScaleY" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_scale_y_value_changed"]
+[connection signal="value_changed" from="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Scale/CropScaleZ" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_scale_z_value_changed"]
+[connection signal="value_changed" from="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate/CropTranslateX" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_translate_x_value_changed"]
+[connection signal="value_changed" from="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate/CropTranslateY" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_translate_y_value_changed"]
+[connection signal="value_changed" from="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Translate/CropTranslateZ" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_translate_z_value_changed"]
+[connection signal="value_changed" from="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate/CropRotateX" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_rotate_x_value_changed"]
+[connection signal="value_changed" from="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate/CropRotateY" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_rotate_y_value_changed"]
+[connection signal="value_changed" from="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer/Rotate/CropRotateZ" to="FilterAreas/CropRegionContainer/CropRegion" method="_on_rotate_z_value_changed"]
+[connection signal="pressed" from="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer2/AddNDIOutButton" to="." method="_on_add_ndi_out_button_pressed"]
+[connection signal="pressed" from="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/AddNetworkOutButton" to="." method="_on_add_network_out_button_pressed"]
+[connection signal="pressed" from="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveNetworkOutButton" to="." method="_on_remove_network_out_button_pressed"]
 [connection signal="pressed" from="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer2/ShortcutsExitButton" to="." method="_on_close_modal_window_pressed"]
 [connection signal="pressed" from="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer2/ShortcutsExitButton" to="." method="_on_close_modal_window_pressed"]
 [connection signal="value_changed" from="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/CamSpeedHBoxContainer/CameraSpeedSpinBox" to="." method="_on_camera_speed_spin_box_value_changed"]

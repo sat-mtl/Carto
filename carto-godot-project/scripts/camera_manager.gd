@@ -37,7 +37,7 @@ var num_cameras: int:
 # We need to keep this FileAccess alive so that the tmp file exists as long
 # as the program runs.
 var hesai_pandar_p40_correction_tmp_file:FileAccess
-
+var done = false
 func _init() -> void:
 	orbbec_devices.refresh_device_list()
 	# when the exe is exported, the csv correction files in res://device_configurations
@@ -55,7 +55,7 @@ func reset():
 		remove_camera()
 	transform_changes_to_stack = Array()
 	group_edit_linger_countdown = 0
-	var soloed_devices = []
+	soloed_devices = []
 
 var transform_changes_to_stack: Array
 
@@ -96,13 +96,24 @@ func update_solo(state, device_num):
 		soloed_devices.append(device_num)
 	elif not state and device_idx_in_soloed_device != -1:
 		soloed_devices.remove_at(device_idx_in_soloed_device)
-	# tell all the cameras
+	# tell all the camerasd
 	for cam in nodes:
 		cam["point_cloud"].update_display_state(soloed_devices)
 
 func update_point_visibility(device_num):
 	var cam = get_node_from_num(device_num)
 	cam["point_cloud"].update_display_state(soloed_devices)
+
+func get_filtered_buffers_and_sizes():
+	var points_buffers := Array()
+	var sizes_buffers := Array()
+	for cam in nodes:
+		var points_rid : RID = cam["camera"].get_filtered_points_buffer()
+		var sizes_rid : RID = cam["camera"].get_filtered_points_size_buffer()
+		if points_rid.is_valid() and sizes_rid.is_valid():
+			points_buffers.append(points_rid)
+			sizes_buffers.append(sizes_rid)
+	return {"points": points_buffers, "sizes": sizes_buffers}
 
 func initialize_camera_nodes():
 	var cam_idx = get_lowest_available_id()
