@@ -21,6 +21,7 @@ var current_orbbec_ip_idx := 0
 var current_orbbec_resolution_idx := 1
 var current_orbbec_fps_idx := 0
 var current_device_type_idx := 0
+var current_hesai_port := 0
 
 # the default hesai ip is the current ip.
 var current_hesai_ip := "192.168.1.201"
@@ -59,9 +60,10 @@ func _on_pointcloud_connecting():
 	%OrbbecFPSOptionButton.disabled = true
 	%OrbbecResolutionOptionButton.disabled = true
 	%HesaiIPLineEdit.editable = false
+	%HesaiPortSpinBox.editable = false
 	%DeviceOptionButton.disabled = true
 	%ActiveSwitch.disabled = true
-	%RefreshButton.disabled = true
+	%ConnectButton.disabled = true
 	%DeviceOptionButton.disabled = true
 
 func _on_pointcloud_end_connecting():
@@ -69,9 +71,10 @@ func _on_pointcloud_end_connecting():
 	%OrbbecFPSOptionButton.disabled = false
 	%OrbbecResolutionOptionButton.disabled = false
 	%HesaiIPLineEdit.editable = true
+	%HesaiPortSpinBox.editable = true
 	%DeviceOptionButton.disabled = false
 	%ActiveSwitch.disabled = false
-	%RefreshButton.disabled = false
+	%ConnectButton.disabled = false
 	%DeviceOptionButton.disabled = false
 
 func _on_timer_timeout() -> void:
@@ -165,10 +168,10 @@ func start_orbbec_device():
 		camera.start_orbbec_device(ip, resolution[0], resolution[1], fps)
 
 func start_hesai_device():
-	if active_state == false:
+	if active_state == false or %HesaiPortSpinBox.value < 1024:
 		camera.stop_device()
 	else:
-		camera.start_hesai_device(get_current_hesai_ip())
+		camera.start_hesai_device(get_current_hesai_ip(), current_hesai_port)
 
 func start_device():
 	match camera.current_device_type:
@@ -188,6 +191,10 @@ func set_hesai_ip(ip: String):
 	%HesaiIPLineEdit.validate_no_signal(ip)
 	current_hesai_ip = ip
 	set_hesai_webui_url(ip)
+
+func set_hesai_port(port: int):
+	current_hesai_port = port
+	%HesaiPortSpinBox.set_value_no_signal(port)
 
 func select_orbbec_ip(ip: String):
 	var idx = find_index_of_item(ip, %OrbbecIPOptionButton)
@@ -498,6 +505,7 @@ func update_controls_for_device():
 	%OrbbecResolutionLine.visible = false
 	%HesaiIPLine.visible = false
 	%HesaiWebUILine.visible = false
+	%HesaiPortLine.visible = false
 	match get_current_device_type():
 		camera.device_types.ORBBEC:
 			%OrbbecFPSLine.visible = true
@@ -505,6 +513,7 @@ func update_controls_for_device():
 			%OrbbecResolutionLine.visible = true
 		camera.device_types.HESAI:
 			%HesaiIPLine.visible = true
+			%HesaiPortLine.visible = true
 			%HesaiWebUILine.visible = true
 		_:
 			# debug case
@@ -551,7 +560,11 @@ func _on_pivot_to_centroid_button_toggled(toggled_on: bool) -> void:
 	camera.set_centroid_toggled(toggled_on)
 
 func set_hesai_webui_url(ip):
-	%HesaiWebUIButton.uri = "http://"+ip+"/setting.html"
+	if ip != "None":
+		%HesaiWebUIButton.uri = "http://"+ip+"/setting.html"
+		%HesaiWebUIButton.disabled = false
+	else:
+		%HesaiWebUIButton.disabled = true
 
 func _on_hesai_ip_line_edit_valid_change(ip: String) -> void:
 	var last_ip := current_hesai_ip
@@ -562,5 +575,18 @@ func _on_hesai_ip_line_edit_valid_change(ip: String) -> void:
 			start_device(),
 		func():
 			set_hesai_ip(last_ip)
+			start_device()
+	)
+
+func _on_hesai_port_spin_box_value_changed(port: float) -> void:
+	var last_port := current_hesai_port
+	UndoManager.add_to_stack(
+		"start_device cam " + str(camera_num),
+		func():
+			@warning_ignore("narrowing_conversion")
+			set_hesai_port(port)
+			start_device(),
+		func():
+			set_hesai_port(last_port)
 			start_device()
 	)

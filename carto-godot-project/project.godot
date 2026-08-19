@@ -17,8 +17,14 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="Carto"
 config/version="0.0.1"
 run/main_scene="uid://tt8g7d4xmyef"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="SAT/Carto"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
+
+[audio]
+
+driver/driver="Dummy"
 
 [autoload]
 
