@@ -25,7 +25,7 @@ unique_name_in_owner = true
 [node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="CentroidPivot" unique_id=1157385583]
 unique_name_in_owner = true
 layers = 7
-extra_cull_margin = 1000.0
+extra_cull_margin = 300.0
 ignore_occlusion_culling = true
 
 [node name="CentroidIndicator" type="MeshInstance3D" parent="CentroidPivot" unique_id=151456627]

@@ -7,22 +7,26 @@ var transform_buffer := PackedFloat32Array()
 var floats_per_raw_point := 16
 var material = StandardMaterial3D.new()
 var pmesh := PointMesh.new()
-func _init() -> void:
+
+var multimesh_initialized = false
+
+func init_multimesh_points():
+	var empty_basis = Basis()
 	# initialize an empty point buffer with color. See https://docs.godotengine.org/en/stable/classes/class_renderingserver.html#class-renderingserver-method-multimesh-set-buffer
 	transform_buffer.resize(max_points*floats_per_raw_point)
 	for i in range(max_points):
-		transform_buffer[i * floats_per_raw_point] = basis[0][0];
-		transform_buffer[i * floats_per_raw_point + 1] = basis[1][0];
-		transform_buffer[i * floats_per_raw_point + 2] = basis[2][0];
-		transform_buffer[i * floats_per_raw_point + 3] = 0.00001 * i ;
-		transform_buffer[i * floats_per_raw_point + 4] = basis[0][1];
-		transform_buffer[i * floats_per_raw_point + 5] = basis[1][1];
-		transform_buffer[i * floats_per_raw_point + 6] = basis[2][1];
-		transform_buffer[i * floats_per_raw_point + 7] = 0.00001 * i ;
-		transform_buffer[i * floats_per_raw_point + 8] = basis[0][2];
-		transform_buffer[i * floats_per_raw_point + 9] = basis[1][2];
-		transform_buffer[i * floats_per_raw_point + 10] = basis[2][2];
-		transform_buffer[i * floats_per_raw_point + 11] = 0.00001 * i ;
+		transform_buffer[i * floats_per_raw_point] = empty_basis[0][0];
+		transform_buffer[i * floats_per_raw_point + 1] = empty_basis[1][0];
+		transform_buffer[i * floats_per_raw_point + 2] = empty_basis[2][0];
+		transform_buffer[i * floats_per_raw_point + 3] = -666;
+		transform_buffer[i * floats_per_raw_point + 4] = empty_basis[0][1];
+		transform_buffer[i * floats_per_raw_point + 5] = empty_basis[1][1];
+		transform_buffer[i * floats_per_raw_point + 6] = empty_basis[2][1];
+		transform_buffer[i * floats_per_raw_point + 7] = -666;
+		transform_buffer[i * floats_per_raw_point + 8] = empty_basis[0][2];
+		transform_buffer[i * floats_per_raw_point + 9] = empty_basis[1][2];
+		transform_buffer[i * floats_per_raw_point + 10] = empty_basis[2][2];
+		transform_buffer[i * floats_per_raw_point + 11] = -666;
 		transform_buffer[i * floats_per_raw_point + 12] = 1.0;
 		transform_buffer[i * floats_per_raw_point + 13] = 1.0;
 		transform_buffer[i * floats_per_raw_point + 14] = 1.0;
@@ -40,6 +44,11 @@ func _init() -> void:
 	material.albedo_color = Color(1.0, 1.0, 1.0, 0.5)
 	pmesh.material=material
 	multimesh.mesh=pmesh
+	multimesh_initialized = true
+
+func _init() -> void:
+	# this is a long operation so shove it in another thread
+	WorkerThreadPool.add_task(init_multimesh_points)
 	init_compute_shader_buffers()
 
 var rd = RenderingServer.get_rendering_device()
@@ -56,7 +65,8 @@ var output_gpu_resources: Array
 var max_output_size = 1_000_000
 
 func _process(_delta: float) -> void:
-	apply_compute_shader()
+	if multimesh_initialized:
+		apply_compute_shader()
 
 func init_compute_shader_buffers():
 	var empty_floats = PackedFloat32Array()
@@ -136,3 +146,4 @@ func apply_compute_shader():
 	var xyz_invoc = ComputeShaderUtils.get_xyz_invocations(max_points)
 	rd.compute_list_dispatch(compute_list, xyz_invoc.x, xyz_invoc.y, xyz_invoc.z)
 	rd.compute_list_end()
+	print("computes")

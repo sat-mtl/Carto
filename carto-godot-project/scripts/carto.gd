@@ -645,3 +645,7 @@ func _on_camera_view_menu_id_pressed(id: int) -> void:
 func _on_ui_scaling_spin_box_value_changed(value: float) -> void:
 	scale_ui(value)
 	user_settings["ui_scaling"] = value
+
+func _on_tracking_mode_button_toggled(toggled_on: bool) -> void:
+	%CalibPointClouds.visible = not toggled_on
+	%TrackingPointCloud.visible = toggled_on
