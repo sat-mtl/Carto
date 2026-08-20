@@ -1,4 +1,5 @@
 extends Node
+var rendering_device := RenderingServer.get_rendering_device()
 
 func get_xyz_invocations(required_invocations:int) -> Vector3:
 	# number of workgroups in X,Y,Z.
@@ -29,19 +30,19 @@ func get_xyz_invocations(required_invocations:int) -> Vector3:
 		dispatch.z = 1;
 	return dispatch
 
-func create_buffer_with_device_address(rd:RenderingDevice, buffer_size:int, buffer_bytes:PackedByteArray) -> RID:
-	if not rd.has_feature(RenderingDevice.Features.SUPPORTS_BUFFER_DEVICE_ADDRESS):
+func create_buffer_with_device_address(buffer_size:int, buffer_bytes:PackedByteArray) -> RID:
+	if not rendering_device.has_feature(RenderingDevice.Features.SUPPORTS_BUFFER_DEVICE_ADDRESS):
 		ToastManager.show_toast("Your GPU doesn't support getting device address. Tracking mode will not work", "warning")
-		return rd.storage_buffer_create(buffer_size, buffer_bytes)
+		return rendering_device.storage_buffer_create(buffer_size, buffer_bytes)
 	else:
-		return rd.storage_buffer_create(buffer_size, buffer_bytes, 0, RenderingDevice.BUFFER_CREATION_DEVICE_ADDRESS_BIT)
+		return rendering_device.storage_buffer_create(buffer_size, buffer_bytes, 0, RenderingDevice.BUFFER_CREATION_DEVICE_ADDRESS_BIT)
 
 # creates the necessary gpu resources needed to pass a byte buffer to a compute
 # shader. returns an array of [RDUniform, RID to a storage buffer].
-# You really need to call rd.free_rid(the_array_returned_by_this_function[1])
-# in order to free the resources on the GPU.
-func make_buffer_uniform(rd:RenderingDevice, data_bytes:PackedByteArray, binding):
-	var data_storage_buffer := ComputeShaderUtils.create_buffer_with_device_address(rd, data_bytes.size(), data_bytes)
+# You really need to call rendering_device.free_rid(the_array_returned_by_this_function[1])
+# in orendering_deviceer to free the resources on the GPU.
+func make_buffer_uniform(data_bytes:PackedByteArray, binding):
+	var data_storage_buffer := ComputeShaderUtils.create_buffer_with_device_address(data_bytes.size(), data_bytes)
 	var data_uniform := RDUniform.new()
 	data_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 	data_uniform.binding = binding
@@ -62,3 +63,62 @@ func append_transform_to_float_array(tfm:Transform3D, array:PackedFloat32Array):
 	array.append(tfm.basis.z.z)
 	for i in range(3):
 		array.append(tfm.origin[i])
+
+func free_rids(rids):
+	print(rids)
+	for rid in rids:
+		rendering_device.free_rid(rid)
+
+func init_multimesh_buffer(multimesh_buffer_rid: RID, num_points: int, position: Vector3, color=null):
+	var num_floats_per_point = 12
+	if color != null:
+		num_floats_per_point = 16
+	else:
+		# put a dummy color if we don't need it
+		color = Color()
+	var mm_init_shader_file := load("res://shaders/init_multimesh_buffer.glsl")
+	var mm_init_shader_spirv: RDShaderSPIRV = mm_init_shader_file.get_spirv()
+	var mm_init_shader := rendering_device.shader_create_from_spirv(mm_init_shader_spirv)
+	var pipeline := rendering_device.compute_pipeline_create(mm_init_shader)
+	# binds the point cloud multimesh's buffer to the compute shader so that we can write exclusions
+	# directly without a CPU download and a set_buffer to redraw.
+	var multimesh_uniform := RDUniform.new()
+	multimesh_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	multimesh_uniform.binding = 0
+	multimesh_uniform.add_id(multimesh_buffer_rid)
+
+	var uniform_set = rendering_device.uniform_set_create([
+		multimesh_uniform,
+		], mm_init_shader, 0
+	) # the last parameter (the 0) needs to match the "set" in our shader file
+	var compute_list := rendering_device.compute_list_begin()
+	rendering_device.compute_list_bind_compute_pipeline(compute_list, pipeline)
+	rendering_device.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
+	# vulkan (??) does not support non-buffer uniforms for compute shaders (???)
+	# so we have to use push_constant. Note: This is not a PackedInt32Array because
+	# we may eventually want to introduce types that do not fit in 4 bytes in there.
+	var parameters := PackedInt32Array()
+	parameters.append(num_points)
+	parameters.append(num_floats_per_point)
+	# plz gdscript, give us a reinterpret cast
+	var float_params = parameters.to_byte_array().to_float32_array()
+	# number of fields per transform in the transforms buffers (for both point cloud
+	# and filter transform buffers)
+	float_params.append(position.x)
+	float_params.append(position.y)
+	float_params.append(position.z)
+	# even if we don't need color, this shader needs these push constants
+	float_params.append(color.r)
+	float_params.append(color.g)
+	float_params.append(color.b)
+	float_params.append(color.a)
+
+	var parameter_bytes := float_params.to_byte_array()
+	# just use the whole 128 bytes, whatever.
+	#parameter_bytes.resize(80)
+	rendering_device.compute_list_set_push_constant(compute_list, parameter_bytes, parameter_bytes.size())
+	# we need to be called for max_points because we need to clear unused points.
+	var xyz_invoc = ComputeShaderUtils.get_xyz_invocations(num_points)
+	rendering_device.compute_list_dispatch(compute_list, xyz_invoc.x, xyz_invoc.y, xyz_invoc.z)
+	rendering_device.compute_list_end()
+	call_deferred("free_rids", [mm_init_shader, pipeline])

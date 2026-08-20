@@ -218,7 +218,7 @@ func get_stream_formats():
 	return orbbec_device.get_device_stream_formats()
 
 # compute shader section
-var rd = RenderingServer.get_rendering_device()
+var rd = ComputeShaderUtils.rendering_device
 
 var shader_file := load("res://shaders/point_cloud_filter.glsl")
 var shader_spirv: RDShaderSPIRV = shader_file.get_spirv()
@@ -259,23 +259,23 @@ const max_network_size := 1024*1024*floats_per_points*bytes_per_float
 func init_compute_shader_buffers():
 	var empty_floats = PackedFloat32Array()
 	empty_floats.resize(max_filters_num * transforms_num_fields)
-	filter_transforms_gpu_resources = ComputeShaderUtils.make_buffer_uniform(rd, empty_floats.to_byte_array(), 0)
+	filter_transforms_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 0)
 	empty_floats.resize(max_filters_num * filter_settings_num_fields)
-	filter_settings_gpu_resources = ComputeShaderUtils.make_buffer_uniform(rd, empty_floats.to_byte_array(), 1)
+	filter_settings_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 1)
 	point_cloud_buffer_gpu_resources[0].uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 	point_cloud_buffer_gpu_resources[0].binding = 2
 	# we bind a RID to the uniform later
 	multimesh_buffer_gpu_resources[0].uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 	multimesh_buffer_gpu_resources[0].binding = 3
 	empty_floats.resize(1)
-	valid_points_counter_gpu_resources = ComputeShaderUtils.make_buffer_uniform(rd, empty_floats.to_byte_array(), 4)
+	valid_points_counter_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 4)
 	empty_floats.resize(max_network_size)
-	filtered_points_gpu_resources = ComputeShaderUtils.make_buffer_uniform(rd, empty_floats.to_byte_array(), 5)
+	filtered_points_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 5)
 	# create a thinning mask with random floats from 0 to 1.
 	empty_floats.resize(thinning_mask_size)
 	for i in range(thinning_mask_size):
 		empty_floats[i] = randf()
-	thinning_mask_gpu_resources = ComputeShaderUtils.make_buffer_uniform(rd, empty_floats.to_byte_array(), 6)
+	thinning_mask_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 6)
 	upload_mock_data()
 
 func clear_network_output():
@@ -575,7 +575,7 @@ func upload_mock_data(data_bytes=null):
 	if data_bytes == null:
 		data_bytes = debug_points.to_byte_array()
 	if not mock_buffer_rid.is_valid():
-		mock_buffer_rid = ComputeShaderUtils.create_buffer_with_device_address(rd, data_bytes.size(), data_bytes)
+		mock_buffer_rid = ComputeShaderUtils.create_buffer_with_device_address(data_bytes.size(), data_bytes)
 	rd.buffer_update(mock_buffer_rid, 0, len(data_bytes), data_bytes)
 
 func get_points_buffer(	) -> RID:

@@ -24,7 +24,8 @@ unique_name_in_owner = true
 
 [node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="CentroidPivot" unique_id=1157385583]
 unique_name_in_owner = true
-layers = 7
+layers = 1048575
+cast_shadow = 0
 extra_cull_margin = 300.0
 ignore_occlusion_culling = true
 
@@ -32,11 +33,13 @@ ignore_occlusion_culling = true
 unique_name_in_owner = true
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 visible = false
+cast_shadow = 0
 mesh = SubResource("SphereMesh_qgsid")
 
 [node name="CameraSprite3D" type="Sprite3D" parent="." unique_id=1105812293]
 unique_name_in_owner = true
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+cast_shadow = 0
 alpha_scissor_threshold = 0.4
 render_priority = 3
 texture = ExtResource("2_qgsid")
@@ -51,6 +54,7 @@ shape = SubResource("SphereShape3D_qgsid")
 unique_name_in_owner = true
 transform = Transform3D(-2.5, 0, 2.1855695e-07, 0, 2.5, 0, -2.1855695e-07, 0, -2.5, -0.5, 0, 0)
 visible = false
+cast_shadow = 0
 mesh = SubResource("TextMesh_s58di")
 skeleton = NodePath("../CameraSprite3D")
 

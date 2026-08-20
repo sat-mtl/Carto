@@ -11,26 +11,8 @@ var pmesh := PointMesh.new()
 var multimesh_initialized = false
 
 func init_multimesh_points():
-	var empty_basis = Basis()
 	# initialize an empty point buffer with color. See https://docs.godotengine.org/en/stable/classes/class_renderingserver.html#class-renderingserver-method-multimesh-set-buffer
 	transform_buffer.resize(max_points*floats_per_raw_point)
-	for i in range(max_points):
-		transform_buffer[i * floats_per_raw_point] = empty_basis[0][0];
-		transform_buffer[i * floats_per_raw_point + 1] = empty_basis[1][0];
-		transform_buffer[i * floats_per_raw_point + 2] = empty_basis[2][0];
-		transform_buffer[i * floats_per_raw_point + 3] = -666;
-		transform_buffer[i * floats_per_raw_point + 4] = empty_basis[0][1];
-		transform_buffer[i * floats_per_raw_point + 5] = empty_basis[1][1];
-		transform_buffer[i * floats_per_raw_point + 6] = empty_basis[2][1];
-		transform_buffer[i * floats_per_raw_point + 7] = -666;
-		transform_buffer[i * floats_per_raw_point + 8] = empty_basis[0][2];
-		transform_buffer[i * floats_per_raw_point + 9] = empty_basis[1][2];
-		transform_buffer[i * floats_per_raw_point + 10] = empty_basis[2][2];
-		transform_buffer[i * floats_per_raw_point + 11] = -666;
-		transform_buffer[i * floats_per_raw_point + 12] = 1.0;
-		transform_buffer[i * floats_per_raw_point + 13] = 1.0;
-		transform_buffer[i * floats_per_raw_point + 14] = 1.0;
-		transform_buffer[i * floats_per_raw_point + 15] = 1.0;
 	multimesh = MultiMesh.new()
 	multimesh.transform_format = MultiMesh.TRANSFORM_3D
 	multimesh.use_colors = true
@@ -48,10 +30,12 @@ func init_multimesh_points():
 
 func _init() -> void:
 	# this is a long operation so shove it in another thread
-	WorkerThreadPool.add_task(init_multimesh_points)
+	init_multimesh_points()
+	var mm_buffer = RenderingServer.multimesh_get_buffer_rd_rid(multimesh)
+	ComputeShaderUtils.init_multimesh_buffer(mm_buffer, max_points, Vector3.ONE*-666.0, Color(1.0,1.0,1.0))
 	init_compute_shader_buffers()
 
-var rd = RenderingServer.get_rendering_device()
+var rd := ComputeShaderUtils.rendering_device
 var uniform_set: RID
 const max_cam_num := 100
 
@@ -71,15 +55,15 @@ func _process(_delta: float) -> void:
 func init_compute_shader_buffers():
 	var empty_floats = PackedFloat32Array()
 	empty_floats.resize(max_cam_num)
-	point_cloud_pointers_gpu_resources = ComputeShaderUtils.make_buffer_uniform(rd, empty_floats.to_byte_array(), 0)
-	point_cloud_sizes_gpu_resources = ComputeShaderUtils.make_buffer_uniform(rd, empty_floats.to_byte_array(), 1)
+	point_cloud_pointers_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 0)
+	point_cloud_sizes_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 1)
 	# we bind a RID to the uniform later
 	multimesh_buffer_gpu_resources[0].uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 	multimesh_buffer_gpu_resources[0].binding = 2
 	empty_floats.resize(1)
-	output_size_gpu_resources = ComputeShaderUtils.make_buffer_uniform(rd, empty_floats.to_byte_array(), 3)
+	output_size_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 3)
 	empty_floats.resize(max_output_size)
-	output_gpu_resources = ComputeShaderUtils.make_buffer_uniform(rd, empty_floats.to_byte_array(), 4)
+	output_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 4)
 
 var shader_file := load("res://shaders/dummy_tracking_shader.glsl")
 var shader_spirv: RDShaderSPIRV = shader_file.get_spirv()
@@ -90,8 +74,6 @@ const floats_per_points := 3
 const bytes_per_float := 4
 
 func apply_compute_shader():
-	#if CameraManager.done:
-	#	return
 	if uniform_set.is_valid():
 		# we need to cleanup our uniform set, there seems to be no way to update it
 		# so we need to create one every frame and if we don't free we eventually crash
@@ -146,4 +128,3 @@ func apply_compute_shader():
 	var xyz_invoc = ComputeShaderUtils.get_xyz_invocations(max_points)
 	rd.compute_list_dispatch(compute_list, xyz_invoc.x, xyz_invoc.y, xyz_invoc.z)
 	rd.compute_list_end()
-	print("computes")
