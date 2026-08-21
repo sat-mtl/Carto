@@ -17,7 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://bgmbgqc1wd2p3" path="res://assets/grid.png" id="14_ws6x0"]
 [ext_resource type="Script" uid="uid://bcpis2ryug32f" path="res://scripts/tcp_output.gd" id="15_3aqgx"]
 [ext_resource type="Script" uid="uid://cd6aaethcy4un" path="res://scripts/gizmo_3d_overrides.gd" id="16_dkctx"]
-[ext_resource type="Script" uid="uid://j2icjxbhbo45" path="res://scenes/tracking_point_cloud.gd" id="16_dunih"]
+[ext_resource type="Script" uid="uid://j2icjxbhbo45" path="res://scripts/tracking_point_cloud.gd" id="16_dunih"]
 [ext_resource type="Script" uid="uid://halhuefrfjby" path="res://scripts/accept_dialog.gd" id="17_wy4cq"]
 [ext_resource type="Script" uid="uid://5oiwcutjml3v" path="res://scripts/save_dialog.gd" id="18_f16a8"]
 
@@ -262,11 +262,10 @@ grow_vertical = 2
 theme = ExtResource("10_oxl2k")
 theme_override_constants/side_margin = 0
 theme_override_font_sizes/font_size = 13
-current_tab = 1
+current_tab = 0
 use_hidden_tabs_for_min_size = true
 
 [node name="Cameras" type="MarginContainer" parent="CalibSideBarUI" unique_id=1741535256]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
@@ -311,6 +310,7 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="Crop Region" type="MarginContainer" parent="CalibSideBarUI" unique_id=1717464556]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
@@ -527,6 +527,29 @@ theme_override_constants/margin_right = 0
 [node name="NetworkDestinations" type="VBoxContainer" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer" unique_id=1879448514]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="TrackingSideBarUI" type="TabContainer" parent="." unique_id=1371955735]
+unique_name_in_owner = true
+visible = false
+anchors_preset = -1
+anchor_left = 0.859375
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("10_oxl2k")
+theme_override_constants/side_margin = 0
+theme_override_font_sizes/font_size = 13
+current_tab = 0
+use_hidden_tabs_for_min_size = true
+
+[node name="Tracking" type="MarginContainer" parent="TrackingSideBarUI" unique_id=1687756364]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 6
+metadata/_tab_index = 0
 
 [node name="ShortcutsWindow" type="MarginContainer" parent="." unique_id=1038772920 groups=["modals"]]
 unique_name_in_owner = true

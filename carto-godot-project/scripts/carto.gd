@@ -649,3 +649,9 @@ func _on_ui_scaling_spin_box_value_changed(value: float) -> void:
 func _on_tracking_mode_button_toggled(toggled_on: bool) -> void:
 	%CalibPointClouds.visible = not toggled_on
 	%TrackingPointCloud.visible = toggled_on
+	%CalibSideBarUI.visible = not toggled_on
+	%TrackingSideBarUI.visible = toggled_on
+	if toggled_on:
+		# un-gizmo-select everything when in tracking mode
+		clear_gizmo_selection()
+	%CropRegionContainer.visible = not toggled_on

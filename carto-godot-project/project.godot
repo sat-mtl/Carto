@@ -31,6 +31,7 @@ SpatialUtils="*res://scripts/spatial_utils.gd"
 LogManager="*res://scripts/log_manager.gd"
 NdiManager="*uid://bt82qx6vyc51q"
 ComputeShaderUtils="*uid://byotfa8j3lufl"
+ComputePipelinesManager="*uid://dlh6j5llqd6bi"
 
 [display]
 

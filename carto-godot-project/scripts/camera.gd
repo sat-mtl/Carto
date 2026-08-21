@@ -283,6 +283,7 @@ func clear_network_output():
 	has_new_output_data = true
 
 func on_data_got(dat):
+	## todo: more robust check here, its not just active...
 	if active:
 		output_data = dat
 		has_new_output_data = true
@@ -299,9 +300,11 @@ func set_network_output_data():
 
 var uniform_set: RID
 
-func apply_compute_shader():
-	#if CameraManager.done:
-	#	return
+## updates all the buffers with the current values.
+## needs to be called before the compute list exists.
+func update_compute_shader_buffers():
+	# not sure if this step is valid while a compute list is active so we do
+	# it before
 	if uniform_set.is_valid():
 		# we need to cleanup our uniform set, there seems to be no way to update it
 		# so we need to create one every frame and if we don't free we eventually crash
@@ -337,6 +340,11 @@ func apply_compute_shader():
 	rd.buffer_update(filter_settings_gpu_resources[1], 0, len(filter_settings_bytes), filter_settings_bytes)
 	# reset the point counter to 0
 	rd.buffer_update(valid_points_counter_gpu_resources[1], 0, 4, PackedInt32Array([0]).to_byte_array())
+
+func add_dispatch_to_compute_list(compute_list):
+	pass
+func apply_compute_shader():
+
 	# binds the point cloud multimesh's buffer to the compute shader so that we can write exclusions
 	# directly without a CPU download and a set_buffer to redraw.
 	var multimesh_buffer_RID = RenderingServer.multimesh_get_buffer_rd_rid(multimesh)

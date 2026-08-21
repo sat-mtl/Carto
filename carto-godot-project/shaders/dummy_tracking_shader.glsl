@@ -100,7 +100,7 @@ uint get_total_float_size() {
   for(int i = 0; i < params.num_point_clouds; i++) {
     total_size += point_cloud_sizes_pointers.ptrs[i].size;
   }
-  return total_size * 3;
+  return total_size * num_floats_per_input_point;
 }
 
 void main() {
@@ -138,7 +138,6 @@ void main() {
       multimesh_buffer.data[multimesh_buffer_idx + g_idx] = 1.0;
       multimesh_buffer.data[multimesh_buffer_idx + b_idx] = 1.0;
     }
-    // multimesh_buffer.data[0] = 0;
   } else if (multimesh_buffer_idx + num_floats_per_multimesh_point <= params.max_points * num_floats_per_multimesh_point) {
     multimesh_buffer.data[multimesh_buffer_idx + x_idx] = -666.0;
     multimesh_buffer.data[multimesh_buffer_idx + y_idx] = -666.0;

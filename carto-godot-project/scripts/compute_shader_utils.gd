@@ -65,7 +65,6 @@ func append_transform_to_float_array(tfm:Transform3D, array:PackedFloat32Array):
 		array.append(tfm.origin[i])
 
 func free_rids(rids):
-	print(rids)
 	for rid in rids:
 		rendering_device.free_rid(rid)
 

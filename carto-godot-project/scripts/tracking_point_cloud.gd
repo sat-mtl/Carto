@@ -72,7 +72,7 @@ var pipeline := rd.compute_pipeline_create(shader)
 
 const floats_per_points := 3
 const bytes_per_float := 4
-
+## TODO : use indirect dispatch for the multimesh. Right now we unconditionally display 10 million points...
 func apply_compute_shader():
 	if uniform_set.is_valid():
 		# we need to cleanup our uniform set, there seems to be no way to update it
@@ -85,12 +85,14 @@ func apply_compute_shader():
 	var num_point_clouds := len(point_buffers_and_sizes["points"])
 	# We get point cloud sizes indirectly on the gpu to avoid having to transfer
 	# them to the CPU.x
-
 	if num_point_clouds < 1:
 		return
 	for i in range(num_point_clouds):
 		point_cloud_ptrs.append(rd.buffer_get_device_address(point_buffers_and_sizes["points"][i]))
 		point_cloud_sizes_ptrs.append(rd.buffer_get_device_address(point_buffers_and_sizes["sizes"][i]))
+		# TODO: this is a band aid to be able to sync the gpu state before dispatching this shader
+		# need to find a better way that does not need a gpu -> cpu transfer
+		rd.buffer_get_data(point_buffers_and_sizes["sizes"][i], 0, 4).decode_u32(0)
 	var ptrs_bytes = point_cloud_ptrs.to_byte_array()
 	rd.buffer_update(point_cloud_pointers_gpu_resources[1], 0, ptrs_bytes.size(), ptrs_bytes)
 	var size_ptrs_bytes = point_cloud_sizes_ptrs.to_byte_array()

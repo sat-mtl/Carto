@@ -41,7 +41,7 @@ void main() {
        gl_WorkGroupID.y * max_x_idx +
        gl_WorkGroupID.z * max_x_idx * max_workgroup_idx);
   uint multimesh_buffer_idx = global_point_idx * params.num_floats_per_multimesh_point;
-  if (multimesh_buffer_idx + params.num_floats_per_multimesh_point <= params.max_points) {
+  if (global_point_idx <= params.max_points) {
     // basis
     multimesh_buffer.data[multimesh_buffer_idx]         = 1.0;
     multimesh_buffer.data[multimesh_buffer_idx + 1]     = 0.0;

@@ -65,6 +65,12 @@ func stack_group_transform(old_transform, new_transform, camera_node):
 	transform_changes_to_stack.append(new_transform)
 	transform_changes_to_stack.append(camera_node)
 
+func get_total_max_points():
+	var total := 0
+	for cam in nodes:
+		total += cam.max_points
+	return total
+
 func _process(_delta: float) -> void:
 	group_edit_linger_countdown = max(group_edit_linger_countdown-1, 0)
 	if transform_changes_to_stack.size() > 0:
