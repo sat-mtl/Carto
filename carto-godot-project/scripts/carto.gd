@@ -641,7 +641,6 @@ func _on_camera_view_menu_id_pressed(id: int) -> void:
 		6:
 			%FreeCamera.set_to_orthographic(%ManipulatorGizmo.axes.Y, true)
 
-
 func _on_ui_scaling_spin_box_value_changed(value: float) -> void:
 	scale_ui(value)
 	user_settings["ui_scaling"] = value

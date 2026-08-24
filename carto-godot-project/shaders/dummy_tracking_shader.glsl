@@ -6,27 +6,15 @@
 // 64 is going to be optimal for amd and nvidia gpus. maybe.
 layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
 
-// we need to align the references to the smallest element. In our case this is float so the alignement
-// is 4 bytes.
-layout(buffer_reference, std430, buffer_reference_align = 4) readonly buffer PointCloudBuffer
-{
+// buffer for the filtered output
+layout(set = 0, binding = 0, std430) buffer FilteredOutput {
   float data[];
-};
+} filtered_output_buffer;
 
-layout(set = 0, binding = 0) buffer PointCloudPointers {
-    PointCloudBuffer ptrs[];
-} point_cloud_pointers;
-
-layout(buffer_reference, std430, buffer_reference_align = 4) readonly buffer PointCloudSize
-{
-  // this is the size in number of points
-  int size;
-};
-
-layout(set = 0, binding = 1) buffer PointCloudSizesPointers {
-    PointCloudSize ptrs[];
-} point_cloud_sizes_pointers;
-
+// buffer for the atomic point counters
+layout(set = 0, binding = 1, std430) buffer FilteredOutputSizes {
+  uint sizes[];
+} filtered_sizes_buffer;
 
 // buffer of the multimesh instance transforms
 layout(set = 0, binding = 2, std430) buffer MultimeshBuffer {

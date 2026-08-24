@@ -26,18 +26,16 @@ func init_multimesh_points():
 	material.albedo_color = Color(1.0, 1.0, 1.0, 0.5)
 	pmesh.material=material
 	multimesh.mesh=pmesh
-	multimesh_initialized = true
 
 func _init() -> void:
-	# this is a long operation so shove it in another thread
 	init_multimesh_points()
 	var mm_buffer = RenderingServer.multimesh_get_buffer_rd_rid(multimesh)
 	ComputeShaderUtils.init_multimesh_buffer(mm_buffer, max_points, Vector3.ONE*-666.0, Color(1.0,1.0,1.0))
 	init_compute_shader_buffers()
+	multimesh_initialized = true
 
 var rd := ComputeShaderUtils.rendering_device
 var uniform_set: RID
-const max_cam_num := 100
 
 # buffer of device address of cropped point clouds
 var point_cloud_pointers_gpu_resources: Array
@@ -48,15 +46,8 @@ var output_size_gpu_resources: Array
 var output_gpu_resources: Array
 var max_output_size = 1_000_000
 
-func _process(_delta: float) -> void:
-	if multimesh_initialized:
-		apply_compute_shader()
-
 func init_compute_shader_buffers():
 	var empty_floats = PackedFloat32Array()
-	empty_floats.resize(max_cam_num)
-	point_cloud_pointers_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 0)
-	point_cloud_sizes_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 1)
 	# we bind a RID to the uniform later
 	multimesh_buffer_gpu_resources[0].uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 	multimesh_buffer_gpu_resources[0].binding = 2
@@ -73,30 +64,14 @@ var pipeline := rd.compute_pipeline_create(shader)
 const floats_per_points := 3
 const bytes_per_float := 4
 ## TODO : use indirect dispatch for the multimesh. Right now we unconditionally display 10 million points...
-func apply_compute_shader():
+
+func update_compute_shader_buffers():
+	if not multimesh_initialized:
+		return
 	if uniform_set.is_valid():
 		# we need to cleanup our uniform set, there seems to be no way to update it
 		# so we need to create one every frame and if we don't free we eventually crash
 		rd.free_rid(uniform_set)
-	var point_cloud_ptrs := PackedInt64Array()
-	var point_cloud_sizes_ptrs := PackedInt64Array()
-
-	var point_buffers_and_sizes = CameraManager.get_filtered_buffers_and_sizes()
-	var num_point_clouds := len(point_buffers_and_sizes["points"])
-	# We get point cloud sizes indirectly on the gpu to avoid having to transfer
-	# them to the CPU.x
-	if num_point_clouds < 1:
-		return
-	for i in range(num_point_clouds):
-		point_cloud_ptrs.append(rd.buffer_get_device_address(point_buffers_and_sizes["points"][i]))
-		point_cloud_sizes_ptrs.append(rd.buffer_get_device_address(point_buffers_and_sizes["sizes"][i]))
-		# TODO: this is a band aid to be able to sync the gpu state before dispatching this shader
-		# need to find a better way that does not need a gpu -> cpu transfer
-		rd.buffer_get_data(point_buffers_and_sizes["sizes"][i], 0, 4).decode_u32(0)
-	var ptrs_bytes = point_cloud_ptrs.to_byte_array()
-	rd.buffer_update(point_cloud_pointers_gpu_resources[1], 0, ptrs_bytes.size(), ptrs_bytes)
-	var size_ptrs_bytes = point_cloud_sizes_ptrs.to_byte_array()
-	rd.buffer_update(point_cloud_sizes_gpu_resources[1], 0, size_ptrs_bytes.size(), size_ptrs_bytes)
 	# reset the point counter to 0
 	rd.buffer_update(output_size_gpu_resources[1], 0, 4, PackedInt32Array([0]).to_byte_array())
 	# binds the point cloud multimesh's buffer to the compute shader so that we can write exclusions
@@ -104,15 +79,20 @@ func apply_compute_shader():
 	var multimesh_buffer_RID = RenderingServer.multimesh_get_buffer_rd_rid(multimesh)
 	multimesh_buffer_gpu_resources[0].clear_ids()
 	multimesh_buffer_gpu_resources[0].add_id(multimesh_buffer_RID)
+
+func add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, filtered_sizes_gpu_resources):
+	if not multimesh_initialized:
+		return
+	var point_buffers_and_sizes = CameraManager.get_filtered_buffers_and_sizes()
+	var num_point_clouds := len(point_buffers_and_sizes["points"])
 	uniform_set = rd.uniform_set_create([
-		point_cloud_pointers_gpu_resources[0],
-		point_cloud_sizes_gpu_resources[0],
+		filtered_points_gpu_resources[0],
+		filtered_sizes_gpu_resources[0],
 		multimesh_buffer_gpu_resources[0],
 		output_size_gpu_resources[0],
 		output_gpu_resources[0],
 		], shader, 0
 	) # the last parameter (the 0) needs to match the "set" in our shader file
-	var compute_list := rd.compute_list_begin()
 	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
 	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
 	# vulkan (??) does not support non-buffer uniforms for compute shaders (???)

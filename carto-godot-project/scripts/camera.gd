@@ -303,14 +303,15 @@ var uniform_set: RID
 ## updates all the buffers with the current values.
 ## needs to be called before the compute list exists.
 func update_compute_shader_buffers():
-	# not sure if this step is valid while a compute list is active so we do
-	# it before
+	if not (active and (should_draw or transform_has_changed)):
+		return
 	if uniform_set.is_valid():
 		# we need to cleanup our uniform set, there seems to be no way to update it
 		# so we need to create one every frame and if we don't free we eventually crash
 		rd.free_rid(uniform_set)
 	if current_device_type != device_types.DEBUG and not point_cloud_buffer_rid.is_valid():
 		return
+	## TODO: this whole filter things is done once per device but could be done only once.
 	var filter_settings := PackedInt32Array()
 	# the format of this buffer is [
 	#     <9 float components of filter 1 basis>,
@@ -340,11 +341,6 @@ func update_compute_shader_buffers():
 	rd.buffer_update(filter_settings_gpu_resources[1], 0, len(filter_settings_bytes), filter_settings_bytes)
 	# reset the point counter to 0
 	rd.buffer_update(valid_points_counter_gpu_resources[1], 0, 4, PackedInt32Array([0]).to_byte_array())
-
-func add_dispatch_to_compute_list(compute_list):
-	pass
-func apply_compute_shader():
-
 	# binds the point cloud multimesh's buffer to the compute shader so that we can write exclusions
 	# directly without a CPU download and a set_buffer to redraw.
 	var multimesh_buffer_RID = RenderingServer.multimesh_get_buffer_rd_rid(multimesh)
@@ -353,6 +349,11 @@ func apply_compute_shader():
 
 	point_cloud_buffer_gpu_resources[0].clear_ids()
 	point_cloud_buffer_gpu_resources[0].add_id(get_points_buffer())
+
+func add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, filtered_sizes_gpu_resources):
+	if not (active and (should_draw or transform_has_changed)):
+		return
+	var filters := get_tree().get_nodes_in_group("filter_areas")
 	uniform_set = rd.uniform_set_create([
 		point_cloud_buffer_gpu_resources[0],
 		filter_settings_gpu_resources[0],
@@ -363,7 +364,6 @@ func apply_compute_shader():
 		thinning_mask_gpu_resources[0],
 		], shader, 0
 	) # the last parameter (the 0) needs to match the "set" in our shader file
-	var compute_list := rd.compute_list_begin()
 	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
 	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
 	# vulkan (??) does not support non-buffer uniforms for compute shaders (???)
@@ -401,10 +401,10 @@ func apply_compute_shader():
 	# we need to be called for max_points because we need to clear unused points.
 	var xyz_invoc = ComputeShaderUtils.get_xyz_invocations(max_points)
 	rd.compute_list_dispatch(compute_list, xyz_invoc.x, xyz_invoc.y, xyz_invoc.z)
-	rd.compute_list_end()
 	# if we have no active network ouput, we can skip reading from the GPU which is muuuuch
 	# faster than having to read from it.
 	if len(get_tree().get_nodes_in_group("network_outputs").filter(func(out): return out.is_active)) > 0:
+		# TODO: not sure how this will work out now that we dispatch multiple compute lists.
 		set_network_output_data()
 
 # end compute shader section
@@ -598,8 +598,10 @@ func get_filtered_points_buffer() -> RID:
 func get_filtered_points_size_buffer():
 	return valid_points_counter_gpu_resources[1]
 
+var transform_has_changed = true
+
 func _process(_delta: float) -> void:
-	var transformed_has_changed = transform != last_transform
+	transform_has_changed = transform != last_transform
 	if current_device_type == device_types.DEBUG:
 		var data_bytes = debug_points.to_byte_array()
 		upload_mock_data(data_bytes)
@@ -608,7 +610,5 @@ func _process(_delta: float) -> void:
 			calculate_centroid(debug_points)
 			centroid_changed.emit(centroid, centroid_toggled, false)
 		has_centroid = true
-	if active and (should_draw or transformed_has_changed):
-		apply_compute_shader()
 	last_transform = transform
 	should_draw = false
