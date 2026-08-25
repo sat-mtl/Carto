@@ -14,8 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          apt update
-          apt install cargo
+          apt -y update
+          apt -y install cargo
           cargo install mdbook-i18n-helpers
           cd doc/
           MDBOOK_BOOK__LANGUAGE=en mdbook build -d book/en
