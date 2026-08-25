@@ -15,7 +15,7 @@ Cette capture d'écran annotée montre les différents contrôles liés à une o
 
 ![ui orbbec femto mega](./imgs/carto-device-controls.png)
 
-1. **Bouton gizmo**. Cliquez sur ce bouton pour obtenir un gizmo sur ce dispositif dans la vue 3D. Il est possible d'appuyer sur Ctrl+click pour sélectionner plusieurs dispositifs.
+1. **Bouton gizmo**. Cliquez sur ce bouton pour obtenir un gizmo sur ce dispositif dans la vue 3D. Il est possible d'appuyer sur Ctrl+clic pour sélectionner plusieurs dispositifs.
 2. **Nom de la caméra**. Ce nom apparaîtra dans la vue 3D lorsque ce dispositif est sélectionné.
 3. **Bouton de suppression du dispositif**. Un dispositif supprimé sera aussi déconnecté. Il est possible de revenir en arrière avec Ctrl+Z
 4. **Bouton d'activation et de désactivation d'un dispositif**. Un dispositif désactivé sera aussi déconnecté. Il ne consommera plus de resources réseau ou computationnelles.
@@ -47,7 +47,7 @@ Après les avoir branché dans commutateur réseau, vous devez aller trouver leu
 
 Voici une capture d'écran montrant les contrôles propres aux dispositifs de type Hesai.
 
-![ui orbbec femto mega](./imgs/carto-device-hesai.png)
+![ui hesai](./imgs/carto-device-hesai.png)
 
 1. **IP du hesai**. Il n'est pas strictement obligatoire de mettre la bonne IP pour recevoir des points mais avoir la bonne ip assure que le bouton "Open Web UI" fonctionne.
 2. **Port**. Le port du hesai. Si vous avez plusieurs hesais sur le même réseau, vous devez changer ce port pour avoir un port unique pour chaque hesai.
@@ -57,11 +57,11 @@ Voici une capture d'écran montrant les contrôles propres aux dispositifs de ty
 
 Ces contrôles sont disponibles pour tous types de dispositifs et permettent de contrôler l'affichage des points dans la vue 3D.
 
-![ui orbbec femto mega](./imgs/carto-point-cloud-controls.png)
+![ui controle de point cloud](./imgs/carto-point-cloud-controls.png)
 
 1. **RGB Color**. Couleur RGBA des points affichés.
 2. **Calibrate Centroid**. Cliquer sur ce bouton déclenche un calcul du centroïde du nuage de point. Ce calcul est fait automatiquement lors de la première réception de points mais si la caméra a été déplacée ou si l'environemment change beaucoup il peut être préférable de recalculer le centroïde.
-3. **Rotation Pivot**. Ceci contrôle le pivot de rotation du nuage de point. Quand le pivot de rotation est à "Centroid", le gizmo de manipulation apparaît près du "centre" du nuage de point et la rotation se fait depuis le milieu. C'est le comportement par défaut. Quand le pivot de rotation est à "Camera", le gizmo de manipulation apparaît sur l'icône de caméra et le nuage de point pivote comme si on bougait la caméra qui le capte.
+3. **Rotation Pivot**. Ceci contrôle le pivot de rotation du nuage de point. Quand le pivot de rotation est à "Centroid", le gizmo de manipulation apparaît près du "centre" du nuage de point et la rotation se fait depuis le milieu. C'est le comportement par défaut. Quand le pivot de rotation est à "Camera", le gizmo de manipulation apparaît sur l'icône de caméra et le nuage de point pivote comme si on bougeait la caméra qui le capte.
 4. **Contrôles fins de translation**. Permet d'ajuster finement la position du nuage de point dans l'espace
 5. **Contrôles fins de rotation**. Permet d'ajuster finement la rotation du nuage de point dans l'espace.
 6. **Boutons de retours à 0**. Lorsqu'une rotation ou une translation est modifiée, permet de revenir à 0. Notes que tous les changements de rotation et de translation sont aussi réversible avec la commande Ctrl-Z
