@@ -1,19 +1,7 @@
 #[compute]
 #version 450
 
-// 64 is going to be optimal for amd and nvidia gpus. maybe.
-layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
-
-// buffer for the filtered output. an invocation for a device only
-// writes to a part of this.
-layout(set = 0, binding = 0, std430) buffer FilteredOutput {
-  float data[];
-} filtered_output_buffer;
-
-// buffer for the atomic point counters.
-layout(set = 0, binding = 1, std430) buffer FilteredOutputSizes {
-  uint sizes[];
-} filtered_sizes_buffer;
+#include "point_cloud_shader_commons.glsl.inc"
 
 // the transform buffers layouts are as follow:
 // [ t1.x.x, t1.x.y, t1.x.z, t1.y.x, t1.y.y, t1.y.z, t1.z.x, t1.z.y, t1.z.z, t1.origin.x, t1.origin.y, t1.origin.z,
@@ -77,11 +65,6 @@ layout(push_constant) uniform Parameters {
   float pt_cloud_transform_y;
   float pt_cloud_transform_z;
 } params;
-
-const int l_size_x = 64;
-const int max_workgroup_idx = 65535;
-const int max_x_idx = max_workgroup_idx * l_size_x;
-const int num_floats_per_input_point = 3;
 
 // x y and z's indexes in the multimesh transform buffer
 const int x_idx = 3;
@@ -180,14 +163,10 @@ bool apply_filter(vec3 point, int i) {
     return dist > 0.0;
   }
 }
-
+const num_points_per_point_clouds = 1024*1024;
 // The code we want to execute in each invocation
 void main() {
-  // trust me, this results in a smoothly incrementing id with stride of 3.
-  uint point_idx =
-      ((gl_WorkGroupID.x + gl_LocalInvocationID.x + ((l_size_x - 1) * gl_WorkGroupID.x)) +
-       gl_WorkGroupID.y * max_x_idx +
-       gl_WorkGroupID.z * max_x_idx * max_workgroup_idx);
+  uint point_idx = get_global_point_idx();
   uint point_cloud_buffer_idx = point_idx * num_floats_per_input_point;
   uint multimesh_buffer_idx = point_idx * num_floats_per_multimesh_point;
   if (point_cloud_buffer_idx + num_floats_per_input_point <= params.point_cloud_buffer_size) {
@@ -232,7 +211,8 @@ void main() {
     }
     if (point_is_kept) {
       // Atomic add to get a unique write index in the points buffer
-      uint kept_point_idx = atomicAdd(filtered_sizes_buffer.sizes[0/*todo*/], 1u);
+      uint local_idx = atomicAdd(filtered_sizes_buffer.sizes[params.device_idx], 1u);
+      uint filtered_output_idx = get_filtered_output_point_idx(local_idx, params.device_idx, )
       // if the point is included in the filters,  update the position to match the
       // point cloud's transform.
       uint point_cloud_packed_idx = kept_point_idx * num_floats_per_input_point;

@@ -218,12 +218,7 @@ func get_stream_formats():
 	return orbbec_device.get_device_stream_formats()
 
 # compute shader section
-var rd = ComputeShaderUtils.rendering_device
-
-var shader_file := load("res://shaders/point_cloud_filter.glsl")
-var shader_spirv: RDShaderSPIRV = shader_file.get_spirv()
-var shader := rd.shader_create_from_spirv(shader_spirv)
-var pipeline := rd.compute_pipeline_create(shader)
+static var rd = ComputeShaderUtils.rendering_device
 
 var mock_buffer_rid: RID
 var point_cloud_buffer_rid: RID
@@ -259,18 +254,14 @@ const max_network_size := 1024*1024*floats_per_points*bytes_per_float
 func init_compute_shader_buffers():
 	var empty_floats = PackedFloat32Array()
 	empty_floats.resize(max_filters_num * transforms_num_fields)
-	filter_transforms_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 0)
+	filter_transforms_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 2)
 	empty_floats.resize(max_filters_num * filter_settings_num_fields)
-	filter_settings_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 1)
+	filter_settings_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 3)
 	point_cloud_buffer_gpu_resources[0].uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	point_cloud_buffer_gpu_resources[0].binding = 2
+	point_cloud_buffer_gpu_resources[0].binding = 4
 	# we bind a RID to the uniform later
 	multimesh_buffer_gpu_resources[0].uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	multimesh_buffer_gpu_resources[0].binding = 3
-	empty_floats.resize(1)
-	valid_points_counter_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 4)
-	empty_floats.resize(max_network_size)
-	filtered_points_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 5)
+	multimesh_buffer_gpu_resources[0].binding = 5
 	# create a thinning mask with random floats from 0 to 1.
 	empty_floats.resize(thinning_mask_size)
 	for i in range(thinning_mask_size):
@@ -355,16 +346,15 @@ func add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, f
 		return
 	var filters := get_tree().get_nodes_in_group("filter_areas")
 	uniform_set = rd.uniform_set_create([
-		point_cloud_buffer_gpu_resources[0],
+		filtered_sizes_gpu_resources[0],
+		filtered_points_gpu_resources[0],
 		filter_settings_gpu_resources[0],
 		filter_transforms_gpu_resources[0],
+		point_cloud_buffer_gpu_resources[0],
 		multimesh_buffer_gpu_resources[0],
-		valid_points_counter_gpu_resources[0],
-		filtered_points_gpu_resources[0],
 		thinning_mask_gpu_resources[0],
-		], shader, 0
+		], ComputePipelinesManager.filter_shader, 0
 	) # the last parameter (the 0) needs to match the "set" in our shader file
-	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
 	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
 	# vulkan (??) does not support non-buffer uniforms for compute shaders (???)
 	# so we have to use push_constant. Note: This is not a PackedInt32Array because

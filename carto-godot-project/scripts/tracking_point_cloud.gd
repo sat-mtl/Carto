@@ -2,7 +2,6 @@ extends MultiMeshInstance3D
 # don't know what the real practical max amount of points would be ...
 # lets say 10 millions
 var max_points := 10_000_000
-# RenderingServer.multimesh_get_buffer_rd_rid(multimesh)
 var transform_buffer := PackedFloat32Array()
 var floats_per_raw_point := 16
 var material = StandardMaterial3D.new()
@@ -56,11 +55,6 @@ func init_compute_shader_buffers():
 	empty_floats.resize(max_output_size)
 	output_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 4)
 
-var shader_file := load("res://shaders/dummy_tracking_shader.glsl")
-var shader_spirv: RDShaderSPIRV = shader_file.get_spirv()
-var shader := rd.shader_create_from_spirv(shader_spirv)
-var pipeline := rd.compute_pipeline_create(shader)
-
 const floats_per_points := 3
 const bytes_per_float := 4
 ## TODO : use indirect dispatch for the multimesh. Right now we unconditionally display 10 million points...
@@ -91,9 +85,8 @@ func add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, f
 		multimesh_buffer_gpu_resources[0],
 		output_size_gpu_resources[0],
 		output_gpu_resources[0],
-		], shader, 0
+		], ComputePipelinesManager.tracking_shader, 0
 	) # the last parameter (the 0) needs to match the "set" in our shader file
-	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
 	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
 	# vulkan (??) does not support non-buffer uniforms for compute shaders (???)
 	# so we have to use push_constant. Note: This is not a PackedInt32Array because
@@ -108,5 +101,5 @@ func add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, f
 	rd.compute_list_set_push_constant(compute_list, parameter_bytes, 8)
 	# we need to be called for max_points because we need to clear unused points.
 	var xyz_invoc = ComputeShaderUtils.get_xyz_invocations(max_points)
+	# TODO: use indirect dispatch here.
 	rd.compute_list_dispatch(compute_list, xyz_invoc.x, xyz_invoc.y, xyz_invoc.z)
-	rd.compute_list_end()

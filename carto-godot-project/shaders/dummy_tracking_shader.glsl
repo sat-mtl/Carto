@@ -1,20 +1,7 @@
 #[compute]
 #version 450
 
-#extension GL_EXT_buffer_reference : require
-
-// 64 is going to be optimal for amd and nvidia gpus. maybe.
-layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
-
-// buffer for the filtered output
-layout(set = 0, binding = 0, std430) buffer FilteredOutput {
-  float data[];
-} filtered_output_buffer;
-
-// buffer for the atomic point counters
-layout(set = 0, binding = 1, std430) buffer FilteredOutputSizes {
-  uint sizes[];
-} filtered_sizes_buffer;
+#include "point_cloud_shader_commons.glsl.inc"
 
 // buffer of the multimesh instance transforms
 layout(set = 0, binding = 2, std430) buffer MultimeshBuffer {
@@ -48,42 +35,9 @@ const int a_idx = 15;
 
 const int num_floats_per_multimesh_point = 16;
 
-const int l_size_x = 64;
-const int max_workgroup_idx = 65535;
-const int max_x_idx = max_workgroup_idx * l_size_x;
-const int num_floats_per_input_point = 3;
-
-// gets the current point cloud index from the global index.
-// example: if we are processing 2 point clouds, one which starts at 0 and one which starts at 675 and
-// we pass 56, this returns 0. if we pass 897, this returns 1. This allows us to retrieve the
-// transform associated with the point cloud.
-uint get_current_point_cloud_idx(uint point_idx /*in number of floats*/) {
-  uint offset = 0;
-  for(int idx = 0; idx < params.num_point_clouds; idx++) {
-    // iterate until the offset is over the buffer index
-    offset += point_cloud_sizes_pointers.ptrs[idx].size * num_floats_per_input_point;
-    if (point_idx < offset) {
-      // when the offset is greater, it means the last index was the right one.
-      return idx;
-    }
-  }
-  // if we went through the whole loop and didn't find any point_idx > last offset, we are at the last point cloud.
-  // fun fact : if you ommit this return, glsl panics and returns the argument of the function.
-  return params.num_point_clouds - 1;
-}
-
-int get_local_idx(uint global_idx, uint point_cloud_idx) {
-  int offset = 0;
-  for(int idx = 0; idx < point_cloud_idx; idx++) {
-    // iterate until the offset is over the buffer index
-    offset += point_cloud_sizes_pointers.ptrs[idx].size * num_floats_per_input_point;
-  }
-  return int(global_idx) - offset;
-}
-
 // we could get this value computed one in another shader pass before this one maybe
 // not sure its worth optimizing this right now
-uint get_total_float_size() {
+uint get_total_point_size() {
   uint total_size = 0;
   for(int i = 0; i < params.num_point_clouds; i++) {
     total_size += point_cloud_sizes_pointers.ptrs[i].size;
@@ -92,10 +46,8 @@ uint get_total_float_size() {
 }
 
 void main() {
-  uint global_point_idx =
-      ((gl_WorkGroupID.x + gl_LocalInvocationID.x + ((l_size_x - 1) * gl_WorkGroupID.x)) +
-       gl_WorkGroupID.y * max_x_idx +
-       gl_WorkGroupID.z * max_x_idx * max_workgroup_idx);
+  uint global_point_idx = get_global_point_idx();
+  populate_current_offset_and_index(global_point_idx, params.num_point_clouds);
   uint multimesh_buffer_idx = global_point_idx * num_floats_per_multimesh_point;
   uint global_float_idx = global_point_idx * num_floats_per_input_point;
   uint num_point_floats = get_total_float_size();

@@ -19,6 +19,15 @@ var tracking_node = null
 # contains current valid sizes for every camera in points. This is preallocated
 # to max_cam_num because a 100 uint buffer is not that big anyways.
 var filtered_sizes_gpu_resources: Array
+var filter_shader_file := load("res://shaders/point_cloud_filter.glsl")
+var filter_shader_spirv: RDShaderSPIRV = filter_shader_file.get_spirv()
+var filter_shader := rd.shader_create_from_spirv(filter_shader_spirv)
+var filter_pipeline := rd.compute_pipeline_create(filter_shader)
+
+var tracking_shader_file := load("res://shaders/dummy_tracking_shader.glsl")
+var tracking_shader_spirv: RDShaderSPIRV = tracking_shader_file.get_spirv()
+var tracking_shader := rd.shader_create_from_spirv(tracking_shader_spirv)
+var tracking_pipeline := rd.compute_pipeline_create(tracking_shader)
 
 func _init():
 	var empty_floats = PackedFloat32Array()
@@ -49,12 +58,12 @@ func build_and_call_compute_shaders():
 	if tracking_node:
 		tracking_node.update_compute_shader_buffers()
 	var compute_list = rd.compute_list_begin()
+	rd.compute_list_bind_compute_pipeline(compute_list, filter_pipeline)
 	# then we ask every device to add their dispatch to the compute list
-	# we pass them the filtered point buffer so they can declare it in their
+	# we pass them the filtered point buffers so they can declare it in their
 	# uniform set.
 	for cam in CameraManager.nodes:
 		cam["camera"].add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, filtered_sizes_gpu_resources)
-
 	# barrier + tracking step
 	## TODO: use indirect dispatch for this step since we know how many points
 	## are going to be processed and we don't have to process all the hypothetical
@@ -65,6 +74,7 @@ func build_and_call_compute_shaders():
 	# If no dependencies are detected, the RenderingServer may reorder stuff. This is
 	# why we need a common uniform between the filter compute shaders and the tracking compute shader.
 	rd.compute_list_add_barrier(compute_list)
+	rd.compute_list_bind_compute_pipeline(compute_list, tracking_pipeline)
 	if tracking_node:
 		tracking_node.add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, filtered_sizes_gpu_resources)
 	rd.compute_list_end()
