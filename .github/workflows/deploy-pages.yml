@@ -10,17 +10,13 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    container: thenerdlygentleman/mdbook:dev
+    container: guillaumeriousat/mdbook-i18n-helpers:latest
     steps:
       - uses: actions/checkout@v4
       - run: |
-          apt -y update
-          apt -y install cargo
-          cargo install mdbook-i18n-helpers
           cd doc/
           MDBOOK_BOOK__LANGUAGE=en mdbook build -d book/en
           MDBOOK_BOOK__LANGUAGE=fr mdbook build -d book/fr
-          mdbook build
           cd ..
           mkdir github-page
           mv doc/book/* github-page
