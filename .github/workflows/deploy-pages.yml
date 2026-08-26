@@ -10,7 +10,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    # woops, a typo got in
+    # woops, a typo got in. mbdook it will be.
     container: guillaumeriousat/mbdook-i18n-helpers:latest
     steps:
       - uses: actions/checkout@v4
