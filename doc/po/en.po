@@ -722,7 +722,7 @@ msgstr ""
 
 #: src/tuto.md:1
 msgid "Création, paramétrage et calibration d'une caméra"
-msgstr "Cration, configuration and calibration of a device"
+msgstr "Creation, configuration and calibration of a device"
 
 #: src/tuto.md:3
 msgid ""
