@@ -1,0 +1,22 @@
+[remap]
+
+importer="svg"
+type="DPITexture"
+uid="uid://brfgqbo06a45c"
+path="res://.godot/imported/eye_open.svg-5b270ad822af5dbc04d9a91f1a1dab17.dpitex"
+
+[deps]
+
+source_file="res://assets/eye_open.svg"
+dest_files=["res://.godot/imported/eye_open.svg-5b270ad822af5dbc04d9a91f1a1dab17.dpitex"]
+
+[params]
+
+base_scale=0.02
+saturation=1.0
+color_map={
+Color(0, 0, 0, 1): Color(1, 1, 1, 1)
+}
+fix_alpha_border=false
+premult_alpha=false
+compress=true

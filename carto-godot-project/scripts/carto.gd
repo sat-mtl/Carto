@@ -135,8 +135,6 @@ func _on_add_camera_button_pressed() -> void:
 func _on_remove_camera_button_pressed() -> void:
 	# capture the futurely removed nodes so that their reference
 	# count increase and that we can reinstate them on a redo.
-	# TODO: maybe add some kind of call to disable here ? to test, I don't know
-	# if its necessary
 	if CameraManager.num_cameras == 0:
 		return
 	var nodes = CameraManager.nodes[CameraManager.num_cameras-1]
@@ -382,7 +380,8 @@ func save_savefile(path:String, store_current_path=true):
 			"resolution": camera["camera_settings"].get_current_orbbec_resolution(),
 		}
 		var hesai_settings := {
-			"ip": camera["camera_settings"].get_current_hesai_ip()
+			"ip": camera["camera_settings"].get_current_hesai_ip(),
+			"port": camera["camera_settings"].current_hesai_port
 		}
 		var cam_data := {
 			"device_type": camera["camera"].enum_to_device_str(camera["camera"].current_device_type),
@@ -392,9 +391,12 @@ func save_savefile(path:String, store_current_path=true):
 			"centroid_toggled": camera["camera"].centroid_toggled,
 			"has_centroid": camera["camera"].has_centroid,
 			"thinning": camera["camera"].thinning,
+			"point_size": camera["camera"].point_size,
 			"centroid": SavefileUtils.serialize_vec3(camera["camera"].centroid),
 			"transform": SavefileUtils.serialize_transform(camera["camera"].transform),
 			"active_state": camera["camera"].active,
+			"displayed": camera["camera"].displayed,
+			"soloed": camera["camera"].soloed,
 			"orbbec_settings": orbbec_settings,
 			"hesai_settings": hesai_settings
 		}
@@ -470,8 +472,8 @@ func load_savefile(path: String, look_for_autosave: bool = true):
 	# clear gizmo selection to avoid gizmo panic when a selected item is
 	# removed from the scene tree
 	clear_gizmo_selection()
-	while CameraManager.num_cameras > 0:
-		CameraManager.remove_camera()
+	CameraManager.reset()
+	CameraManager.soloed_devices = []
 	while num_network_outputs > 0:
 		remove_network_output()
 	while len(NdiManager.nodes) > 0:
@@ -505,6 +507,7 @@ func load_savefile(path: String, look_for_autosave: bool = true):
 		cam_nodes["camera"].centroid = SavefileUtils.deserialize_vec3(cam["centroid"])
 		cam_nodes["camera"].set_centroid_toggled(cam["centroid_toggled"])
 		cam_nodes["camera"].thinning = cam["thinning"]
+		cam_nodes["camera"].point_size = cam.get("point_size", 1.0)
 		var camera_transform = SavefileUtils.deserialize_transform(cam["transform"])
 		cam_nodes["point_cloud"].transform = camera_transform
 		cam_nodes["camera"].transform = camera_transform
@@ -529,9 +532,12 @@ func load_savefile(path: String, look_for_autosave: bool = true):
 			cam_nodes["camera_settings"].select_orbbec_fps(cam["orbbec_settings"]["fps"])
 			cam_nodes["camera_settings"].select_orbbec_resolution(cam["orbbec_settings"]["resolution"])
 			cam_nodes["camera_settings"].set_hesai_ip(cam["hesai_settings"].get("ip", "192.168.1.201"))
+			cam_nodes["camera_settings"].set_hesai_port(cam["hesai_settings"].get("port", 2368))
 		cam_nodes["camera"].current_device_type = device_type_enum
 		cam_nodes["camera_settings"].start_device()
 		cam_nodes["camera_settings"].active_state = cam.get("active_state", true)
+		cam_nodes["camera"].displayed = cam.get("displayed", true)
+		cam_nodes["camera"].soloed = cam.get("soloed", false)
 
 	var ndi_outputs = save_data.get("ndi_outputs", [])
 	if ndi_outputs is Dictionary:
