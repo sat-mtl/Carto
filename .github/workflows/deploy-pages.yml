@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     container: guillaumeriousat/mdbook-i18n-helpers:latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: |
           cd doc/
           MDBOOK_BOOK__LANGUAGE=en mdbook build -d book/en
