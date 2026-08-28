@@ -1,0 +1,7 @@
+[book]
+authors = ["Guillaume Riou"]
+language = "fr"
+src = "src"
+title = "Carto Documentation"
+[preprocessor.gettext]
+after = ["links"]
