@@ -24,13 +24,15 @@ uint get_global_point_idx() {
        gl_WorkGroupID.z * max_x_idx * max_workgroup_idx);
 }
 
+// TODO: maybe put this as a push constant if it ever changes.
+const int num_points_per_point_clouds = 1024*1024;
 int current_point_cloud_idx = -1;
 int current_point_cloud_offset = -1;
 
 // sets the current point cloud index and offset from the global index.
 // example: if we are processing 2 point clouds, one which starts at 0 and one which starts at 675 and
 // we pass 56, this returns 0. if we pass 897, this sets current_point_cloud_idx to 1 and current_point_cloud_offset to 675.
-uint populate_current_offset_and_index(uint global_point_idx, uint num_point_clouds) {
+void populate_current_offset_and_index(uint global_point_idx, uint num_point_clouds) {
   if (current_point_cloud_idx != -1 && current_point_cloud_offset != -1) {
     // don't recompute this.
     return;
@@ -38,16 +40,16 @@ uint populate_current_offset_and_index(uint global_point_idx, uint num_point_clo
   uint offset = 0;
   for(int idx = 0; idx < num_point_clouds; idx++) {
     // iterate until the offset is over the buffer index
-    offset += point_cloud_sizes_pointers.ptrs[idx].size;
+    offset += filtered_sizes_buffer.sizes[idx];
     if (global_point_idx < offset) {
       // when the offset is greater, it means the last index was the right one.
-      current_point_cloud_offset = offset;
-      current_point_cloud_idx = idx;
+      current_point_cloud_offset = int(offset);
+      current_point_cloud_idx = int(idx);
       return;
     }
   }
-  current_point_cloud_offset = offset;
-  current_point_cloud_idx = idx;
+  current_point_cloud_offset = int(offset);
+  current_point_cloud_idx = int(num_point_clouds - 1);
 }
 
 // from a global index (in number of floats, not points), returns the local index in float
@@ -68,6 +70,16 @@ int get_local_idx(uint global_point_idx) {
 // gets the actual float index in filtered points buffer.
 // num_points_per_point_clouds is the constant size (in points) of the portion of the filtered_output_buffer
 // that is reserved for every device.
-uint get_filtered_output_point_idx(int local_point_idx, int pt_cloud_index, int num_points_per_point_clouds) {
+uint get_filtered_output_point_idx(int local_point_idx, int pt_cloud_index) {
   return local_point_idx + (pt_cloud_index * num_points_per_point_clouds);
+}
+
+// we could get this value computed one in another shader pass before this one maybe
+// not sure its worth optimizing this right now
+uint get_total_point_size(uint num_point_clouds) {
+  uint total_size = 0;
+  for(int idx = 0; idx < num_point_clouds; idx++) {
+    total_size += filtered_sizes_buffer.sizes[idx];
+  }
+  return total_size;
 }

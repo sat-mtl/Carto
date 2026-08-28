@@ -163,7 +163,7 @@ bool apply_filter(vec3 point, int i) {
     return dist > 0.0;
   }
 }
-const num_points_per_point_clouds = 1024*1024;
+
 // The code we want to execute in each invocation
 void main() {
   uint point_idx = get_global_point_idx();
@@ -212,10 +212,10 @@ void main() {
     if (point_is_kept) {
       // Atomic add to get a unique write index in the points buffer
       uint local_idx = atomicAdd(filtered_sizes_buffer.sizes[params.device_idx], 1u);
-      uint filtered_output_idx = get_filtered_output_point_idx(local_idx, params.device_idx, )
+      uint filtered_output_idx = get_filtered_output_point_idx(int(local_idx), params.device_idx);
       // if the point is included in the filters,  update the position to match the
       // point cloud's transform.
-      uint point_cloud_packed_idx = kept_point_idx * num_floats_per_input_point;
+      int point_cloud_packed_idx = int(filtered_output_idx) * num_floats_per_input_point;
       filtered_output_buffer.data[point_cloud_packed_idx] = transformed_coords.x;
       filtered_output_buffer.data[point_cloud_packed_idx + 1] = transformed_coords.y;
       filtered_output_buffer.data[point_cloud_packed_idx + 2] = transformed_coords.z;

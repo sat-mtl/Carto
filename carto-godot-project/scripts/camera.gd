@@ -123,6 +123,9 @@ var last_transform: Transform3D
 func _on_display_transform_changed(tform: Transform3D):
 	transform = tform
 
+func get_total_max_points():
+	return 1_048_576
+
 # max 1024x1024 points.
 var max_points := 1_048_576
 
@@ -160,6 +163,7 @@ func connect_device_log_signals(device_node):
 	device_node.success_log.connect(_on_device_success_log)
 
 func _init(ui:Node, display:Node, num:int) -> void:
+	print(num)
 	device_num = num
 	ui_node = ui
 	display_node = display
@@ -218,7 +222,7 @@ func get_stream_formats():
 	return orbbec_device.get_device_stream_formats()
 
 # compute shader section
-static var rd = ComputeShaderUtils.rendering_device
+var rd = ComputeShaderUtils.rendering_device
 
 var mock_buffer_rid: RID
 var point_cloud_buffer_rid: RID
@@ -226,8 +230,6 @@ var point_cloud_buffer_gpu_resources:= [RDUniform.new(), null]
 var filter_transforms_gpu_resources: Array
 var filter_settings_gpu_resources: Array
 var multimesh_buffer_gpu_resources:= [RDUniform.new(), null]
-var valid_points_counter_gpu_resources: Array
-var filtered_points_gpu_resources: Array
 var thinning_mask_gpu_resources: Array
 
 const max_filters_num := 100
@@ -239,9 +241,7 @@ const bytes_per_float := 4
 func free_compute_shader_buffers():
 	rd.free_rid(filter_transforms_gpu_resources[1])
 	rd.free_rid(filter_settings_gpu_resources[1])
-	rd.free_rid(valid_points_counter_gpu_resources[1])
 	rd.free_rid(mock_buffer_rid)
-	rd.free_rid(filtered_points_gpu_resources[1])
 	rd.free_rid(thinning_mask_gpu_resources[1])
 	mock_buffer_rid = RID()
 
@@ -279,15 +279,26 @@ func on_data_got(dat):
 		output_data = dat
 		has_new_output_data = true
 
+func get_filtered_output_binary_offset():
+	return max_network_size*(device_num-1)
+
+func get_filtered_size_offset():
+	return (device_num-1) * 4
+
 func set_network_output_data():
-	var num_points := rd.buffer_get_data(valid_points_counter_gpu_resources[1], 0, 4).decode_u32(0)
-	var output_size := num_points * bytes_per_float * floats_per_points
+	if not should_read:
+		return
+	should_read = false
+	var filtered_size_offset = get_filtered_size_offset()
+	var num_points := rd.buffer_get_data(ComputePipelinesManager.filtered_sizes_gpu_resources[1], filtered_size_offset, 4).decode_u32(0)
+	var output_binary_size := num_points * bytes_per_float * floats_per_points
 	# This buffer_get_data command waits for the gpu to finish computing.
 	if num_points == 0:
 		clear_network_output()
 		return
 	# TODO: maybe try buffer_get_data_async ? it introduces latency though.
-	rd.buffer_get_data_async(filtered_points_gpu_resources[1], on_data_got, 0, output_size)
+	var binary_offset = get_filtered_output_binary_offset()
+	rd.buffer_get_data_async(ComputePipelinesManager.filtered_points_gpu_resources[1], on_data_got, binary_offset, output_binary_size)
 
 var uniform_set: RID
 
@@ -331,7 +342,9 @@ func update_compute_shader_buffers():
 	var filter_settings_bytes = filter_settings.to_byte_array()
 	rd.buffer_update(filter_settings_gpu_resources[1], 0, len(filter_settings_bytes), filter_settings_bytes)
 	# reset the point counter to 0
-	rd.buffer_update(valid_points_counter_gpu_resources[1], 0, 4, PackedInt32Array([0]).to_byte_array())
+	var filtered_size_offset = get_filtered_size_offset()
+	print(filtered_size_offset)
+	rd.buffer_update(ComputePipelinesManager.filtered_sizes_gpu_resources[1], filtered_size_offset, 4, PackedInt32Array([0]).to_byte_array())
 	# binds the point cloud multimesh's buffer to the compute shader so that we can write exclusions
 	# directly without a CPU download and a set_buffer to redraw.
 	var multimesh_buffer_RID = RenderingServer.multimesh_get_buffer_rd_rid(multimesh)
@@ -339,7 +352,10 @@ func update_compute_shader_buffers():
 	multimesh_buffer_gpu_resources[0].add_id(multimesh_buffer_RID)
 
 	point_cloud_buffer_gpu_resources[0].clear_ids()
+	print(get_points_buffer())
 	point_cloud_buffer_gpu_resources[0].add_id(get_points_buffer())
+
+var should_read = false
 
 func add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, filtered_sizes_gpu_resources):
 	if not (active and (should_draw or transform_has_changed)):
@@ -374,6 +390,7 @@ func add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, f
 	# pass the current device type to be able to pre-process differently depending on the
 	# source.
 	parameters.append(current_device_type)
+	parameters.append(device_num - 1)
 	parameters.append(thinning_mask_size)
 	# I'm so sorry. (what I really want is a reinterpret_cast)
 	var float_params = parameters.to_byte_array().to_float32_array()
@@ -386,16 +403,13 @@ func add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, f
 	# of 16 bytes.
 	var parameter_bytes := float_params.to_byte_array()
 	# just use the whole 128 bytes, whatever.
-	parameter_bytes.resize(80)
+	parameter_bytes.resize(84)
 	rd.compute_list_set_push_constant(compute_list, parameter_bytes, parameter_bytes.size())
 	# we need to be called for max_points because we need to clear unused points.
 	var xyz_invoc = ComputeShaderUtils.get_xyz_invocations(max_points)
 	rd.compute_list_dispatch(compute_list, xyz_invoc.x, xyz_invoc.y, xyz_invoc.z)
-	# if we have no active network ouput, we can skip reading from the GPU which is muuuuch
-	# faster than having to read from it.
-	if len(get_tree().get_nodes_in_group("network_outputs").filter(func(out): return out.is_active)) > 0:
-		# TODO: not sure how this will work out now that we dispatch multiple compute lists.
-		set_network_output_data()
+	# indicate that this device potentially has something to read from the gpu
+	should_read = true
 
 # end compute shader section
 
@@ -582,12 +596,6 @@ func get_points_buffer(	) -> RID:
 	else:
 		return mock_buffer_rid
 
-func get_filtered_points_buffer() -> RID:
-	return filtered_points_gpu_resources[1]
-
-func get_filtered_points_size_buffer():
-	return valid_points_counter_gpu_resources[1]
-
 var transform_has_changed = true
 
 func _process(_delta: float) -> void:
@@ -601,4 +609,3 @@ func _process(_delta: float) -> void:
 			centroid_changed.emit(centroid, centroid_toggled, false)
 		has_centroid = true
 	last_transform = transform
-	should_draw = false

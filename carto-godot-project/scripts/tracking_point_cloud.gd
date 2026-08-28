@@ -32,6 +32,7 @@ func _init() -> void:
 	ComputeShaderUtils.init_multimesh_buffer(mm_buffer, max_points, Vector3.ONE*-666.0, Color(1.0,1.0,1.0))
 	init_compute_shader_buffers()
 	multimesh_initialized = true
+	ComputePipelinesManager.tracking_node = self
 
 var rd := ComputeShaderUtils.rendering_device
 var uniform_set: RID
@@ -77,8 +78,6 @@ func update_compute_shader_buffers():
 func add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, filtered_sizes_gpu_resources):
 	if not multimesh_initialized:
 		return
-	var point_buffers_and_sizes = CameraManager.get_filtered_buffers_and_sizes()
-	var num_point_clouds := len(point_buffers_and_sizes["points"])
 	uniform_set = rd.uniform_set_create([
 		filtered_points_gpu_resources[0],
 		filtered_sizes_gpu_resources[0],
@@ -93,7 +92,7 @@ func add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, f
 	# we may eventually want to introduce types that do not fit in 4 bytes in there.
 	var parameters := PackedInt32Array()
 	# number of point cloud buffers
-	parameters.append(num_point_clouds)
+	parameters.append(CameraManager.num_cameras)
 	# max number of displayed points
 	parameters.append(max_points)
 	var parameter_bytes := parameters.to_byte_array()

@@ -4,7 +4,7 @@ var camera_scene := preload("res://scripts/camera.gd")
 var camera_setting_scene := preload("res://scenes/ui_components/camera_settings.tscn")
 var point_cloud_scene := preload("res://scenes/point_cloud.tscn")
 var gizmo
-const max_cam_num := 100
+const max_cam_num := 2
 
 ## main carto node. Used to connect signals. Could be eliminated with a bit
 ## more signals and indirection but not sure its worth it.
@@ -69,7 +69,7 @@ func stack_group_transform(old_transform, new_transform, camera_node):
 func get_total_max_points():
 	var total := 0
 	for cam in nodes:
-		total += cam.max_points
+		total += cam["camera"].get_total_max_points()
 	return total
 
 func _process(_delta: float) -> void:
@@ -110,17 +110,6 @@ func update_solo(state, device_num):
 func update_point_visibility(device_num):
 	var cam = get_node_from_num(device_num)
 	cam["point_cloud"].update_display_state(soloed_devices)
-
-func get_filtered_buffers_and_sizes():
-	var points_buffers := Array()
-	var sizes_buffers := Array()
-	for cam in nodes:
-		var points_rid : RID = cam["camera"].get_filtered_points_buffer()
-		var sizes_rid : RID = cam["camera"].get_filtered_points_size_buffer()
-		if points_rid.is_valid() and sizes_rid.is_valid():
-			points_buffers.append(points_rid)
-			sizes_buffers.append(sizes_rid)
-	return {"points": points_buffers, "sizes": sizes_buffers}
 
 func initialize_camera_nodes():
 	var cam_idx = get_lowest_available_id()
@@ -197,6 +186,7 @@ func add_camera(camera_nodes, idx=null):
 	update_solo(camera_nodes["camera"].soloed, camera_nodes["camera"].device_num)
 	for cam in nodes:
 		update_point_visibility(cam["camera"].device_num)
+	ComputePipelinesManager.reallocate_filtered_points_buffer()
 
 
 func request_redraw():
