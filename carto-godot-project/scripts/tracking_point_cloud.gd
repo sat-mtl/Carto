@@ -5,15 +5,15 @@ class_name TrackingPointCloud
 var max_points := 10_000_000
 var transform_buffer := PackedFloat32Array()
 var floats_per_raw_point := 16
-var material #: RID
-var pmesh #: RID
+var material := StandardMaterial3D.new()
+var pmesh := PointMesh.new()
 var multimesh: RID
 var multimesh_instance: RID
 var multimesh_initialized = false
 
 func init_multimesh_points():
 	multimesh = RenderingServer.multimesh_create()
-	material = StandardMaterial3D.new()
+
 	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	material.use_point_size = true
 	material.point_size=1
@@ -21,17 +21,21 @@ func init_multimesh_points():
 	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	material.albedo_color = Color(1.0, 1.0, 1.0, 0.5)
 
-	pmesh = PointMesh.new()
 	pmesh.material = material
 
 	RenderingServer.multimesh_allocate_data(multimesh, max_points, RenderingServer.MULTIMESH_TRANSFORM_3D, true, false, true)
 	RenderingServer.multimesh_set_mesh(multimesh, pmesh.get_rid())
 	multimesh_instance = RenderingServer.instance_create2(multimesh, get_world_3d().scenario)
+	# since we are in calibration mode by default, set the visibility to false.
 	RenderingServer.instance_set_visible(multimesh_instance, false)
-	RenderingServer.multimesh_set_visible_instances(multimesh, -1)
+	# without a custom AABB, it looks like the engine thinks the multimesh instance
+	# has a size of zero and it won't render it no matter how hard we tell it to ignore occlusion.
 	RenderingServer.instance_set_custom_aabb(multimesh_instance, AABB( Vector3.ONE * -25000.0, Vector3.ONE * 25000.0))
 	# this magic rendering layer value is the binary value that is set in the multimeshinstance3d of a device
-	RenderingServer.instance_set_layer_mask(multimesh_instance, 0b11100000000000000000)
+	# these two settings makes the ndi cameras pickup the multimesh. it seems like
+	# the extra visibility margin is needed for that.
+	RenderingServer.instance_set_layer_mask(multimesh_instance, 1048575)
+	RenderingServer.instance_set_extra_visibility_margin(multimesh_instance, 3000)
 
 func set_visibility(visibility):
 	RenderingServer.instance_set_visible(multimesh_instance, visibility)
