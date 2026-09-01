@@ -273,11 +273,16 @@ func clear_network_output():
 	output_data.clear()
 	has_new_output_data = true
 
-func on_data_got(dat):
-	## todo: more robust check here, its not just active...
-	if active:
-		output_data = dat
-		has_new_output_data = true
+func make_on_data_got(initial_frame):
+	return func (dat):
+		print("on data got")
+		print(initial_frame)
+		print(Engine.get_frames_drawn())
+		print("end on data got")
+		## todo: more robust check here, its not just active...
+		if active:
+			output_data = dat
+			has_new_output_data = true
 
 func get_filtered_output_binary_offset():
 	return max_network_size*(device_num-1)
@@ -285,12 +290,8 @@ func get_filtered_output_binary_offset():
 func get_filtered_size_offset():
 	return (device_num-1) * 4
 
-func set_network_output_data():
-	if not should_read:
-		return
-	should_read = false
-	var filtered_size_offset = get_filtered_size_offset()
-	var num_points := rd.buffer_get_data(ComputePipelinesManager.filtered_sizes_gpu_resources[1], filtered_size_offset, 4).decode_u32(0)
+func set_network_output_with_size(data):
+	var num_points :int = data.decode_u32(0)
 	var output_binary_size := num_points * bytes_per_float * floats_per_points
 	# This buffer_get_data command waits for the gpu to finish computing.
 	if num_points == 0:
@@ -298,21 +299,31 @@ func set_network_output_data():
 		return
 	# TODO: maybe try buffer_get_data_async ? it introduces latency though.
 	var binary_offset = get_filtered_output_binary_offset()
-	rd.buffer_get_data_async(ComputePipelinesManager.filtered_points_gpu_resources[1], on_data_got, binary_offset, output_binary_size)
+	# this is supposed to add a frame latency but in tests it seems to always be called the same
+	# frame as set_network_output_data
+	rd.buffer_get_data_async(ComputePipelinesManager.filtered_points_gpu_resources[1], make_on_data_got(Engine.get_frames_drawn()), binary_offset, output_binary_size)
+
+func set_network_output_data():
+	if not should_read:
+		return
+	should_read = false
+	var filtered_size_offset = get_filtered_size_offset()
+	rd.buffer_get_data_async(ComputePipelinesManager.filtered_sizes_gpu_resources[1], set_network_output_with_size, filtered_size_offset, 4)
 
 var uniform_set: RID
+
+func should_run_compute_shader():
+	return active and (should_draw or transform_has_changed) and (current_device_type == device_types.DEBUG or point_cloud_buffer_rid.is_valid())
 
 ## updates all the buffers with the current values.
 ## needs to be called before the compute list exists.
 func update_compute_shader_buffers():
-	if not (active and (should_draw or transform_has_changed)):
+	if not should_run_compute_shader():
 		return
 	if uniform_set.is_valid():
 		# we need to cleanup our uniform set, there seems to be no way to update it
 		# so we need to create one every frame and if we don't free we eventually crash
 		rd.free_rid(uniform_set)
-	if current_device_type != device_types.DEBUG and not point_cloud_buffer_rid.is_valid():
-		return
 	## TODO: this whole filter things is done once per device but could be done only once.
 	var filter_settings := PackedInt32Array()
 	# the format of this buffer is [
@@ -343,7 +354,6 @@ func update_compute_shader_buffers():
 	rd.buffer_update(filter_settings_gpu_resources[1], 0, len(filter_settings_bytes), filter_settings_bytes)
 	# reset the point counter to 0
 	var filtered_size_offset = get_filtered_size_offset()
-	print(filtered_size_offset)
 	rd.buffer_update(ComputePipelinesManager.filtered_sizes_gpu_resources[1], filtered_size_offset, 4, PackedInt32Array([0]).to_byte_array())
 	# binds the point cloud multimesh's buffer to the compute shader so that we can write exclusions
 	# directly without a CPU download and a set_buffer to redraw.
@@ -352,13 +362,12 @@ func update_compute_shader_buffers():
 	multimesh_buffer_gpu_resources[0].add_id(multimesh_buffer_RID)
 
 	point_cloud_buffer_gpu_resources[0].clear_ids()
-	print(get_points_buffer())
 	point_cloud_buffer_gpu_resources[0].add_id(get_points_buffer())
 
 var should_read = false
 
 func add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, filtered_sizes_gpu_resources):
-	if not (active and (should_draw or transform_has_changed)):
+	if not should_run_compute_shader():
 		return
 	var filters := get_tree().get_nodes_in_group("filter_areas")
 	uniform_set = rd.uniform_set_create([
@@ -402,7 +411,6 @@ func add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, f
 	# everything in there. It also looks like this buffer needs to have a multiple
 	# of 16 bytes.
 	var parameter_bytes := float_params.to_byte_array()
-	# just use the whole 128 bytes, whatever.
 	parameter_bytes.resize(84)
 	rd.compute_list_set_push_constant(compute_list, parameter_bytes, parameter_bytes.size())
 	# we need to be called for max_points because we need to clear unused points.

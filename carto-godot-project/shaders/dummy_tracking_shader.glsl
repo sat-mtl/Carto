@@ -18,6 +18,15 @@ layout(set = 0, binding = 4, std430) buffer Output {
   float data[];
 } output_buffer;
 
+// buffer for the multimesh command
+layout(set = 0, binding = 5, std430) buffer MultimeshCommandBuffer {
+  int vertex_count;
+  int instance_count;
+  int first_vertex;
+  int first_instance;
+  int unused;
+} multimesh_command_buffer;
+
 layout(push_constant) uniform Parameters {
   // number of point cloud buffer pointers
   int num_point_clouds;
@@ -40,7 +49,12 @@ void main() {
   uint global_float_idx = global_point_idx * num_floats_per_input_point;
   populate_current_offset_and_index(global_point_idx, params.num_point_clouds);
   uint multimesh_buffer_idx = global_point_idx * num_floats_per_multimesh_point;
-  uint num_floats = get_total_point_size(params.num_point_clouds) * num_floats_per_input_point;
+  uint num_points = get_total_point_size(params.num_point_clouds);
+  uint num_floats = num_points * num_floats_per_input_point;
+  multimesh_command_buffer.vertex_count = 1;
+  multimesh_command_buffer.instance_count = int(num_points);
+  multimesh_command_buffer.first_vertex = 0;
+  multimesh_command_buffer.first_instance = 0;
   if (global_float_idx + num_floats_per_input_point <= num_floats) {
     int local_point_idx = get_local_idx(global_point_idx);
     uint filtered_output_point_idx = get_filtered_output_point_idx(local_point_idx, current_point_cloud_idx);

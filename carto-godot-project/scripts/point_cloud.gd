@@ -47,6 +47,7 @@ func _ready() -> void:
 	text_mesh.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	text_mesh.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	%CameraNameMeshInstance3D.mesh = text_mesh
+	print(%MultiMeshInstance3D.layers)
 
 func _on_name_change(n: String):
 	text_mesh.text = n

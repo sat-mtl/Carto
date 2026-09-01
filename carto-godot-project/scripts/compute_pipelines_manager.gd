@@ -46,8 +46,11 @@ func reallocate_filtered_points_buffer():
 	var empty_floats = PackedFloat32Array()
 	empty_floats.resize(size)
 	var bytes = empty_floats.to_byte_array()
-	filtered_points_gpu_resources[1] = ComputeShaderUtils.create_buffer_with_device_address(bytes.size(), bytes)
+	# TODO: don't free now, wait for all potential CPU-side reads in this to be finished
 	ComputeShaderUtils.rendering_device.free_rid(filtered_points_gpu_resources[1])
+	filtered_points_gpu_resources[1] = ComputeShaderUtils.create_buffer_with_device_address(bytes.size(), bytes)
+	filtered_points_gpu_resources[0].clear_ids()
+	filtered_points_gpu_resources[0].add_id(filtered_points_gpu_resources[1])
 
 func build_and_call_compute_shaders():
 	if CameraManager.num_cameras == 0:
@@ -80,14 +83,14 @@ func build_and_call_compute_shaders():
 	if tracking_node:
 		tracking_node.add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, filtered_sizes_gpu_resources)
 	rd.compute_list_end()
+
+	tracking_node.read_from_command_buffer()
 	# if we have no active network ouput, we can skip reading from the GPU which is muuuuch
 	# faster than having to read from it.
 	if len(get_tree().get_nodes_in_group("network_outputs").filter(func(out): return out.is_active)) > 0:
 		# TODO: not sure how this will work out now that we dispatch multiple compute lists.
 		for cam in CameraManager.nodes:
 			cam["camera"].set_network_output_data()
-	var sizes := rd.buffer_get_data(filtered_sizes_gpu_resources[1], 0, 8).to_int32_array()
-	print(sizes)
 
 var process = true
 

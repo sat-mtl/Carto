@@ -38,12 +38,13 @@ void populate_current_offset_and_index(uint global_point_idx, uint num_point_clo
     return;
   }
   uint offset = 0;
+  // iterate until the offset is over the buffer index
   for(int idx = 0; idx < num_point_clouds; idx++) {
-    // iterate until the offset is over the buffer index
+    uint old_offset = offset;
     offset += filtered_sizes_buffer.sizes[idx];
     if (global_point_idx < offset) {
       // when the offset is greater, it means the last index was the right one.
-      current_point_cloud_offset = int(offset);
+      current_point_cloud_offset = int(old_offset);
       current_point_cloud_idx = int(idx);
       return;
     }

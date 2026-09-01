@@ -4,7 +4,7 @@ var camera_scene := preload("res://scripts/camera.gd")
 var camera_setting_scene := preload("res://scenes/ui_components/camera_settings.tscn")
 var point_cloud_scene := preload("res://scenes/point_cloud.tscn")
 var gizmo
-const max_cam_num := 2
+const max_cam_num := 100
 
 ## main carto node. Used to connect signals. Could be eliminated with a bit
 ## more signals and indirection but not sure its worth it.

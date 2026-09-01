@@ -970,13 +970,8 @@ unique_name_in_owner = true
 [node name="PointCloudCameras" type="Node" parent="." unique_id=129504982]
 unique_name_in_owner = true
 
-[node name="TrackingPointCloud" type="MultiMeshInstance3D" parent="." unique_id=1135268503]
+[node name="TrackingPointCloud" type="Node3D" parent="." unique_id=1764823802]
 unique_name_in_owner = true
-visible = false
-layers = 7
-cast_shadow = 0
-extra_cull_margin = 300.0
-ignore_occlusion_culling = true
 script = ExtResource("16_dunih")
 
 [node name="TCPOutput" type="Node" parent="." unique_id=1557318940]
