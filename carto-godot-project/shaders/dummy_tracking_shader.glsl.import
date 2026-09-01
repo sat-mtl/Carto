@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://fdcebpyx6tb5"
+path="res://.godot/imported/dummy_tracking_shader.glsl-68722ffa3e1d81bf14dbfaf2b5dd4c9a.res"
+
+[deps]
+
+source_file="res://shaders/dummy_tracking_shader.glsl"
+dest_files=["res://.godot/imported/dummy_tracking_shader.glsl-68722ffa3e1d81bf14dbfaf2b5dd4c9a.res"]
+
+[params]
+

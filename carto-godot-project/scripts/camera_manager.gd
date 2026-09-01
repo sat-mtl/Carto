@@ -4,6 +4,7 @@ var camera_scene := preload("res://scripts/camera.gd")
 var camera_setting_scene := preload("res://scenes/ui_components/camera_settings.tscn")
 var point_cloud_scene := preload("res://scenes/point_cloud.tscn")
 var gizmo
+const max_cam_num := 100
 
 ## main carto node. Used to connect signals. Could be eliminated with a bit
 ## more signals and indirection but not sure its worth it.
@@ -13,6 +14,13 @@ var carto_node
 var camera_container
 var camera_settings_container
 var point_cloud_container
+
+func get_all_devices_gpu_idx() -> PackedInt32Array:
+	var device_nums := PackedInt32Array()
+	for cam in nodes:
+		# the index on the gpu is the device number -1.
+		device_nums.append(cam["camera"].device_num - 1)
+	return device_nums
 
 func get_num_from_node(node):
 	return node["camera_settings"].camera_num
@@ -37,7 +45,7 @@ var num_cameras: int:
 # We need to keep this FileAccess alive so that the tmp file exists as long
 # as the program runs.
 var hesai_pandar_p40_correction_tmp_file:FileAccess
-
+var done = false
 func _init() -> void:
 	orbbec_devices.refresh_device_list()
 	# when the exe is exported, the csv correction files in res://device_configurations
@@ -55,7 +63,7 @@ func reset():
 		remove_camera()
 	transform_changes_to_stack = Array()
 	group_edit_linger_countdown = 0
-	var soloed_devices = []
+	soloed_devices = []
 
 var transform_changes_to_stack: Array
 
@@ -64,6 +72,12 @@ func stack_group_transform(old_transform, new_transform, camera_node):
 	transform_changes_to_stack.append(old_transform)
 	transform_changes_to_stack.append(new_transform)
 	transform_changes_to_stack.append(camera_node)
+
+func get_total_max_points():
+	var total := 0
+	for cam in nodes:
+		total += cam["camera"].get_total_max_points()
+	return total
 
 func _process(_delta: float) -> void:
 	group_edit_linger_countdown = max(group_edit_linger_countdown-1, 0)
@@ -96,7 +110,7 @@ func update_solo(state, device_num):
 		soloed_devices.append(device_num)
 	elif not state and device_idx_in_soloed_device != -1:
 		soloed_devices.remove_at(device_idx_in_soloed_device)
-	# tell all the cameras
+	# tell all the camerasd
 	for cam in nodes:
 		cam["point_cloud"].update_display_state(soloed_devices)
 
@@ -179,6 +193,7 @@ func add_camera(camera_nodes, idx=null):
 	update_solo(camera_nodes["camera"].soloed, camera_nodes["camera"].device_num)
 	for cam in nodes:
 		update_point_visibility(cam["camera"].device_num)
+	ComputePipelinesManager.reallocate_filtered_points_buffer()
 
 
 func request_redraw():

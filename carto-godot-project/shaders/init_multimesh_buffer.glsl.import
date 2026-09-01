@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://bd1xftkhkegph"
+path="res://.godot/imported/init_multimesh_buffer.glsl-29bfe8564fe70ce469473ab85a882e56.res"
+
+[deps]
+
+source_file="res://shaders/init_multimesh_buffer.glsl"
+dest_files=["res://.godot/imported/init_multimesh_buffer.glsl-29bfe8564fe70ce469473ab85a882e56.res"]
+
+[params]
+

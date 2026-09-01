@@ -17,7 +17,7 @@ func _on_log_entry(log_entry):
 
 func _ready() -> void:
 	CameraManager.carto_node = self
-	CameraManager.point_cloud_container = %PointClouds
+	CameraManager.point_cloud_container = %CalibPointClouds
 	CameraManager.camera_container =  %PointCloudCameras
 	CameraManager.camera_settings_container = %CamerasContainer
 
@@ -102,7 +102,7 @@ func gizmo_select_crop_region():
 func select_crop_region():
 	gizmo_select_node(%CropRegion, false)
 	# current tab goes to crop region
-	%SideBarUI.current_tab = 1
+	%CalibSideBarUI.current_tab = 1
 	%CropRegion.highlight()
 
 func _on_crop_gizmo_select_pressed() -> void:
@@ -256,7 +256,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		gizmo_select_node(node, _add)
 		var nodes = CameraManager.get_node_from_num(node.camera_num)
 		# current tab goes to cameras
-		%SideBarUI.current_tab = 0
+		%CalibSideBarUI.current_tab = 0
 		%CameraScrollContainer.ensure_control_visible(nodes["camera_settings"])
 		nodes["camera_settings"].focus_gizmo_button()
 
@@ -641,7 +641,16 @@ func _on_camera_view_menu_id_pressed(id: int) -> void:
 		6:
 			%FreeCamera.set_to_orthographic(%ManipulatorGizmo.axes.Y, true)
 
-
 func _on_ui_scaling_spin_box_value_changed(value: float) -> void:
 	scale_ui(value)
 	user_settings["ui_scaling"] = value
+
+func _on_tracking_mode_button_toggled(toggled_on: bool) -> void:
+	%CalibPointClouds.visible = not toggled_on
+	%TrackingPointCloud.set_visibility(toggled_on)
+	%CalibSideBarUI.visible = not toggled_on
+	%TrackingSideBarUI.visible = toggled_on
+	if toggled_on:
+		# un-gizmo-select everything when in tracking mode
+		clear_gizmo_selection()
+	%CropRegionContainer.visible = not toggled_on and %CropRegion.filter_active
