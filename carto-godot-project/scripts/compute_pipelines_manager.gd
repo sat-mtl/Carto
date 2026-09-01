@@ -68,6 +68,7 @@ func reallocate_filtered_points_buffer():
 
 func build_and_call_compute_shaders():
 	if CameraManager.num_cameras == 0:
+		tracking_node.make_multimesh_draw_zero_points()
 		return
 	# updating buffers is illegal when a compute list is open so we first ask
 	# every device to update their stuff

@@ -279,7 +279,6 @@ func clear_network_output():
 	has_new_output_data = true
 
 func on_data_got(dat):
-	#print(dat.to_float32_array().slice(0, 30))
 	if active:
 		output_data = dat
 		has_new_output_data = true
@@ -305,8 +304,17 @@ func set_network_output_data():
 
 var uniform_set: RID
 
+# we need to give a consisten value of should_run_compute_shader
+# during a specific frame even if an event that should make us process the frame
+# happens. We'll just process it next frame.
+var should_run_last_frame = -1
+var should_run_cache = false
 func should_run_compute_shader():
-	return active and (should_draw or transform_has_changed) and (current_device_type == device_types.DEBUG or point_cloud_buffer_rid.is_valid())
+	var this_frame = Engine.get_frames_drawn()
+	if should_run_last_frame < Engine.get_frames_drawn():
+		should_run_cache = active and (should_draw or transform_has_changed) and (current_device_type == device_types.DEBUG or point_cloud_buffer_rid.is_valid())
+		should_run_last_frame = this_frame
+	return should_run_cache
 
 ## updates all the buffers with the current values.
 ## needs to be called before the compute list exists.

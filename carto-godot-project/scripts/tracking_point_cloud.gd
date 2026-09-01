@@ -27,9 +27,7 @@ func init_multimesh_points():
 	RenderingServer.multimesh_allocate_data(multimesh, max_points, RenderingServer.MULTIMESH_TRANSFORM_3D, true, false, true)
 	RenderingServer.multimesh_set_mesh(multimesh, pmesh.get_rid())
 	multimesh_instance = RenderingServer.instance_create2(multimesh, get_world_3d().scenario)
-	#RenderingServer.instance_set_ignore_culling(multimesh_instance, true)
-	#RenderingServer.instance_set_transform(multimesh_instance, global_transform)
-	RenderingServer.instance_set_visible(multimesh_instance, true)
+	RenderingServer.instance_set_visible(multimesh_instance, false)
 	RenderingServer.multimesh_set_visible_instances(multimesh, -1)
 	RenderingServer.instance_set_custom_aabb(multimesh_instance, AABB( Vector3.ONE * -25000.0, Vector3.ONE * 25000.0))
 	# this magic rendering layer value is the binary value that is set in the multimeshinstance3d of a device
@@ -58,6 +56,10 @@ var output_size_gpu_resources: ComputeShaderUtils.GPUResources
 var output_gpu_resources: ComputeShaderUtils.GPUResources
 var multimesh_command_buffer_uniform := RDUniform.new()
 var max_output_size = 1_000_000
+
+func make_multimesh_draw_zero_points():
+	# update the command buffer to tell the multimesh to render 0 instances.
+	rd.buffer_update(RenderingServer.multimesh_get_command_buffer_rd_rid(multimesh), 0, 5*4, [1,0,0,0,0])
 
 func init_compute_shader_buffers():
 	var empty_floats = PackedFloat32Array()
