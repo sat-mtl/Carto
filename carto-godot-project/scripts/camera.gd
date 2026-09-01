@@ -279,12 +279,19 @@ func clear_network_output():
 	has_new_output_data = true
 
 func on_data_got(dat):
+	#print(dat.to_float32_array().slice(0, 30))
 	if active:
 		output_data = dat
 		has_new_output_data = true
 
-func on_size_got(data):
-	var num_points :int = data.decode_u32(0)
+func set_network_output_data():
+	if not should_read:
+		return
+	should_read = false
+	var filtered_size_offset = get_filtered_size_offset()
+	# wait for gpu-cpu sync to read the network output size
+
+	var num_points :int = rd.buffer_get_data(ComputePipelinesManager.filtered_sizes_gpu_resources.buffer, filtered_size_offset, 4).decode_u32(0)
 	var output_binary_size := num_points * bytes_per_float * floats_per_points
 	# This buffer_get_data command waits for the gpu to finish computing.
 	if num_points == 0:
@@ -295,14 +302,6 @@ func on_size_got(data):
 	# frame of latency and we can be sure that the size read at the previous step
 	# is still valid for this frame.
 	rd.buffer_get_data_async(ComputePipelinesManager.filtered_points_gpu_resources.buffer, on_data_got, binary_offset, output_binary_size)
-
-func set_network_output_data():
-	if not should_read:
-		return
-	should_read = false
-	var filtered_size_offset = get_filtered_size_offset()
-	# wait for gpu-cpu sync to read the network output size
-	rd.buffer_get_data_async(ComputePipelinesManager.filtered_sizes_gpu_resources.buffer, on_size_got, filtered_size_offset, 4)
 
 var uniform_set: RID
 

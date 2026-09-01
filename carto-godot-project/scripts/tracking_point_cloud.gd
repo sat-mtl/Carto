@@ -35,6 +35,8 @@ func init_multimesh_points():
 	# this magic rendering layer value is the binary value that is set in the multimeshinstance3d of a device
 	RenderingServer.instance_set_layer_mask(multimesh_instance, 0b11100000000000000000)
 
+func set_visibility(visibility):
+	RenderingServer.instance_set_visible(multimesh_instance, visibility)
 
 func _ready() -> void:
 	init_multimesh_points()
