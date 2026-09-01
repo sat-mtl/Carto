@@ -7,28 +7,28 @@
 // [ t1.x.x, t1.x.y, t1.x.z, t1.y.x, t1.y.y, t1.y.z, t1.z.x, t1.z.y, t1.z.z, t1.origin.x, t1.origin.y, t1.origin.z,
 //   t2.x.x, t2.x.y, t2.x.z, t2.y.x, t2.y.y, t2.y.z, t2.z.x, t2.z.y, t2.z.z, t2.origin.x, t2.origin.y, t2.origin.z, ...]
 // so 12 floats per elements.
-layout(set = 0, binding = 2, std430) buffer FilterTransforms {
+layout(set = 0, binding = 3, std430) buffer FilterTransforms {
   float data[];
 } filter_transforms_buffer;
 
 // the filter_settings_buffer is layout like so :  [filter_1_shape, filter_1_mode, filter_2 shape, filter_2_mode, ...]
-layout(set = 0, binding = 3, std430) buffer FilterSettings {
+layout(set = 0, binding = 4, std430) buffer FilterSettings {
   int data[];
 } filter_settings_buffer;
 
 // The point_cloud_buffer is [p_c_1.1.x, p_c_1.1.y, p_c_1.1.z, p_c_1.2.x ..., p_c_2.1.x, p_c_2.1.y, p_c_2.1.z, ...]
 // so three coordinates per points.
-layout(set = 0, binding = 4, std430) buffer PointCloud {
+layout(set = 0, binding = 5, std430) buffer PointCloud {
   float data[];
 } point_cloud_buffer;
 
 // buffer of the multimesh instance transforms
-layout(set = 0, binding = 5, std430) buffer MultimeshBuffer {
+layout(set = 0, binding = 6, std430) buffer MultimeshBuffer {
   float data[];
 } multimesh_buffer;
 
 // thinning mask buffer
-layout(set = 0, binding = 6, std430) buffer ThinningMask {
+layout(set = 0, binding = 7, std430) buffer ThinningMask {
   float data[];
 } thinning_mask_buffer;
 

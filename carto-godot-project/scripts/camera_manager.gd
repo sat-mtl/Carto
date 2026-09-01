@@ -15,6 +15,13 @@ var camera_container
 var camera_settings_container
 var point_cloud_container
 
+func get_all_devices_gpu_idx() -> PackedInt32Array:
+	var device_nums := PackedInt32Array()
+	for cam in nodes:
+		# the index on the gpu is the device number -1.
+		device_nums.append(cam["camera"].device_num - 1)
+	return device_nums
+
 func get_num_from_node(node):
 	return node["camera_settings"].camera_num
 

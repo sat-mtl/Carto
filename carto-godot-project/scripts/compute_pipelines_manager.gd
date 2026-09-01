@@ -15,12 +15,19 @@ var rd = ComputeShaderUtils.rendering_device
 # and not just passed by buffer_device_address because otherwise godot's resource
 # tracking algorithm is not going to see the dependency and can reorder the call
 # which will result in crashes.
-var filtered_points_gpu_resources: Array
+var filtered_points_gpu_resources: ComputeShaderUtils.GPUResources
 const floats_per_filtered_point := 3
-var tracking_node = null
+var tracking_node :TrackingPointCloud = null
 # contains current valid sizes for every camera in points. This is preallocated
 # to max_cam_num because a 100 uint buffer is not that big anyways.
-var filtered_sizes_gpu_resources: Array
+var filtered_sizes_gpu_resources: ComputeShaderUtils.GPUResources
+# the tracking compute shaders track point cloud index in a dense manner,
+# counting incrementally from 0 to num_point_clouds but it is very possible
+# that through device deletions, the gpu index of the remaining devices are
+# something like [0, 12, 45, 77] so we need to keep this mapping in order for
+# the compute shader to address the right offsets in the filtered points buffer.
+var point_cloud_indexes_gpu_resources: ComputeShaderUtils.GPUResources
+var current_filtered_size := 0
 var filter_shader_file := load("res://shaders/point_cloud_filter.glsl")
 var filter_shader_spirv: RDShaderSPIRV = filter_shader_file.get_spirv()
 var filter_shader := rd.shader_create_from_spirv(filter_shader_spirv)
@@ -33,24 +40,31 @@ var tracking_pipeline := rd.compute_pipeline_create(tracking_shader)
 
 func _init():
 	var empty_floats = PackedFloat32Array()
-	empty_floats.resize(1024*1024*3)
+	current_filtered_size = 1024*1024*3
+	empty_floats.resize(current_filtered_size)
 	# make a buffer big enough to accomodate one device
-	filtered_points_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 0)
+	filtered_points_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 0)
 	empty_floats.resize(CameraManager.max_cam_num)
-	filtered_sizes_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 1)
+	filtered_sizes_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 1)
+	point_cloud_indexes_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 2)
+
 ## this needs to be called everytime a new device is added.
 ## TODO: maybe prevent a compute shader call when this happens to make
 ## sure nothing breaks.
 func reallocate_filtered_points_buffer():
 	var size = CameraManager.get_total_max_points() * floats_per_filtered_point
+	# never reduce allocated size
+	if size <= current_filtered_size:
+		return
+	current_filtered_size = size
 	var empty_floats = PackedFloat32Array()
 	empty_floats.resize(size)
 	var bytes = empty_floats.to_byte_array()
 	# TODO: don't free now, wait for all potential CPU-side reads in this to be finished
-	ComputeShaderUtils.rendering_device.free_rid(filtered_points_gpu_resources[1])
-	filtered_points_gpu_resources[1] = ComputeShaderUtils.create_buffer_with_device_address(bytes.size(), bytes)
-	filtered_points_gpu_resources[0].clear_ids()
-	filtered_points_gpu_resources[0].add_id(filtered_points_gpu_resources[1])
+	ComputeShaderUtils.rendering_device.free_rid(filtered_points_gpu_resources.buffer)
+	filtered_points_gpu_resources.buffer = ComputeShaderUtils.create_buffer_with_device_address(bytes.size(), bytes)
+	filtered_points_gpu_resources.uniform.clear_ids()
+	filtered_points_gpu_resources.uniform.add_id(filtered_points_gpu_resources.buffer)
 
 func build_and_call_compute_shaders():
 	if CameraManager.num_cameras == 0:
@@ -61,13 +75,17 @@ func build_and_call_compute_shaders():
 		cam["camera"].update_compute_shader_buffers()
 	if tracking_node:
 		tracking_node.update_compute_shader_buffers()
+	# update the mapping dense id -> actual device gpu id.
+	var existing_cam_ids_bytes = CameraManager.get_all_devices_gpu_idx().to_byte_array()
+	rd.buffer_update(point_cloud_indexes_gpu_resources.buffer, 0, len(existing_cam_ids_bytes), existing_cam_ids_bytes)
+
 	var compute_list = rd.compute_list_begin()
 	rd.compute_list_bind_compute_pipeline(compute_list, filter_pipeline)
 	# then we ask every device to add their dispatch to the compute list
 	# we pass them the filtered point buffers so they can declare it in their
 	# uniform set.
 	for cam in CameraManager.nodes:
-		cam["camera"].add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, filtered_sizes_gpu_resources)
+		cam["camera"].add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, filtered_sizes_gpu_resources, point_cloud_indexes_gpu_resources)
 		cam["camera"].should_draw = false
 	# barrier + tracking step
 	## TODO: use indirect dispatch for this step since we know how many points
@@ -81,24 +99,13 @@ func build_and_call_compute_shaders():
 	rd.compute_list_add_barrier(compute_list)
 	rd.compute_list_bind_compute_pipeline(compute_list, tracking_pipeline)
 	if tracking_node:
-		tracking_node.add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, filtered_sizes_gpu_resources)
+		tracking_node.add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, filtered_sizes_gpu_resources, point_cloud_indexes_gpu_resources)
 	rd.compute_list_end()
 
-	tracking_node.read_from_command_buffer()
-	# if we have no active network ouput, we can skip reading from the GPU which is muuuuch
-	# faster than having to read from it.
+	# update network outputs for every device if there is one active network output.
 	if len(get_tree().get_nodes_in_group("network_outputs").filter(func(out): return out.is_active)) > 0:
-		# TODO: not sure how this will work out now that we dispatch multiple compute lists.
 		for cam in CameraManager.nodes:
 			cam["camera"].set_network_output_data()
 
-var process = true
-
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.is_pressed() and event.keycode == KEY_B:
-		ToastManager.show_toast(str(not process), "info")
-		process = not process
-
 func _process(_delta: float) -> void:
-	if process:
-		build_and_call_compute_shaders()
+	build_and_call_compute_shaders()

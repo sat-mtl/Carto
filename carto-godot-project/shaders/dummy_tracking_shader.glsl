@@ -4,22 +4,22 @@
 #include "point_cloud_shader_commons.glsl.inc"
 
 // buffer of the multimesh instance transforms
-layout(set = 0, binding = 2, std430) buffer MultimeshBuffer {
+layout(set = 0, binding = 3, std430) buffer MultimeshBuffer {
   float data[];
 } multimesh_buffer;
 
 // buffer for the atomic point counter
-layout(set = 0, binding = 3, std430) buffer PointsCounter {
+layout(set = 0, binding = 4, std430) buffer PointsCounter {
   uint data;
 } counter_buffer;
 
 // buffer for the network output
-layout(set = 0, binding = 4, std430) buffer Output {
+layout(set = 0, binding = 5, std430) buffer Output {
   float data[];
 } output_buffer;
 
 // buffer for the multimesh command
-layout(set = 0, binding = 5, std430) buffer MultimeshCommandBuffer {
+layout(set = 0, binding = 6, std430) buffer MultimeshCommandBuffer {
   int vertex_count;
   int instance_count;
   int first_vertex;

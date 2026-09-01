@@ -1,6 +1,6 @@
 ## This represents the characterist
 extends Node
-
+class_name Device
 enum device_types {DEBUG=0, ORBBEC=1, HESAI=2}
 func device_str_to_enum(device_str:String):
 	device_str = device_str.to_lower()
@@ -163,7 +163,6 @@ func connect_device_log_signals(device_node):
 	device_node.success_log.connect(_on_device_success_log)
 
 func _init(ui:Node, display:Node, num:int) -> void:
-	print(num)
 	device_num = num
 	ui_node = ui
 	display_node = display
@@ -226,11 +225,11 @@ var rd = ComputeShaderUtils.rendering_device
 
 var mock_buffer_rid: RID
 var point_cloud_buffer_rid: RID
-var point_cloud_buffer_gpu_resources:= [RDUniform.new(), null]
-var filter_transforms_gpu_resources: Array
-var filter_settings_gpu_resources: Array
-var multimesh_buffer_gpu_resources:= [RDUniform.new(), null]
-var thinning_mask_gpu_resources: Array
+var point_cloud_buffer_uniform := RDUniform.new()
+var filter_transforms_gpu_resources: ComputeShaderUtils.GPUResources
+var filter_settings_gpu_resources: ComputeShaderUtils.GPUResources
+var multimesh_buffer_uniform := RDUniform.new()
+var thinning_mask_gpu_resources: ComputeShaderUtils.GPUResources
 
 const max_filters_num := 100
 const transforms_num_fields := 12
@@ -239,10 +238,10 @@ const floats_per_points := 3
 const bytes_per_float := 4
 
 func free_compute_shader_buffers():
-	rd.free_rid(filter_transforms_gpu_resources[1])
-	rd.free_rid(filter_settings_gpu_resources[1])
+	rd.free_rid(filter_transforms_gpu_resources.buffer)
+	rd.free_rid(filter_settings_gpu_resources.buffer)
 	rd.free_rid(mock_buffer_rid)
-	rd.free_rid(thinning_mask_gpu_resources[1])
+	rd.free_rid(thinning_mask_gpu_resources.buffer)
 	mock_buffer_rid = RID()
 
 const thinning_mask_size := 100_000
@@ -254,35 +253,20 @@ const max_network_size := 1024*1024*floats_per_points*bytes_per_float
 func init_compute_shader_buffers():
 	var empty_floats = PackedFloat32Array()
 	empty_floats.resize(max_filters_num * transforms_num_fields)
-	filter_transforms_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 2)
+	filter_transforms_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 3)
 	empty_floats.resize(max_filters_num * filter_settings_num_fields)
-	filter_settings_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 3)
-	point_cloud_buffer_gpu_resources[0].uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	point_cloud_buffer_gpu_resources[0].binding = 4
+	filter_settings_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 4)
+	point_cloud_buffer_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	point_cloud_buffer_uniform.binding = 5
 	# we bind a RID to the uniform later
-	multimesh_buffer_gpu_resources[0].uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	multimesh_buffer_gpu_resources[0].binding = 5
+	multimesh_buffer_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+	multimesh_buffer_uniform.binding = 6
 	# create a thinning mask with random floats from 0 to 1.
 	empty_floats.resize(thinning_mask_size)
 	for i in range(thinning_mask_size):
 		empty_floats[i] = randf()
-	thinning_mask_gpu_resources = ComputeShaderUtils.make_buffer_uniform(empty_floats.to_byte_array(), 6)
+	thinning_mask_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 7)
 	upload_mock_data()
-
-func clear_network_output():
-	output_data.clear()
-	has_new_output_data = true
-
-func make_on_data_got(initial_frame):
-	return func (dat):
-		print("on data got")
-		print(initial_frame)
-		print(Engine.get_frames_drawn())
-		print("end on data got")
-		## todo: more robust check here, its not just active...
-		if active:
-			output_data = dat
-			has_new_output_data = true
 
 func get_filtered_output_binary_offset():
 	return max_network_size*(device_num-1)
@@ -290,25 +274,35 @@ func get_filtered_output_binary_offset():
 func get_filtered_size_offset():
 	return (device_num-1) * 4
 
-func set_network_output_with_size(data):
+func clear_network_output():
+	output_data.clear()
+	has_new_output_data = true
+
+func on_data_got(dat):
+	if active:
+		output_data = dat
+		has_new_output_data = true
+
+func on_size_got(data):
 	var num_points :int = data.decode_u32(0)
 	var output_binary_size := num_points * bytes_per_float * floats_per_points
 	# This buffer_get_data command waits for the gpu to finish computing.
 	if num_points == 0:
 		clear_network_output()
 		return
-	# TODO: maybe try buffer_get_data_async ? it introduces latency though.
 	var binary_offset = get_filtered_output_binary_offset()
-	# this is supposed to add a frame latency but in tests it seems to always be called the same
-	# frame as set_network_output_data
-	rd.buffer_get_data_async(ComputePipelinesManager.filtered_points_gpu_resources[1], make_on_data_got(Engine.get_frames_drawn()), binary_offset, output_binary_size)
+	# since this is called right after a gpu-cpu sync, this won't incur a
+	# frame of latency and we can be sure that the size read at the previous step
+	# is still valid for this frame.
+	rd.buffer_get_data_async(ComputePipelinesManager.filtered_points_gpu_resources.buffer, on_data_got, binary_offset, output_binary_size)
 
 func set_network_output_data():
 	if not should_read:
 		return
 	should_read = false
 	var filtered_size_offset = get_filtered_size_offset()
-	rd.buffer_get_data_async(ComputePipelinesManager.filtered_sizes_gpu_resources[1], set_network_output_with_size, filtered_size_offset, 4)
+	# wait for gpu-cpu sync to read the network output size
+	rd.buffer_get_data_async(ComputePipelinesManager.filtered_sizes_gpu_resources.buffer, on_size_got, filtered_size_offset, 4)
 
 var uniform_set: RID
 
@@ -349,35 +343,40 @@ func update_compute_shader_buffers():
 		ComputeShaderUtils.append_transform_to_float_array(filter_transform.affine_inverse(), filter_transforms)
 	# upload our various buffers on the gpu.
 	var filter_transform_bytes = filter_transforms.to_byte_array()
-	rd.buffer_update(filter_transforms_gpu_resources[1], 0, len(filter_transform_bytes), filter_transform_bytes)
+	rd.buffer_update(filter_transforms_gpu_resources.buffer, 0, len(filter_transform_bytes), filter_transform_bytes)
 	var filter_settings_bytes = filter_settings.to_byte_array()
-	rd.buffer_update(filter_settings_gpu_resources[1], 0, len(filter_settings_bytes), filter_settings_bytes)
+	rd.buffer_update(filter_settings_gpu_resources.buffer, 0, len(filter_settings_bytes), filter_settings_bytes)
 	# reset the point counter to 0
 	var filtered_size_offset = get_filtered_size_offset()
-	rd.buffer_update(ComputePipelinesManager.filtered_sizes_gpu_resources[1], filtered_size_offset, 4, PackedInt32Array([0]).to_byte_array())
+	rd.buffer_update(ComputePipelinesManager.filtered_sizes_gpu_resources.buffer, filtered_size_offset, 4, PackedInt32Array([0]).to_byte_array())
 	# binds the point cloud multimesh's buffer to the compute shader so that we can write exclusions
 	# directly without a CPU download and a set_buffer to redraw.
 	var multimesh_buffer_RID = RenderingServer.multimesh_get_buffer_rd_rid(multimesh)
-	multimesh_buffer_gpu_resources[0].clear_ids()
-	multimesh_buffer_gpu_resources[0].add_id(multimesh_buffer_RID)
+	multimesh_buffer_uniform.clear_ids()
+	multimesh_buffer_uniform.add_id(multimesh_buffer_RID)
 
-	point_cloud_buffer_gpu_resources[0].clear_ids()
-	point_cloud_buffer_gpu_resources[0].add_id(get_points_buffer())
+	point_cloud_buffer_uniform.clear_ids()
+	point_cloud_buffer_uniform.add_id(get_points_buffer())
 
 var should_read = false
 
-func add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, filtered_sizes_gpu_resources):
+func add_dispatch_to_compute_list(compute_list,
+		filtered_points_gpu_resources:ComputeShaderUtils.GPUResources,
+		filtered_sizes_gpu_resources:ComputeShaderUtils.GPUResources,
+		# not needed but needs to be there for the include to work...
+		point_cloud_indexes_gpu_resources:ComputeShaderUtils.GPUResources):
 	if not should_run_compute_shader():
 		return
 	var filters := get_tree().get_nodes_in_group("filter_areas")
 	uniform_set = rd.uniform_set_create([
-		filtered_sizes_gpu_resources[0],
-		filtered_points_gpu_resources[0],
-		filter_settings_gpu_resources[0],
-		filter_transforms_gpu_resources[0],
-		point_cloud_buffer_gpu_resources[0],
-		multimesh_buffer_gpu_resources[0],
-		thinning_mask_gpu_resources[0],
+		filtered_sizes_gpu_resources.uniform,
+		filtered_points_gpu_resources.uniform,
+		point_cloud_indexes_gpu_resources.uniform,
+		filter_settings_gpu_resources.uniform,
+		filter_transforms_gpu_resources.uniform,
+		point_cloud_buffer_uniform,
+		multimesh_buffer_uniform,
+		thinning_mask_gpu_resources.uniform,
 		], ComputePipelinesManager.filter_shader, 0
 	) # the last parameter (the 0) needs to match the "set" in our shader file
 	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)

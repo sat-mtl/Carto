@@ -39,15 +39,17 @@ func create_buffer_with_device_address(buffer_size:int, buffer_bytes:PackedByteA
 
 # creates the necessary gpu resources needed to pass a byte buffer to a compute
 # shader. returns an array of [RDUniform, RID to a storage buffer].
-# You really need to call rendering_device.free_rid(the_array_returned_by_this_function[1])
+# You really need to call rendering_device.free_rid(gpu_resource.buffer)
 # in orendering_deviceer to free the resources on the GPU.
-func make_buffer_uniform(data_bytes:PackedByteArray, binding):
-	var data_storage_buffer := ComputeShaderUtils.create_buffer_with_device_address(data_bytes.size(), data_bytes)
-	var data_uniform := RDUniform.new()
-	data_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	data_uniform.binding = binding
-	data_uniform.add_id(data_storage_buffer)
-	return [data_uniform, data_storage_buffer]
+class GPUResources:
+	var buffer := RID()
+	var uniform := RDUniform.new()
+
+	func _init(data_bytes:PackedByteArray, binding):
+		buffer = ComputeShaderUtils.create_buffer_with_device_address(data_bytes.size(), data_bytes)
+		uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
+		uniform.binding = binding
+		uniform.add_id(buffer)
 
 # flattens the transform and appends it to the array.
 # all work is done as side effect.

@@ -17,6 +17,10 @@ layout(set = 0, binding = 1, std430) buffer FilteredOutputSizes {
   uint sizes[];
 } filtered_sizes_buffer;
 
+layout(set = 0, binding = 2, std430) buffer PointCloudIndexes {
+  uint indexes[];
+} point_cloud_indexes_buffer;
+
 uint get_global_point_idx() {
   // trust me, this results in a smoothly incrementing id.
   return ((gl_WorkGroupID.x + gl_LocalInvocationID.x + ((l_size_x - 1) * gl_WorkGroupID.x)) +
@@ -40,12 +44,13 @@ void populate_current_offset_and_index(uint global_point_idx, uint num_point_clo
   uint offset = 0;
   // iterate until the offset is over the buffer index
   for(int idx = 0; idx < num_point_clouds; idx++) {
+    int gpu_idx = int(point_cloud_indexes_buffer.indexes[idx]);
     uint old_offset = offset;
-    offset += filtered_sizes_buffer.sizes[idx];
+    offset += filtered_sizes_buffer.sizes[gpu_idx];
     if (global_point_idx < offset) {
       // when the offset is greater, it means the last index was the right one.
       current_point_cloud_offset = int(old_offset);
-      current_point_cloud_idx = int(idx);
+      current_point_cloud_idx = gpu_idx;
       return;
     }
   }
@@ -80,7 +85,8 @@ uint get_filtered_output_point_idx(int local_point_idx, int pt_cloud_index) {
 uint get_total_point_size(uint num_point_clouds) {
   uint total_size = 0;
   for(int idx = 0; idx < num_point_clouds; idx++) {
-    total_size += filtered_sizes_buffer.sizes[idx];
+    int gpu_idx = int(point_cloud_indexes_buffer.indexes[idx]);
+    total_size += filtered_sizes_buffer.sizes[gpu_idx];
   }
   return total_size;
 }
