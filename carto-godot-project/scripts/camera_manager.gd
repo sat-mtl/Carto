@@ -49,6 +49,14 @@ func _init() -> void:
 	# need to flush or else the file will be empty.
 	hesai_pandar_p40_correction_tmp_file.flush()
 
+## resets the camera manager to the initial state. helpful when loading savefiles
+func reset():
+	while num_cameras > 0:
+		remove_camera()
+	transform_changes_to_stack = Array()
+	group_edit_linger_countdown = 0
+	var soloed_devices = []
+
 var transform_changes_to_stack: Array
 
 ## manages undo-redo for grouped camera transforms
@@ -80,6 +88,21 @@ func _process(_delta: float) -> void:
 			false,
 			UndoRedo.MERGE_ENDS)
 		transform_changes_to_stack = []
+
+var soloed_devices := []
+func update_solo(state, device_num):
+	var device_idx_in_soloed_device := soloed_devices.find(device_num)
+	if state and device_idx_in_soloed_device == -1:
+		soloed_devices.append(device_num)
+	elif not state and device_idx_in_soloed_device != -1:
+		soloed_devices.remove_at(device_idx_in_soloed_device)
+	# tell all the cameras
+	for cam in nodes:
+		cam["point_cloud"].update_display_state(soloed_devices)
+
+func update_point_visibility(device_num):
+	var cam = get_node_from_num(device_num)
+	cam["point_cloud"].update_display_state(soloed_devices)
 
 func initialize_camera_nodes():
 	var cam_idx = get_lowest_available_id()
@@ -124,6 +147,9 @@ func remove_camera(camera_num=null):
 		camera_num = nodes[-1]["camera_settings"].camera_num
 
 	var camera_nodes = get_node_from_num(camera_num)
+	update_solo(false, camera_num)
+	for cam in nodes:
+		update_point_visibility(cam["camera"].device_num)
 
 	# clear the gizmo selection to make sure there is no selected nodes that are not in the tree.
 	carto_node.clear_gizmo_selection()
@@ -150,6 +176,10 @@ func add_camera(camera_nodes, idx=null):
 	# tries to restart the camera if the add_camera was called from a redo.
 	camera_nodes["camera_settings"].start_device()
 	update_orbbec_ip_lists()
+	update_solo(camera_nodes["camera"].soloed, camera_nodes["camera"].device_num)
+	for cam in nodes:
+		update_point_visibility(cam["camera"].device_num)
+
 
 func request_redraw():
 	for cam in nodes:

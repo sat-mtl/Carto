@@ -1,26 +1,26 @@
 [gd_scene format=3 uid="uid://tt8g7d4xmyef"]
 
-[ext_resource type="Script" uid="uid://bh1152w0ne357" path="res://scripts/carto.gd" id="1_a4htx"]
-[ext_resource type="Script" uid="uid://dk1utdqgvj4w3" path="res://scripts/filter_areas.gd" id="2_i46el"]
-[ext_resource type="Script" uid="uid://vwryfd5ch66d" path="res://scripts/crop_region.gd" id="2_xtm48"]
-[ext_resource type="Script" uid="uid://c7ieqghvdbi45" path="res://scripts/free_camera.gd" id="3_hsaqs"]
-[ext_resource type="Texture2D" uid="uid://bgmbgqc1wd2p3" path="res://assets/grid.png" id="4_a4htx"]
-[ext_resource type="Script" uid="uid://ck3u4sb2nm7ch" path="res://scripts/crop_region_container.gd" id="4_ku3x0"]
-[ext_resource type="Material" uid="uid://c4ht70wksvn1h" path="res://scenes/materials/filter_material.tres" id="6_4gu3m"]
-[ext_resource type="Theme" uid="uid://bl51ay8kbmrp" path="res://themes/controls_theme.tres" id="8_i31ge"]
-[ext_resource type="Texture2D" uid="uid://bypv18pxw3k0m" path="res://assets/gear.svg" id="8_s1rv2"]
-[ext_resource type="Script" uid="uid://bcydqv6jfkgjn" path="res://scripts/camera_view_menu.gd" id="9_24b5v"]
-[ext_resource type="Texture2D" uid="uid://bk8yy82uqfvhn" path="res://assets/log_icon.svg" id="9_a1b3o"]
-[ext_resource type="Script" uid="uid://bcpis2ryug32f" path="res://scripts/tcp_output.gd" id="10_5wrc5"]
-[ext_resource type="PackedScene" uid="uid://d1knnhn22cjyc" path="res://scenes/ui_components/keybinding_display.tscn" id="10_i31ge"]
-[ext_resource type="Script" uid="uid://cd6aaethcy4un" path="res://scripts/gizmo_3d_overrides.gd" id="10_i46el"]
-[ext_resource type="PackedScene" uid="uid://tq6uf5kjby7t" path="res://scenes/orthographic_camera.tscn" id="11_s1rv2"]
-[ext_resource type="Script" uid="uid://halhuefrfjby" path="res://scripts/accept_dialog.gd" id="14_3ukpp"]
-[ext_resource type="Script" uid="uid://5oiwcutjml3v" path="res://scripts/save_dialog.gd" id="15_qmy37"]
-[ext_resource type="PackedScene" uid="uid://jygsbdchwydl" path="res://scenes/ui_components/manipulator_gizmo.tscn" id="18_ku3x0"]
+[ext_resource type="Script" uid="uid://bh1152w0ne357" path="res://scripts/carto.gd" id="1_045h6"]
+[ext_resource type="Script" uid="uid://dk1utdqgvj4w3" path="res://scripts/filter_areas.gd" id="2_48igv"]
+[ext_resource type="Script" uid="uid://ck3u4sb2nm7ch" path="res://scripts/crop_region_container.gd" id="3_dunih"]
+[ext_resource type="Material" uid="uid://c4ht70wksvn1h" path="res://scenes/materials/filter_material.tres" id="4_gl0la"]
+[ext_resource type="Script" uid="uid://vwryfd5ch66d" path="res://scripts/crop_region.gd" id="5_l3b00"]
+[ext_resource type="PackedScene" uid="uid://jygsbdchwydl" path="res://scenes/ui_components/manipulator_gizmo.tscn" id="6_j5nj0"]
+[ext_resource type="Texture2D" uid="uid://bypv18pxw3k0m" path="res://assets/gear.svg" id="7_hth1k"]
+[ext_resource type="Texture2D" uid="uid://bk8yy82uqfvhn" path="res://assets/log_icon.svg" id="8_hyci1"]
+[ext_resource type="Script" uid="uid://bcydqv6jfkgjn" path="res://scripts/camera_view_menu.gd" id="9_jur1s"]
+[ext_resource type="Theme" uid="uid://bl51ay8kbmrp" path="res://themes/controls_theme.tres" id="10_oxl2k"]
+[ext_resource type="PackedScene" uid="uid://d1knnhn22cjyc" path="res://scenes/ui_components/keybinding_display.tscn" id="11_0bpmb"]
+[ext_resource type="Script" uid="uid://c7ieqghvdbi45" path="res://scripts/free_camera.gd" id="12_v6fjn"]
+[ext_resource type="PackedScene" uid="uid://tq6uf5kjby7t" path="res://scenes/orthographic_camera.tscn" id="13_hs86g"]
+[ext_resource type="Texture2D" uid="uid://bgmbgqc1wd2p3" path="res://assets/grid.png" id="14_ws6x0"]
+[ext_resource type="Script" uid="uid://bcpis2ryug32f" path="res://scripts/tcp_output.gd" id="15_3aqgx"]
+[ext_resource type="Script" uid="uid://cd6aaethcy4un" path="res://scripts/gizmo_3d_overrides.gd" id="16_dkctx"]
+[ext_resource type="Script" uid="uid://halhuefrfjby" path="res://scripts/accept_dialog.gd" id="17_wy4cq"]
+[ext_resource type="Script" uid="uid://5oiwcutjml3v" path="res://scripts/save_dialog.gd" id="18_f16a8"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_ku3x0"]
-material = ExtResource("6_4gu3m")
+material = ExtResource("4_gl0la")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ku3x0"]
 
@@ -62,7 +62,7 @@ background_energy_multiplier = 0.38
 ambient_light_color = Color(0.24840015, 0.24840018, 0.24840015, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q8x2j"]
-albedo_texture = ExtResource("4_a4htx")
+albedo_texture = ExtResource("14_ws6x0")
 uv1_scale = Vector3(200, 200, 200)
 texture_filter = 4
 
@@ -123,21 +123,21 @@ albedo_color = Color(0, 1, 1, 1)
 material = SubResource("StandardMaterial3D_s1rv2")
 
 [node name="Carto" type="Node3D" unique_id=557453807]
-script = ExtResource("1_a4htx")
+script = ExtResource("1_045h6")
 
 [node name="FilterAreas" type="Node3D" parent="." unique_id=1383953183]
 unique_name_in_owner = true
-script = ExtResource("2_i46el")
+script = ExtResource("2_48igv")
 
 [node name="CropRegionContainer" type="Node3D" parent="FilterAreas" unique_id=1703344049]
 unique_name_in_owner = true
-script = ExtResource("4_ku3x0")
+script = ExtResource("3_dunih")
 
 [node name="CropRegion" type="MeshInstance3D" parent="FilterAreas/CropRegionContainer" unique_id=1417114988 groups=["filter_areas"]]
 unique_name_in_owner = true
 transform = Transform3D(5, 0, 0, 0, 2, 0, 0, 0, 5, 2.5, 1, 2.5)
 mesh = SubResource("BoxMesh_ku3x0")
-script = ExtResource("2_xtm48")
+script = ExtResource("5_l3b00")
 
 [node name="CropRegionArea3D" type="Area3D" parent="FilterAreas/CropRegionContainer/CropRegion" unique_id=675522326]
 unique_name_in_owner = true
@@ -150,7 +150,7 @@ shape = SubResource("BoxShape3D_ku3x0")
 [node name="OrbbecDevices" type="OrbbecDevices" parent="." unique_id=1197585588]
 unique_name_in_owner = true
 
-[node name="ManipulatorGizmo" parent="." unique_id=1159002895 instance=ExtResource("18_ku3x0")]
+[node name="ManipulatorGizmo" parent="." unique_id=1159002895 instance=ExtResource("6_j5nj0")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(130, 130)
 anchors_preset = -1
@@ -192,13 +192,13 @@ text = " ? "
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_vertical = 0
-icon = ExtResource("8_s1rv2")
+icon = ExtResource("7_hth1k")
 
 [node name="LogsButton" type="Button" parent="ViewButtonsContainer" unique_id=51968534]
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
 size_flags_vertical = 0
-icon = ExtResource("9_a1b3o")
+icon = ExtResource("8_hyci1")
 
 [node name="CameraViewMenuBar" type="MenuBar" parent="ViewButtonsContainer" unique_id=2032857152]
 custom_minimum_size = Vector2(0, 35)
@@ -225,7 +225,7 @@ item_5/text = "Top Orthographic"
 item_5/id = 5
 item_6/text = "Bottom Orthographic"
 item_6/id = 6
-script = ExtResource("9_24b5v")
+script = ExtResource("9_jur1s")
 
 [node name="SideBarUI" type="TabContainer" parent="." unique_id=1301982972]
 unique_name_in_owner = true
@@ -235,7 +235,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 2
-theme = ExtResource("8_i31ge")
+theme = ExtResource("10_oxl2k")
 theme_override_constants/side_margin = 0
 theme_override_font_sizes/font_size = 13
 current_tab = 2
@@ -575,17 +575,17 @@ text = "General Commands"
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="SaveKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/GeneralCommandsVBoxContainer" unique_id=619940805 instance=ExtResource("10_i31ge")]
+[node name="SaveKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/GeneralCommandsVBoxContainer" unique_id=619940805 instance=ExtResource("11_0bpmb")]
 layout_mode = 2
 keybinding_text = "Ctrl+S"
 help_text = "Save/Save As"
 
-[node name="OpenKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/GeneralCommandsVBoxContainer" unique_id=954457331 instance=ExtResource("10_i31ge")]
+[node name="OpenKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/GeneralCommandsVBoxContainer" unique_id=954457331 instance=ExtResource("11_0bpmb")]
 layout_mode = 2
 keybinding_text = "Ctrl+O"
 help_text = "Open"
 
-[node name="AddGizmoKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/GeneralCommandsVBoxContainer" unique_id=1083184756 instance=ExtResource("10_i31ge")]
+[node name="AddGizmoKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/GeneralCommandsVBoxContainer" unique_id=1083184756 instance=ExtResource("11_0bpmb")]
 layout_mode = 2
 keybinding_text = "Ctrl+Left Click"
 help_text = "Add camera to selection"
@@ -607,52 +607,52 @@ text = "Camera Controls"
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="LClickKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=2124777552 instance=ExtResource("10_i31ge")]
+[node name="LClickKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=2124777552 instance=ExtResource("11_0bpmb")]
 layout_mode = 2
 keybinding_text = "Left Click"
 help_text = "Rotate Camera"
 
-[node name="RClickKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=1571269697 instance=ExtResource("10_i31ge")]
+[node name="RClickKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=1571269697 instance=ExtResource("11_0bpmb")]
 layout_mode = 2
 keybinding_text = "Right Click"
 help_text = "Move Camera"
 
-[node name="ScrollWheelKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=735938023 instance=ExtResource("10_i31ge")]
+[node name="ScrollWheelKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=735938023 instance=ExtResource("11_0bpmb")]
 layout_mode = 2
 keybinding_text = "Scroll Wheel"
 help_text = "Zoom"
 
-[node name="WKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=959544281 instance=ExtResource("10_i31ge")]
+[node name="WKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=959544281 instance=ExtResource("11_0bpmb")]
 layout_mode = 2
 keybinding_text = "W"
 help_text = "Move forward"
 
-[node name="AKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=1411989067 instance=ExtResource("10_i31ge")]
+[node name="AKeybinding" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=1411989067 instance=ExtResource("11_0bpmb")]
 layout_mode = 2
 keybinding_text = "A"
 help_text = "Move left"
 
-[node name="SKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=2126285381 instance=ExtResource("10_i31ge")]
+[node name="SKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=2126285381 instance=ExtResource("11_0bpmb")]
 layout_mode = 2
 keybinding_text = "S"
 help_text = "Move Right"
 
-[node name="DKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=908578589 instance=ExtResource("10_i31ge")]
+[node name="DKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=908578589 instance=ExtResource("11_0bpmb")]
 layout_mode = 2
 keybinding_text = "D"
 help_text = "Move backwards"
 
-[node name="QKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=1361285367 instance=ExtResource("10_i31ge")]
+[node name="QKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=1361285367 instance=ExtResource("11_0bpmb")]
 layout_mode = 2
 keybinding_text = "Q"
 help_text = "Move down"
 
-[node name="EKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=32986103 instance=ExtResource("10_i31ge")]
+[node name="EKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=32986103 instance=ExtResource("11_0bpmb")]
 layout_mode = 2
 keybinding_text = "E"
 help_text = "Move up"
 
-[node name="RKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=919343502 instance=ExtResource("10_i31ge")]
+[node name="RKeybindings" parent="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/CameraControlsVBoxContainer" unique_id=919343502 instance=ExtResource("11_0bpmb")]
 layout_mode = 2
 keybinding_text = "R"
 help_text = "Reset camera position"
@@ -854,7 +854,7 @@ selection_enabled = true
 unique_name_in_owner = true
 transform = Transform3D(0.99961793, -0.023006774, 0.015316316, 0.006382184, 0.73132586, 0.6819984, -0.0268918, -0.68164, 0.7311933, 4.429, 6.301, 8.784)
 cull_mask = 524279
-script = ExtResource("3_hsaqs")
+script = ExtResource("12_v6fjn")
 
 [node name="FreeCameraPivot" type="MeshInstance3D" parent="FreeCamera" unique_id=1666518350]
 unique_name_in_owner = true
@@ -862,19 +862,19 @@ transform = Transform3D(0.99985874, 0.0077288523, 0.014924537, 0.005544372, 0.68
 visible = false
 mesh = SubResource("SphereMesh_ku3x0")
 
-[node name="TopCamera" parent="." unique_id=187597146 instance=ExtResource("11_s1rv2")]
+[node name="TopCamera" parent="." unique_id=187597146 instance=ExtResource("13_hs86g")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 2.5, 4.5, 2.5)
 cull_mask = 524278
 ndi_stream_name = "Carto Top View"
 
-[node name="SideCamera" parent="." unique_id=178140328 instance=ExtResource("11_s1rv2")]
+[node name="SideCamera" parent="." unique_id=178140328 instance=ExtResource("13_hs86g")]
 unique_name_in_owner = true
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 7.5728235, 1.5043974, 2.5)
 cull_mask = 524278
 ndi_stream_name = "Carto Side View"
 
-[node name="FrontCamera" parent="." unique_id=793988782 instance=ExtResource("11_s1rv2")]
+[node name="FrontCamera" parent="." unique_id=793988782 instance=ExtResource("13_hs86g")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1, 9.5)
 cull_mask = 524278
@@ -925,11 +925,11 @@ unique_name_in_owner = true
 
 [node name="TCPOutput" type="Node" parent="." unique_id=1557318940]
 unique_name_in_owner = true
-script = ExtResource("10_5wrc5")
+script = ExtResource("15_3aqgx")
 
 [node name="Gizmo3D" type="Node3D" parent="." unique_id=2026745209]
 unique_name_in_owner = true
-script = ExtResource("10_i46el")
+script = ExtResource("16_dkctx")
 metadata/_custom_type_script = "uid://e3f1ox6y6cvg"
 
 [node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=558224296]
@@ -948,7 +948,7 @@ initial_position = 2
 size = Vector2i(518, 158)
 ok_button_text = "Yes"
 dialog_close_on_escape = false
-script = ExtResource("14_3ukpp")
+script = ExtResource("17_wy4cq")
 
 [node name="SaveDialog" type="FileDialog" parent="." unique_id=917884427]
 unique_name_in_owner = true
@@ -958,7 +958,7 @@ dialog_hide_on_ok = true
 access = 2
 filters = PackedStringArray("*.ptmap", "*.carto")
 use_native_dialog = true
-script = ExtResource("15_qmy37")
+script = ExtResource("18_f16a8")
 
 [node name="LoadDialog" type="FileDialog" parent="." unique_id=2015867523]
 unique_name_in_owner = true

@@ -1,0 +1,22 @@
+[remap]
+
+importer="svg"
+type="DPITexture"
+uid="uid://e5cccn4p5i6w"
+path="res://.godot/imported/eye_closed.svg-1fcbc63b50a89e57203fa633f0a2e2e7.dpitex"
+
+[deps]
+
+source_file="res://assets/eye_closed.svg"
+dest_files=["res://.godot/imported/eye_closed.svg-1fcbc63b50a89e57203fa633f0a2e2e7.dpitex"]
+
+[params]
+
+base_scale=0.02
+saturation=1.0
+color_map={
+Color(0, 0, 0, 1): Color(1, 1, 1, 1)
+}
+fix_alpha_border=false
+premult_alpha=false
+compress=true

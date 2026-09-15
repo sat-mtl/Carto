@@ -32,12 +32,48 @@ var active_state := true:
 		camera.active = active_state
 		%ActiveSwitch.set_pressed_no_signal(state)
 
+static var eye_open_texture := preload("res://assets/eye_open.svg")
+static var eye_closed_texture := preload("res://assets/eye_closed.svg")
+
+func set_display_button_no_signal(state):
+	%DisplayButton.set_pressed_no_signal(state)
+	if state:
+		%DisplayButton.icon = eye_open_texture
+	else:
+		%DisplayButton.icon = eye_closed_texture
+
+var target_texture := preload("res://assets/target.svg").duplicate()
+
+func set_solo_button_no_signal(state):
+	%SoloButton.set_pressed_no_signal(state)
+	if state:
+		%SoloButton.icon.color_map = {Color(0,0,0): Color(1,0,0)}
+	else:
+		%SoloButton.icon.color_map = {Color(0,0,0): Color(1,1,1)}
+
+var displayed := true:
+	set(state):
+		displayed = state
+		set_display_button_no_signal(state)
+
+func _on_displayed_change(state):
+	set_display_button_no_signal(state)
+
+var soloed := false:
+	set(state):
+		soloed = state
+		set_solo_button_no_signal(state)
+
+func _on_soloed_changed(state):
+	set_solo_button_no_signal(state)
+
 var stylebox = preload("res://themes/camera_settings_panel_stylebox.stylebox").duplicate()
 
 var highlight_stylebox = preload("res://themes/camera_settings_panel_stylebox.stylebox").duplicate()
 
 func _ready() -> void:
 	%GizmoSelectButton.icon = gizmo_icon
+	%SoloButton.icon = target_texture
 	%ColorPickerButton.color = color
 	highlight_stylebox.bg_color = Color(1,1,1,0)
 	# calls the set function of the color because if the color was set before ready,
@@ -378,6 +414,11 @@ var color: Color:
 		%ColorPickerButton.color = color
 		set_ui_elements_colors(color)
 
+var point_size: float = 1.0:
+	set(pt_size):
+		point_size = pt_size
+		%PointSizeSlider.set_value_no_signal(point_size)
+
 func set_color(col, stack_undo=true):
 	var color_setter = func(colo):
 		self.camera.color = colo
@@ -396,6 +437,9 @@ func set_color(col, stack_undo=true):
 
 func _on_color_change(col):
 	self.color = col
+
+func _on_point_size_change(pt_size):
+	self.point_size = pt_size
 
 func _process(_delta):
 	# update the rotation pivot radio buttons. The other alternative would be to make
@@ -589,4 +633,31 @@ func _on_hesai_port_spin_box_value_changed(port: float) -> void:
 		func():
 			set_hesai_port(last_port)
 			start_device()
+	)
+
+func _on_point_size_slider_value_changed(value: float) -> void:
+	UndoManager.add_property_change_to_stack(
+		"set_point_size cam " + str(camera_num),
+		value,
+		point_size,
+		func(val): camera.point_size = val,
+		func(val): %PointSizeSlider.set_value_no_signal(val)
+	)
+
+func _on_display_button_toggled(toggled_on: bool) -> void:
+	UndoManager.add_to_stack(
+		"display cam " + str(camera_num),
+		func():
+			camera.displayed = toggled_on,
+		func():
+			camera.displayed = !toggled_on
+	)
+
+func _on_solo_button_toggled(toggled_on: bool) -> void:
+	UndoManager.add_to_stack(
+		"display cam " + str(camera_num),
+		func():
+			camera.soloed = toggled_on,
+		func():
+			camera.soloed = !toggled_on
 	)
