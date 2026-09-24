@@ -4,3 +4,6 @@
 [submodule "3rdparty/godot-orbbec"]
 	path = 3rdparty/godot-orbbec
 	url = git@github.com:sat-mtl/godot-orbbec.git
+[submodule "3rdparty/godot-blobtrack-3d"]
+	path = 3rdparty/godot-blobtrack-3d
+	url = git@github.com:sat-mtl/godot-blobtrack-3d.git
