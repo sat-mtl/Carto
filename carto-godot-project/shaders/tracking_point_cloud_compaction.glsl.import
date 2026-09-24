@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://fdcebpyx6tb5"
+path="res://.godot/imported/tracking_point_cloud_compaction.glsl-29fc1b612337b6806fd721e4d26b099b.res"
+
+[deps]
+
+source_file="res://shaders/tracking_point_cloud_compaction.glsl"
+dest_files=["res://.godot/imported/tracking_point_cloud_compaction.glsl-29fc1b612337b6806fd721e4d26b099b.res"]
+
+[params]
+

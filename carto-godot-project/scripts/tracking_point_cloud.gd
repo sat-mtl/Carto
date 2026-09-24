@@ -1,8 +1,7 @@
 extends Node3D
 class_name TrackingPointCloud
-# don't know what the real practical max amount of points would be ...
-# lets say 10 millions
-var max_points := 10_000_000
+
+var max_points := ComputePipelinesManager.max_tracking_points
 var transform_buffer := PackedFloat32Array()
 var floats_per_raw_point := 16
 var material := StandardMaterial3D.new()
@@ -55,15 +54,18 @@ var uniform_set: RID
 var point_cloud_pointers_gpu_resources: ComputeShaderUtils.GPUResources
 # buffer of device address of an int that gives each point cloud's size
 var point_cloud_sizes_gpu_resources: ComputeShaderUtils.GPUResources
+var thinning_mask_gpu_resources: ComputeShaderUtils.GPUResources
 var multimesh_buffer_uniform := RDUniform.new()
 var output_size_gpu_resources: ComputeShaderUtils.GPUResources
-var output_gpu_resources: ComputeShaderUtils.GPUResources
 var multimesh_command_buffer_uniform := RDUniform.new()
-var max_output_size = 1_000_000
 
 func make_multimesh_draw_zero_points():
 	# update the command buffer to tell the multimesh to render 0 instances.
 	rd.buffer_update(RenderingServer.multimesh_get_command_buffer_rd_rid(multimesh), 0, 5*4, [1,0,0,0,0])
+
+const thinning_mask_size := 100_000_000
+# global thinning for the merged point cloud.
+var thinning := 0.0
 
 func init_compute_shader_buffers():
 	var empty_floats = PackedFloat32Array()
@@ -72,13 +74,15 @@ func init_compute_shader_buffers():
 	multimesh_buffer_uniform.binding = 3
 
 	empty_floats.resize(1)
-	output_size_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 4)
-	empty_floats.resize(max_output_size)
-	output_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 5)
+	output_size_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 11)
 
 	# we create a uniform with the multimesh command buffer (for later use of indirect dispatch)
 	multimesh_command_buffer_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
 	multimesh_command_buffer_uniform.binding = 6
+	empty_floats.resize(thinning_mask_size)
+	for i in range(thinning_mask_size):
+		empty_floats[i] = randf()
+	thinning_mask_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 7)
 
 const floats_per_points := 3
 const bytes_per_float := 4
@@ -104,7 +108,8 @@ func update_compute_shader_buffers():
 func add_dispatch_to_compute_list(compute_list,
 		filtered_points_gpu_resources:ComputeShaderUtils.GPUResources,
 		filtered_sizes_gpu_resources:ComputeShaderUtils.GPUResources,
-		point_cloud_indexes_gpu_resources:ComputeShaderUtils.GPUResources):
+		point_cloud_indexes_gpu_resources:ComputeShaderUtils.GPUResources,
+		compacted_output_gpu_resource:ComputeShaderUtils.GPUResources):
 	if not multimesh_initialized:
 		return
 	uniform_set = rd.uniform_set_create([
@@ -113,7 +118,7 @@ func add_dispatch_to_compute_list(compute_list,
 		point_cloud_indexes_gpu_resources.uniform,
 		multimesh_buffer_uniform,
 		output_size_gpu_resources.uniform,
-		output_gpu_resources.uniform,
+		compacted_output_gpu_resource.uniform,
 		multimesh_command_buffer_uniform,
 		], ComputePipelinesManager.tracking_shader, 0
 	)

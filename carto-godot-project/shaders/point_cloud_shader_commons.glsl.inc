@@ -7,7 +7,7 @@ const int max_x_idx = max_workgroup_idx * l_size_x;
 const int num_floats_per_input_point = 3;
 // buffer for the filtered output. an invocation for a device only
 // writes to a part of this.
-layout(set = 0, binding = 0, std430) buffer FilteredOutput {
+layout(set = 0, binding = 10, std430) buffer FilteredOutput {
   float data[];
 } filtered_output_buffer;
 

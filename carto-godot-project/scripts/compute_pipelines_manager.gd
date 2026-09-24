@@ -27,26 +27,36 @@ var filtered_sizes_gpu_resources: ComputeShaderUtils.GPUResources
 # something like [0, 12, 45, 77] so we need to keep this mapping in order for
 # the compute shader to address the right offsets in the filtered points buffer.
 var point_cloud_indexes_gpu_resources: ComputeShaderUtils.GPUResources
+# don't know what the real practical max amount of points would be ...
+# lets say 10 millions
+var max_tracking_points := 10_000_000
+# this is the buffer containing the compacted point cloud used for tracking.
+# this is populated from tracking_point_cloud's compaction compute shader.
+var tracking_point_cloud_gpu_resources
 var current_filtered_size := 0
 var filter_shader_file := load("res://shaders/point_cloud_filter.glsl")
 var filter_shader_spirv: RDShaderSPIRV = filter_shader_file.get_spirv()
 var filter_shader := rd.shader_create_from_spirv(filter_shader_spirv)
 var filter_pipeline := rd.compute_pipeline_create(filter_shader)
 
-var tracking_shader_file := load("res://shaders/dummy_tracking_shader.glsl")
+var tracking_shader_file := load("res://shaders/tracking_point_cloud_compaction.glsl")
 var tracking_shader_spirv: RDShaderSPIRV = tracking_shader_file.get_spirv()
 var tracking_shader := rd.shader_create_from_spirv(tracking_shader_spirv)
 var tracking_pipeline := rd.compute_pipeline_create(tracking_shader)
+#TODO: deduplicate this constant.
+const floats_per_points:=3
 
 func _init():
 	var empty_floats = PackedFloat32Array()
 	current_filtered_size = 1024*1024*3
 	empty_floats.resize(current_filtered_size)
 	# make a buffer big enough to accomodate one device
-	filtered_points_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 0)
+	filtered_points_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 10)
 	empty_floats.resize(CameraManager.max_cam_num)
 	filtered_sizes_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 1)
 	point_cloud_indexes_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 2)
+	empty_floats.resize(max_tracking_points*floats_per_points)
+	tracking_point_cloud_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 0)
 
 ## this needs to be called everytime a new device is added.
 ## TODO: maybe prevent a compute shader call when this happens to make
@@ -100,7 +110,7 @@ func build_and_call_compute_shaders():
 	rd.compute_list_add_barrier(compute_list)
 	rd.compute_list_bind_compute_pipeline(compute_list, tracking_pipeline)
 	if tracking_node:
-		tracking_node.add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, filtered_sizes_gpu_resources, point_cloud_indexes_gpu_resources)
+		tracking_node.add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, filtered_sizes_gpu_resources, point_cloud_indexes_gpu_resources, tracking_point_cloud_gpu_resources)
 	rd.compute_list_end()
 
 	# update network outputs for every device if there is one active network output.
