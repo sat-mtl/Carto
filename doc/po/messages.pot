@@ -1,0 +1,809 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: Carto Documentation\n"
+"POT-Creation-Date: 2026-08-25T16:11:32-04:00\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: src/SUMMARY.md:1
+msgid "Summary"
+msgstr ""
+
+#: src/SUMMARY.md:3
+msgid "Introduction"
+msgstr ""
+
+#: src/SUMMARY.md:4 src/installation.md:1
+msgid "Installation"
+msgstr ""
+
+#: src/SUMMARY.md:5 src/utilisation.md:1
+msgid "Utilisation"
+msgstr ""
+
+#: src/SUMMARY.md:6
+msgid "Dispositifs supportés"
+msgstr ""
+
+#: src/SUMMARY.md:7
+msgid "Calibration de 2 Orbbec"
+msgstr ""
+
+#: src/SUMMARY.md:8 src/integration.md:1
+msgid "Intégration"
+msgstr ""
+
+#: src/SUMMARY.md:9 src/depannage.md:1
+msgid "Dépannage"
+msgstr ""
+
+#: src/intro.md:1
+msgid "Carto"
+msgstr ""
+
+#: src/intro.md:3
+msgid ""
+"Carto est un outil de calibration d'acquisition, de calibration et de fusion "
+"de nuage de points développé par le département de l'innovation de la "
+"Société des Arts Technologiques."
+msgstr ""
+
+#: src/intro.md:5
+msgid ""
+"Carto permet de se connecter à plusieurs dispositifs de captation "
+"volumétriques et de calibrer leurs nuages de points pour créer une "
+"cartographie cohérente d'une espace. Le nuage de point fusionné qui résulte "
+"de cette calibration peut ensuite être envoyée en temps réel à d'autres "
+"logiciels sous forme de vues orthographique ou en données brutes."
+msgstr ""
+
+#: src/intro.md:7
+msgid "![Carto](./imgs/carto_0.1.0_ui.png)"
+msgstr ""
+
+#: src/intro.md:9
+msgid "License"
+msgstr ""
+
+#: src/intro.md:11
+msgid "Carto est distribué sous license AGPL-3.0"
+msgstr ""
+
+#: src/installation.md:3
+msgid "TODO: Mettre à jour lorsque des builds seront réellement disponibles"
+msgstr ""
+
+#: src/installation.md:5
+msgid ""
+"Bien que Carto est distribué sous une license libre, les binaires ne sont "
+"distribués que pour les abonnés à la [suite "
+"SAT](https://suite-dev.sat.qc.ca/)."
+msgstr ""
+
+#: src/installation.md:7
+msgid "Carto est disponible sur Windows et Linux."
+msgstr ""
+
+#: src/installation.md:9
+msgid ""
+"Pour utiliser Carto, vous pouvez extraire le ZIP qui vous a été fourni et "
+"lancer l'exécutable. Il est important que l'emplacement relatif du fichier "
+"exécutable reste le même par rapport au reste du dossier Carto."
+msgstr ""
+
+#: src/installation.md:11
+msgid "Vous devrez aussi installer les binaires NDI."
+msgstr ""
+
+#: src/installation.md:13
+msgid "Installation NDI (Windows)"
+msgstr ""
+
+#: src/installation.md:15
+msgid ""
+"Suivre les instructions indiquées "
+"[ici](https://github.com/DistroAV/DistroAV/wiki/1.-Installation#windows-1)"
+msgstr ""
+
+#: src/installation.md:17
+msgid "Installation NDI (Linux)"
+msgstr ""
+
+#: src/installation.md:19
+msgid ""
+"Suivre les instructions indiquées "
+"[ici](https://github.com/DistroAV/DistroAV/wiki/1.-Installation#linux-1)"
+msgstr ""
+
+#: src/installation.md:21
+msgid "Requis matériel"
+msgstr ""
+
+#: src/installation.md:23
+msgid ""
+"Carto a surtout été testé avec des cartes NVIDIA RTX3060. Il est possible "
+"que des cartes moins puissantes puissent fonctionner. La carte doit "
+"entièrement supporter Vulkan 1.0."
+msgstr ""
+
+#: src/utilisation.md:3
+msgid "Survol de l'interface"
+msgstr ""
+
+#: src/utilisation.md:5
+msgid "![Survol](imgs/carto-utilisation-survol.png)"
+msgstr ""
+
+#: src/utilisation.md:7
+msgid "L'interface de Carto est séparée en plusieurs sections."
+msgstr ""
+
+#: src/utilisation.md:9
+msgid ""
+"La section 1 sur l'image est la vue 3D. Elle contient tous les éléments qui "
+"font partie de la cartographie 3D de l'espace: Les caméras, les nuages de "
+"points et la zone d'inclusion (crop region)."
+msgstr ""
+
+#: src/utilisation.md:11
+msgid ""
+"La section 2 est la barre d'outils qui contient plusieurs boutons et menus."
+msgstr ""
+
+#: src/utilisation.md:13
+msgid ""
+"La section 3 est le menu latéral qui permet d'instancier des caméras, de "
+"paramétrer la zone d'inclusion et d'instancier des sorties réseau."
+msgstr ""
+
+#: src/utilisation.md:15
+msgid "Contrôles de la vue 3D"
+msgstr ""
+
+#: src/utilisation.md:17
+msgid "![Vue 3D](imgs/carto-utilisation-vue-3d.png)"
+msgstr ""
+
+#: src/utilisation.md:19
+msgid ""
+"La vue 3D contient les différents éléments de votre cartographie 3D. Ce qui "
+"suit est une description des éléments numérotés sur la capture d'écran."
+msgstr ""
+
+#: src/utilisation.md:21
+msgid ""
+"Icônes de caméras. Ces icones prennent la couleur défini dans le menu de "
+"droite. Chaque icône pointe vers le centroïde du nuage de point capté par le "
+"dispositif qu'elle représente."
+msgstr ""
+
+#: src/utilisation.md:22
+msgid ""
+"Nuage de point. Affichage du nuage de point représenté par la caméra. Le "
+"nuage sera de la couleur configuré dans le menu de droite."
+msgstr ""
+
+#: src/utilisation.md:23
+msgid ""
+"Nom de la caméra. Ce nom n'est affiché que lorsque la caméra est sélectionné "
+"ou lorsque le curseur de la souris est par dessus l'icône de la caméra."
+msgstr ""
+
+#: src/utilisation.md:24
+msgid ""
+"Gizmo de manipulation caméra. Ce gizmo permet de manipuler la rotation et la "
+"translation d'une caméra et de son nuage de point. Les flèches permettent de "
+"déplacer les caméras dans chacun des axes, les carrés permettent de déplacer "
+"une caméra sur deux axes et les arcs de cercles permettent de faire des "
+"rotations."
+msgstr ""
+
+#: src/utilisation.md:25
+msgid ""
+"Gizmo du point de vue. Ce gizmo permet de manipuler la caméra de point de "
+"vue. On peut cliquer-glisser sur la surface circulaire du gizmo pour "
+"effectuer une rotation de la caméra et cliquer sur les ronds représentant "
+"les axes pour obtenir des vues orthographiques."
+msgstr ""
+
+#: src/utilisation.md:27
+msgid ""
+"Région d'inclusion. Le volume grisé représente la zone dans laquelle les "
+"points seront conservés. Il est possible d'obtenir un gizmo sur cette zone "
+"en cliquant sur les poignées"
+msgstr ""
+
+#: src/utilisation.md:29
+msgid "Barre d'outils"
+msgstr ""
+
+#: src/utilisation.md:31
+msgid "![Barre d'outil](imgs/carto-utilisation-vue-3d.png)"
+msgstr ""
+
+#: src/utilisation.md:33
+msgid ""
+"Menu fichier. Avec les options classique enregistrer, enregistrer-sous et "
+"charger."
+msgstr ""
+
+#: src/utilisation.md:34
+msgid "Bouton d'aide qui afficher un menu décrivant les contrôles."
+msgstr ""
+
+#: src/utilisation.md:35
+msgid "Bouton de configurations qui affiche le menu des configurations globales."
+msgstr ""
+
+#: src/utilisation.md:36
+msgid ""
+"Menu du journal des événements. Les \"logs\" d'erreurs et d'avertissement "
+"seront affichées dans une fenêtre accessible en cliquant ce bouton."
+msgstr ""
+
+#: src/utilisation.md:37
+msgid ""
+"Menu déroulant des vues orthographiques. Ce menu déroulant permet de "
+"sélectionner soit la vue en perspectives ou une des vues orthographiques."
+msgstr ""
+
+#: src/utilisation.md:39
+msgid "Menu"
+msgstr ""
+
+#: src/utilisation.md:41
+msgid "![Menu latéral](imgs/carto-barre-latterale.png)"
+msgstr ""
+
+#: src/utilisation.md:43
+msgid ""
+"Onglet des caméras. Cet onglet contient les contrôles permettant "
+"d'instancier des dispositifs de capture et de les paramétrer."
+msgstr ""
+
+#: src/utilisation.md:44
+msgid ""
+"Onglet de la zone d'inclusion (\"crop region\"). Cet onglet permet de "
+"paramétrer la taille et la position de la zone d'inclusion."
+msgstr ""
+
+#: src/utilisation.md:45
+msgid ""
+"Onglet des sorties réseau. Cet onglet permet d'instancier et de configurer "
+"différentes sorties réseau."
+msgstr ""
+
+#: src/dispositifs.md:1
+msgid "Dispositifs"
+msgstr ""
+
+#: src/dispositifs.md:3
+msgid ""
+"Carto supporte actuellement les Orbbec Femto Mega et les Hesai Pandar 40P. "
+"Il est possible que d'autres dispositifs Orbbec et d'autres dispositifs "
+"hesai fonctionnent mais ils n'ont pas été testés et peuvent ne pas être "
+"supportés optimalement."
+msgstr ""
+
+#: src/dispositifs.md:6
+msgid "Orbbec Femto Mega et controles génériques d'un dispositif"
+msgstr ""
+
+#: src/dispositifs.md:8
+msgid ""
+"Les Orbbec Femto Mega ont été les premières caméras à être intégrées à "
+"Carto. Lorsqu'une caméra est instanciée dans Carto, le dispositif par défaut "
+"est \"Orbbec\", ce qui réfère à une orbbec femto mega."
+msgstr ""
+
+#: src/dispositifs.md:10
+msgid ""
+"L'utilisation d'une Orbbec est très simple: une fois branchée à un "
+"commutateur réseau PoE, la caméra annonce son identité sur le réseau, ce qui "
+"permet à Carto de l'auto-découvrir."
+msgstr ""
+
+#: src/dispositifs.md:12
+msgid "Paramètres des Orbbec Femto Mega dans Carto"
+msgstr ""
+
+#: src/dispositifs.md:14
+msgid ""
+"Cette capture d'écran annotée montre les différents contrôles liés à une "
+"orbbec femto mega ainsi que les contrôles génériques d'un dispositif."
+msgstr ""
+
+#: src/dispositifs.md:16
+msgid "![ui orbbec femto mega](./imgs/carto-device-controls.png)"
+msgstr ""
+
+#: src/dispositifs.md:18
+msgid ""
+"**Bouton gizmo**. Cliquez sur ce bouton pour obtenir un gizmo sur ce "
+"dispositif dans la vue 3D. Il est possible d'appuyer sur Ctrl+clic pour "
+"sélectionner plusieurs dispositifs."
+msgstr ""
+
+#: src/dispositifs.md:19
+msgid ""
+"**Nom de la caméra**. Ce nom apparaîtra dans la vue 3D lorsque ce dispositif "
+"est sélectionné."
+msgstr ""
+
+#: src/dispositifs.md:20
+msgid ""
+"**Bouton de suppression du dispositif**. Un dispositif supprimé sera aussi "
+"déconnecté. Il est possible de revenir en arrière avec Ctrl+Z"
+msgstr ""
+
+#: src/dispositifs.md:21
+msgid ""
+"**Bouton d'activation et de désactivation d'un dispositif**. Un dispositif "
+"désactivé sera aussi déconnecté. Il ne consommera plus de resources réseau "
+"ou computationnelles."
+msgstr ""
+
+#: src/dispositifs.md:22
+msgid ""
+"**Compteur de \"frame rate\"**. Ce compteur représente le nombre de trames "
+"de nuage de point par seconde que Carto reçoit du dispositif. **Important**: "
+"cette valeur est indépendante du taux de rafraichissement de Carto."
+msgstr ""
+
+#: src/dispositifs.md:23
+msgid "**Menu de sélection des dispositifs**."
+msgstr ""
+
+#: src/dispositifs.md:24
+msgid ""
+"**Bouton de rafraichissement**. Il est possible de forcer une caméra à se "
+"reconnecter en cliquant sur ce bouton."
+msgstr ""
+
+#: src/dispositifs.md:25
+msgid ""
+"**Menu déroulant des IPs**. Pour les orbbec, ce menu déroulant permet de "
+"sélectionner une adresse IP parmis la liste des caméras détectées."
+msgstr ""
+
+#: src/dispositifs.md:26
+msgid ""
+"**Menu déroulant des résolutions**. Permet de sélectionner une des "
+"résolutions valides pour les Orbbec femto mega."
+msgstr ""
+
+#: src/dispositifs.md:27
+msgid ""
+"**Menu déroulant des taux d'envois**. Permet de sélectionner le taux "
+"d'envois demandé à la Orbbec. Se met à jour automatiquement si une "
+"résolution demandée n'est pas compatible avec le taux d'envois demandé."
+msgstr ""
+
+#: src/dispositifs.md:28
+msgid ""
+"**Menu du \"thinning\"**. Disponible pour tous les dispositifs, permet "
+"d'amincir le nuage de point affiché."
+msgstr ""
+
+#: src/dispositifs.md:30
+msgid "Bande passante utilisée selon les configurations d'une Orbbec Femto Mega"
+msgstr ""
+
+#: src/dispositifs.md:32
+msgid ""
+"Voici un tableau qui pourra vous aider à planifier l'infrastructure réseau "
+"nécessaire à votre installation."
+msgstr ""
+
+#: src/dispositifs.md:34
+msgid "Débit en Mibps en fonction de la résolution et du taux d'envois"
+msgstr ""
+
+#: src/dispositifs.md:34
+msgid "320x288"
+msgstr ""
+
+#: src/dispositifs.md:34
+msgid "512x512"
+msgstr ""
+
+#: src/dispositifs.md:34
+msgid "640x576"
+msgstr ""
+
+#: src/dispositifs.md:34
+msgid "1024x1024"
+msgstr ""
+
+#: src/dispositifs.md:36
+msgid "30 fps"
+msgstr ""
+
+#: src/dispositifs.md:36
+msgid "44.4 Mibps"
+msgstr ""
+
+#: src/dispositifs.md:36
+msgid "125 Mibps"
+msgstr ""
+
+#: src/dispositifs.md:36
+msgid "178 Mibps"
+msgstr ""
+
+#: src/dispositifs.md:36 src/dispositifs.md:37
+msgid "N/A"
+msgstr ""
+
+#: src/dispositifs.md:37
+msgid "25 fps"
+msgstr ""
+
+#: src/dispositifs.md:37
+msgid "37.0 Mibps"
+msgstr ""
+
+#: src/dispositifs.md:37
+msgid "106 Mibps"
+msgstr ""
+
+#: src/dispositifs.md:37
+msgid "148 Mibps"
+msgstr ""
+
+#: src/dispositifs.md:38
+msgid "15 fps"
+msgstr ""
+
+#: src/dispositifs.md:38
+msgid "22.5 Mibps"
+msgstr ""
+
+#: src/dispositifs.md:38
+msgid "64.2 Mibps"
+msgstr ""
+
+#: src/dispositifs.md:38
+msgid "90.1 Mibps"
+msgstr ""
+
+#: src/dispositifs.md:38
+msgid "253 Mibps"
+msgstr ""
+
+#: src/dispositifs.md:39
+msgid "5 fps"
+msgstr ""
+
+#: src/dispositifs.md:39
+msgid "7.44 Mibps"
+msgstr ""
+
+#: src/dispositifs.md:39
+msgid "21.2 Mibps"
+msgstr ""
+
+#: src/dispositifs.md:39
+msgid "30.1 Mibps"
+msgstr ""
+
+#: src/dispositifs.md:39
+msgid "85.1 Mibps"
+msgstr ""
+
+#: src/dispositifs.md:42
+msgid "Hesai Pandar 40P"
+msgstr ""
+
+#: src/dispositifs.md:44
+msgid "Les lidar Hesai 40P demandent un peu plus de configuration."
+msgstr ""
+
+#: src/dispositifs.md:46
+msgid ""
+"Après les avoir branché dans commutateur réseau, vous devez aller trouver "
+"leur adresse sur le réseau et vous rendre sur `http://<adresse de votre "
+"hesai>/setting.html` puis changer les champs ip de destination et port TODO: "
+"aller voir c'est quoi les champ et mettre un screenshot."
+msgstr ""
+
+#: src/dispositifs.md:48
+msgid ""
+"Voici une capture d'écran montrant les contrôles propres aux dispositifs de "
+"type Hesai."
+msgstr ""
+
+#: src/dispositifs.md:50
+msgid "![ui hesai](./imgs/carto-device-hesai.png)"
+msgstr ""
+
+#: src/dispositifs.md:52
+msgid ""
+"**IP du hesai**. Il n'est pas strictement obligatoire de mettre la bonne IP "
+"pour recevoir des points mais avoir la bonne ip assure que le bouton \"Open "
+"Web UI\" fonctionne."
+msgstr ""
+
+#: src/dispositifs.md:53
+msgid ""
+"**Port**. Le port du hesai. Si vous avez plusieurs hesais sur le même "
+"réseau, vous devez changer ce port pour avoir un port unique pour chaque "
+"hesai."
+msgstr ""
+
+#: src/dispositifs.md:54
+msgid ""
+"**Open Web UI**. Ce bouton ouvre un navigateur qui vous montrera les "
+"configurations du hesai qui est à l'adresse IP indiquée. Vous pouvez changer "
+"les autres paramètres du hesai à partir de cette interface web."
+msgstr ""
+
+#: src/dispositifs.md:56
+msgid "Contrôle de nuage de point"
+msgstr ""
+
+#: src/dispositifs.md:58
+msgid ""
+"Ces contrôles sont disponibles pour tous types de dispositifs et permettent "
+"de contrôler l'affichage des points dans la vue 3D."
+msgstr ""
+
+#: src/dispositifs.md:60
+msgid "![ui controle de point cloud](./imgs/carto-point-cloud-controls.png)"
+msgstr ""
+
+#: src/dispositifs.md:62
+msgid "**RGB Color**. Couleur RGBA des points affichés."
+msgstr ""
+
+#: src/dispositifs.md:63
+msgid ""
+"**Calibrate Centroid**. Cliquer sur ce bouton déclenche un calcul du "
+"centroïde du nuage de point. Ce calcul est fait automatiquement lors de la "
+"première réception de points mais si la caméra a été déplacée ou si "
+"l'environemment change beaucoup il peut être préférable de recalculer le "
+"centroïde."
+msgstr ""
+
+#: src/dispositifs.md:64
+msgid ""
+"**Rotation Pivot**. Ceci contrôle le pivot de rotation du nuage de point. "
+"Quand le pivot de rotation est à \"Centroid\", le gizmo de manipulation "
+"apparaît près du \"centre\" du nuage de point et la rotation se fait depuis "
+"le milieu. C'est le comportement par défaut. Quand le pivot de rotation est "
+"à \"Camera\", le gizmo de manipulation apparaît sur l'icône de caméra et le "
+"nuage de point pivote comme si on bougeait la caméra qui le capte."
+msgstr ""
+
+#: src/dispositifs.md:65
+msgid ""
+"**Contrôles fins de translation**. Permet d'ajuster finement la position du "
+"nuage de point dans l'espace"
+msgstr ""
+
+#: src/dispositifs.md:66
+msgid ""
+"**Contrôles fins de rotation**. Permet d'ajuster finement la rotation du "
+"nuage de point dans l'espace."
+msgstr ""
+
+#: src/dispositifs.md:67
+msgid ""
+"**Boutons de retours à 0**. Lorsqu'une rotation ou une translation est "
+"modifiée, permet de revenir à 0. Notes que tous les changements de rotation "
+"et de translation sont aussi réversible avec la commande Ctrl-Z"
+msgstr ""
+
+#: src/tuto.md:1
+msgid "Création, paramétrage et calibration d'une caméra"
+msgstr ""
+
+#: src/tuto.md:3
+msgid ""
+"Ce petit tutoriel vous guidera à travers la création et la calibration de "
+"deux caméra orbbec femto mega."
+msgstr ""
+
+#: src/tuto.md:5
+msgid ""
+"Pour faire une calibration, nous conseillons de désactiver la \"crop "
+"region\" en premier lieu. Cela vous permet de manipuler librement vos nuages "
+"de points sans que leur position par rapport à la \"crop region\" n'en "
+"change leur affichage."
+msgstr ""
+
+#: src/tuto.md:7
+msgid ""
+"Pour instancier une caméra, allez dans l'onglet \"Cameras\" du menu latéral "
+"et appuyez sur le \"+\". Un sous-menu pour le dispositif devrait être créé. "
+"Le dispositif Orbbec devrait être sélectionné par défaut."
+msgstr ""
+
+#: src/tuto.md:9
+msgid ""
+"Si des caméra orbbec sont branchées sur votre réseau, le menu déroulant "
+"\"IP\" devrait déjà contenir les adresses IP des caméras. Si vous venez de "
+"les brancher, attendez un moment que les orbbecs démarrent et que le "
+"processus d'auto-découverte de Carto les trouve. En sélectionnant une IP, la "
+"caméra devrait se connecter et son nuage de point devrait s'afficher."
+msgstr ""
+
+#: src/tuto.md:11
+msgid ""
+"Commencez par tenter d'aligner le plancher, les murs ou un objet facilement "
+"reconnaissable de votre espace de manière à ce que le haut soit "
+"reconnaissable. Pour faciliter la visualisation, Vous pouvez faire "
+"disparaître les points de votre deuxième caméra en mettant le \"thinning\" à "
+"100%. Les vues orthographiques sont très pratiques pour obtenir un "
+"alignement des planchers et des murs."
+msgstr ""
+
+#: src/tuto.md:13
+msgid ""
+"Pour votre deuxième caméra, tentez d'aligner les planchers, murs ou autre "
+"objets reconnaissable au nuage de point de votre première caméra."
+msgstr ""
+
+#: src/tuto.md:15
+msgid ""
+"Vous pouvez ensuite réactiver la \"crop region\". Vous pouvez cliquer sur "
+"les \"poignées\" de la \"crop region\" pour obtenir un gizmo vous permettant "
+"de la déplacer et de la redimensionner."
+msgstr ""
+
+#: src/tuto.md:17
+msgid ""
+"La \"crop region\" est pratique pour obtenir un cadrage permettant "
+"d'observer des gens déambulant dans l'espace sans avoir les points des "
+"planchers et des murs."
+msgstr ""
+
+#: src/tuto.md:19
+msgid ""
+"Notez qu'il est possible de sélectionner plusieurs objets à la fois avec "
+"Ctrl+Click. Cela peut vous aider à changer la position de vos caméras sans "
+"perdre votre alignement."
+msgstr ""
+
+#: src/tuto.md:21
+msgid "Voici un vidéo montrant l'exécution des étapes :"
+msgstr ""
+
+#: src/integration.md:3
+msgid ""
+"Cette page contient des conseils d'intégration de Carto et de dispositifs de "
+"capture dans un espace."
+msgstr ""
+
+#: src/integration.md:5
+msgid "Couverture de l'espace avec des Orbbec Femto Mega"
+msgstr ""
+
+#: src/integration.md:7
+msgid ""
+"L’objectif de ce système multi-caméras est d’être en mesure de capter des "
+"données visuelles sur toute la superficie sur laquelle nous envisageons que "
+"des participants pourront interagir avec l’installation. Afin de s’assurer "
+"que notre système nous procure des données 3d fiable à tout moment de "
+"l’expérience, il faut optimiser la couverture de l’espace grâce au bon "
+"positionnement des caméras."
+msgstr ""
+
+#: src/integration.md:9
+msgid ""
+"Les spécifications techniques des capteurs Femto Mega nous indiquent qu’il "
+"est possible d’obtenir des données de profondeur selon deux modes "
+"d’utilisation: le Wide Field of View (WFoV), ainsi que le Narrow Field of "
+"View (NFoV). L’utilisation du champ de vision plus large assurera une "
+"superficie de captation plus grande à proximité du capteur, tandis que "
+"l’utilisation du champ de vision plus étroit permettra de récupérer des "
+"informations visuelles à une plus grande distance du capteur. Les "
+"spécifications techniques sont présentées dans le tableau suivant. Il faut "
+"cependant noter que l’intervalle de distance recommandé dans le tableau est "
+"une estimation plutôt conservatrice; nous avons par exemple pu récupérer des "
+"données de profondeur à plus de 8m du capteur en utilisant le mode NFOV. À "
+"noter que les performances en extérieur sont très limités. Il est préférable "
+"d'utiliser un lidar."
+msgstr ""
+
+#: src/integration.md:11
+msgid "[modes de capture orbbec femto mega](imgs/femto-mega-modes.png)"
+msgstr ""
+
+#: src/integration.md:13
+msgid ""
+"Le positionnement des caméras dans l’espace sera déterminé en grande partie "
+"par la superficie de la zone de captation, ainsi que par la hauteur des "
+"plafonds. Plus les plafonds sont hauts, plus il est facile de couvrir une "
+"grande zone de captation au sol sans avoir à se soucier de l’occlusion du "
+"champ de vision des caméras (bien entendu, cela considère qu’on est en "
+"mesure d’accrocher les caméras en hauteur dans la pièce)."
+msgstr ""
+
+#: src/integration.md:15
+msgid ""
+"Le cas d’usage standard d’un système à plusieurs caméras visera à obtenir de "
+"l’information visuelle dans une zone 3 dimensionnelle d’une hauteur d’au "
+"moins 2m, question de récupérer les données de position de tous les corps "
+"des individus dans l’espace. Moins les plafonds sont hauts, plus il faut de "
+"caméras pour assurer une couverture complète de l’espace, et éviter "
+"l’occlusion dans la zone."
+msgstr ""
+
+#: src/integration.md:17
+msgid ""
+"Il est à noter que le nombre de caméras nécessaire (et la précision de "
+"calibration requise) dépendra de ce qu’on souhaite obtenir comme information "
+"sur les déplacements dans l’espace de captation. Le premier objectif sera "
+"toujours d’assurer une compréhension spatiale des déplacements par le "
+"système: être en mesure de projeter la localisation 3 dimensionnelle d’un "
+"participant sur toute surface adjacente, notamment."
+msgstr ""
+
+#: src/depannage.md:3
+msgid ""
+"Ce document contient des conseils de dépannage pour certains problèmes "
+"rencontrés."
+msgstr ""
+
+#: src/depannage.md:5
+msgid "Le taux d'envois des caméras est plus bas que la cible"
+msgstr ""
+
+#: src/depannage.md:7
+msgid "Orbbec"
+msgstr ""
+
+#: src/depannage.md:9
+msgid ""
+"Si vous utilisez des Orbbec Femto Mega, assurez-vous que personne d'autre "
+"sur le réseau n'est en train de demander des flux à la même caméra. Les "
+"Orbbec Femto Mega peuvent envoyer des flux à plusieurs application à la fois "
+"mais pas en gardant un taux d'envois optimal."
+msgstr ""
+
+#: src/depannage.md:11
+msgid ""
+"Si personne d'autre n'utilise le réseau et que le taux d'envois est toujours "
+"trop lent, assurez-vous que le lien réseau n'est pas saturé. À leur débit "
+"maximal (en 1024x1024 à 15fps), sans la couleur, les Orbbec Femto Mega "
+"peuvent utiliser 253 Mibps de bande passante. Cela signifie qu'une seule "
+"orbbec peut saturer un lien 200 Mibps et qu'ajouter une deuxième orbbec à ce "
+"réseau dégradera les performances. Assurez-vous d'utiliser au moins un lien "
+"1Gibps si vous avez un nombre restreint de caméra. Il est aussi possible "
+"d'utiliser plusieur réseaux 1Gibps si le serveur sur lequel Carto roule "
+"possède un port réseau 10Gibps. Si il n'est pas possible pour vous "
+"d'utiliser un réseau avec plus de bande passante, vous pouvez réduire la "
+"résolution."
+msgstr ""
+
+#: src/depannage.md:13
+msgid "Hesai"
+msgstr ""
+
+#: src/depannage.md:15
+msgid ""
+"Si vous utilisez des hesai, la cible de taux d'envois dans Carto assume que "
+"le lidar est configuré à 1200 rpm. Si votre lidar est configuré à 600 rpm "
+"vous aurez la moitié du taux d'envois"
+msgstr ""
+
+#: src/depannage.md:17
+msgid "Mes caméras orbbec se retrouve à 0FPS après un certain temps"
+msgstr ""
+
+#: src/depannage.md:19
+msgid ""
+"Nous avons remarqué que les Orbbecs ont tendance à se déconnecter après un "
+"certain temps lorsqu'elles ne sont pas connectées sur un réseau dédié. Si "
+"vos orbbec sont connectés sur un réseau sur lequel d'autres utilisateurs "
+"génère du trafic, tentez de créer un réseau dédié pour vos Orbbecs."
+msgstr ""
+
