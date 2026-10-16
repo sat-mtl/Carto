@@ -1,8 +1,6 @@
 # Installation
 
-TODO: Mettre à jour lorsque des builds seront réellement disponibles
-
-Bien que Carto est distribué sous une license libre, les binaires ne sont distribués que pour les abonnés à la [suite SAT](https://suite-dev.sat.qc.ca/).
+Bien que Carto est distribué sous une license libre, les binaires ne sont distribués que pour les abonnés PRO à la [suite SAT](https://suite-dev.sat.qc.ca/).
 
 Carto est disponible sur Windows et Linux.
 
@@ -20,4 +18,4 @@ Suivre les instructions indiquées [ici](https://github.com/DistroAV/DistroAV/wi
 
 ## Requis matériel
 
-Carto a surtout été testé avec des cartes NVIDIA RTX3060. Il est possible que des cartes moins puissantes puissent fonctionner. La carte doit entièrement supporter Vulkan 1.0.
+Carto a surtout été testé avec des cartes graphique NVIDIA RTX3060. Il est possible que des cartes moins puissantes puissent fonctionner. La carte doit entièrement supporter Vulkan 1.0.

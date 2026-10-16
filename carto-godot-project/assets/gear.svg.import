@@ -17,6 +17,4 @@ saturation=1.0
 color_map={
 Color(0, 0, 0, 1): Color(1, 1, 1, 1)
 }
-fix_alpha_border=false
-premult_alpha=false
 compress=true

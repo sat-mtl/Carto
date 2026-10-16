@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://jygsbdchwydl"]
+[gd_scene format=3 uid="uid://jygsbdchwydl"]
 
 [ext_resource type="Material" uid="uid://gtwtuc5g054s" path="res://scenes/materials/manipulator_gizmo_z_material.tres" id="1_0gsx2"]
 [ext_resource type="Script" uid="uid://5jqnk33i3wof" path="res://scripts/manipulator_gizmo.gd" id="1_wmi2y"]
@@ -145,7 +145,7 @@ material = SubResource("StandardMaterial3D_v0cva")
 radius = 0.225
 height = 0.45
 
-[node name="ManipulatorGizmo" type="Control"]
+[node name="ManipulatorGizmo" type="Control" unique_id=2057954]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 512.0
@@ -154,7 +154,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_wmi2y")
 
-[node name="HighlightCircle" type="ColorRect" parent="."]
+[node name="HighlightCircle" type="ColorRect" parent="." unique_id=1923005829]
 unique_name_in_owner = true
 visible = false
 material = SubResource("ShaderMaterial_nkc7i")
@@ -165,7 +165,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1132026487]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -175,7 +175,7 @@ grow_vertical = 2
 stretch = true
 mouse_target = true
 
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1671720982]
 unique_name_in_owner = true
 own_world_3d = true
 world_3d = SubResource("World3D_nkc7i")
@@ -187,7 +187,7 @@ physics_object_picking_sort = true
 physics_object_picking_first_only = true
 render_target_update_mode = 4
 
-[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport"]
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport" unique_id=710812825]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.537)
 cull_mask = 524288
@@ -196,14 +196,14 @@ current = true
 fov = 85.1
 size = 3.0
 
-[node name="ZSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+[node name="ZSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport" unique_id=1583402986]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 layers = 524288
 mesh = SubResource("SphereMesh_n1w1t")
 skeleton = NodePath("../YSphere")
 
-[node name="Label3D" type="Label3D" parent="SubViewportContainer/SubViewport/ZSphere"]
+[node name="Label3D" type="Label3D" parent="SubViewportContainer/SubViewport/ZSphere" unique_id=1715730738]
 layers = 524288
 sorting_offset = 7.785
 billboard = 1
@@ -214,20 +214,20 @@ text = "Z
 font_size = 88
 outline_size = 10
 
-[node name="ZSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/ZSphere"]
+[node name="ZSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/ZSphere" unique_id=292618264]
 unique_name_in_owner = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/ZSphere/ZSphereArea3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/ZSphere/ZSphereArea3D" unique_id=1565292943]
 shape = SubResource("SphereShape3D_b74n8")
 
-[node name="XSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+[node name="XSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport" unique_id=1372926848]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
 layers = 524288
 mesh = SubResource("SphereMesh_0samr")
 skeleton = NodePath("../YSphere")
 
-[node name="Label3D" type="Label3D" parent="SubViewportContainer/SubViewport/XSphere"]
+[node name="Label3D" type="Label3D" parent="SubViewportContainer/SubViewport/XSphere" unique_id=1908085947]
 layers = 524288
 billboard = 1
 alpha_cut = 2
@@ -239,19 +239,19 @@ text = "X
 font_size = 88
 outline_size = 10
 
-[node name="XSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/XSphere"]
+[node name="XSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/XSphere" unique_id=1642953727]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/XSphere/XSphereArea3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/XSphere/XSphereArea3D" unique_id=990441057]
 shape = SubResource("SphereShape3D_b74n8")
 
-[node name="YSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+[node name="YSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport" unique_id=732463166]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 layers = 524288
 mesh = SubResource("SphereMesh_jlocd")
 skeleton = NodePath("")
 
-[node name="Label3D" type="Label3D" parent="SubViewportContainer/SubViewport/YSphere"]
+[node name="Label3D" type="Label3D" parent="SubViewportContainer/SubViewport/YSphere" unique_id=1915203434]
 layers = 524288
 billboard = 1
 alpha_cut = 2
@@ -262,63 +262,63 @@ text = "Y"
 font_size = 88
 outline_size = 10
 
-[node name="YSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/YSphere"]
+[node name="YSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/YSphere" unique_id=2079124044]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/YSphere/YSphereArea3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/YSphere/YSphereArea3D" unique_id=1984908567]
 shape = SubResource("SphereShape3D_b74n8")
 
-[node name="XStick" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+[node name="XStick" type="MeshInstance3D" parent="SubViewportContainer/SubViewport" unique_id=1379700732]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
 layers = 524288
 mesh = SubResource("BoxMesh_b5mjm")
 skeleton = NodePath("")
 
-[node name="YStick" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+[node name="YStick" type="MeshInstance3D" parent="SubViewportContainer/SubViewport" unique_id=473808525]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
 layers = 524288
 mesh = SubResource("BoxMesh_2rhx1")
 skeleton = NodePath("")
 
-[node name="ZStick" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+[node name="ZStick" type="MeshInstance3D" parent="SubViewportContainer/SubViewport" unique_id=1667418651]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.4)
 layers = 524288
 mesh = SubResource("BoxMesh_v0cva")
 skeleton = NodePath("")
 
-[node name="XMinusSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+[node name="XMinusSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport" unique_id=440690143]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
 layers = 524288
 mesh = SubResource("SphereMesh_rycw3")
 skeleton = NodePath("../YMinusSphere")
 
-[node name="XMinuxSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/XMinusSphere"]
+[node name="XMinuxSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/XMinusSphere" unique_id=851861821]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/XMinusSphere/XMinuxSphereArea3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/XMinusSphere/XMinuxSphereArea3D" unique_id=1363295588]
 shape = SubResource("SphereShape3D_b74n8")
 
-[node name="YMinusSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+[node name="YMinusSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport" unique_id=204522652]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 layers = 524288
 mesh = SubResource("SphereMesh_x53vj")
 skeleton = NodePath("")
 
-[node name="YMinusSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/YMinusSphere"]
+[node name="YMinusSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/YMinusSphere" unique_id=918633658]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/YMinusSphere/YMinusSphereArea3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/YMinusSphere/YMinusSphereArea3D" unique_id=1383904600]
 shape = SubResource("SphereShape3D_b74n8")
 
-[node name="ZMinusSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport"]
+[node name="ZMinusSphere" type="MeshInstance3D" parent="SubViewportContainer/SubViewport" unique_id=1566033774]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 layers = 524288
 mesh = SubResource("SphereMesh_th16o")
 skeleton = NodePath("../YMinusSphere")
 
-[node name="ZMinusSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/ZMinusSphere"]
+[node name="ZMinusSphereArea3D" type="Area3D" parent="SubViewportContainer/SubViewport/ZMinusSphere" unique_id=1727489449]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/ZMinusSphere/ZMinusSphereArea3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewportContainer/SubViewport/ZMinusSphere/ZMinusSphereArea3D" unique_id=820595986]
 shape = SubResource("SphereShape3D_b74n8")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

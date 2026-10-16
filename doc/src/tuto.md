@@ -10,7 +10,7 @@ Si des caméra orbbec sont branchées sur votre réseau, le menu déroulant "IP"
 
 Commencez par tenter d'aligner le plancher, les murs ou un objet facilement reconnaissable de votre espace de manière à ce que le haut soit reconnaissable. Pour faciliter la visualisation, Vous pouvez faire disparaître les points de votre deuxième caméra en mettant le "thinning" à 100%. Les vues orthographiques sont très pratiques pour obtenir un alignement des planchers et des murs.
 
-Pour votre deuxième caméra, tentez d'aligner les planchers, murs ou autre objets reconnaissable au nuage de point de votre première caméra.
+Pour votre deuxième caméra, tentez d'aligner les planchers, murs ou autre objets reconnaissables du nuage de point de votre première caméra.
 
 Vous pouvez ensuite réactiver la "crop region". Vous pouvez cliquer sur les "poignées" de la "crop region" pour obtenir un gizmo vous permettant de la déplacer et de la redimensionner.
 

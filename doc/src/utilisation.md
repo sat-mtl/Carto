@@ -23,18 +23,17 @@ La vue 3D contient les différents éléments de votre cartographie 3D. Ce qui s
 3. Nom de la caméra. Ce nom n'est affiché que lorsque la caméra est sélectionné ou lorsque le curseur de la souris est par dessus l'icône de la caméra.
 4. Gizmo de manipulation caméra. Ce gizmo permet de manipuler la rotation et la translation d'une caméra et de son nuage de point. Les flèches permettent de déplacer les caméras dans chacun des axes, les carrés permettent de déplacer une caméra sur deux axes et les arcs de cercles permettent de faire des rotations.
 5. Gizmo du point de vue. Ce gizmo permet de manipuler la caméra de point de vue. On peut cliquer-glisser sur la surface circulaire du gizmo pour effectuer une rotation de la caméra et cliquer sur les ronds représentant les axes pour obtenir des vues orthographiques.
-<!-- woops, 6 était de trop dans le screenshot. à corriger dans la prochaine version -->
-7. Région d'inclusion. Le volume grisé représente la zone dans laquelle les points seront conservés. Il est possible d'obtenir un gizmo sur cette zone en cliquant sur les poignées
+6. Région d'inclusion. Le volume grisé représente la zone dans laquelle les points seront conservés. Il est possible d'obtenir un gizmo sur cette zone en cliquant sur les poignées
 
 ### Barre d'outils
 
-![Barre d'outil](imgs/carto-utilisation-vue-3d.png)
+![Barre d'outil](imgs/carto-utilisation-barre-d-outils.png)
 
-1. Menu fichier. Avec les options classique enregistrer, enregistrer-sous et charger.
-2. Bouton d'aide qui afficher un menu décrivant les contrôles.
-3. Bouton de configurations qui affiche le menu des configurations globales.
-4. Menu du journal des événements. Les "logs" d'erreurs et d'avertissement seront affichées dans une fenêtre accessible en cliquant ce bouton.
-5. Menu déroulant des vues orthographiques. Ce menu déroulant permet de sélectionner soit la vue en perspectives ou une des vues orthographiques.
+1. Menu fichier. Avec les options classique "enregistrer", "enregistrer-sous" et "charger".
+2. Bouton d'aide qui affiche un menu décrivant les contrôles.
+3. Bouton de configuration qui affiche le menu des paramètres globaux.
+4. Menu du journal des événements. Une fois le bouton cliqué, les "logs" d'erreurs et d'avertissement seront affichés dans une fenêtre accessible.
+5. Menu déroulant des vues orthographiques. Ce menu déroulant permet de sélectionner soit la vue en perspective ou une des vues orthographiques.
 
 ### Menu
 

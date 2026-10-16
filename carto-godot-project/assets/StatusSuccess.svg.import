@@ -15,6 +15,4 @@ dest_files=["res://.godot/imported/StatusSuccess.svg-326f98b0773f836d377808fa611
 base_scale=1.0
 saturation=1.0
 color_map={}
-fix_alpha_border=false
-premult_alpha=false
 compress=true
