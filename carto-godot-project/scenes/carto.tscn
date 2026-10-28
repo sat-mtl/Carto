@@ -17,7 +17,8 @@
 [ext_resource type="Texture2D" uid="uid://bgmbgqc1wd2p3" path="res://assets/grid.png" id="14_ws6x0"]
 [ext_resource type="Script" uid="uid://bcpis2ryug32f" path="res://scripts/tcp_output.gd" id="15_3aqgx"]
 [ext_resource type="Script" uid="uid://cd6aaethcy4un" path="res://scripts/gizmo_3d_overrides.gd" id="16_dkctx"]
-[ext_resource type="Script" uid="uid://j2icjxbhbo45" path="res://scripts/tracking_point_cloud.gd" id="16_dunih"]
+[ext_resource type="Script" uid="uid://dcng4mqiun5at" path="res://addons/blobtrack3d/blobtrack3d.gd" id="17_gl0la"]
+[ext_resource type="Script" uid="uid://budf7q4qmos0w" path="res://scripts/blobtrack_3d_display.gd" id="17_l3b00"]
 [ext_resource type="Script" uid="uid://halhuefrfjby" path="res://scripts/accept_dialog.gd" id="17_wy4cq"]
 [ext_resource type="Script" uid="uid://5oiwcutjml3v" path="res://scripts/save_dialog.gd" id="18_f16a8"]
 
@@ -970,9 +971,13 @@ unique_name_in_owner = true
 [node name="PointCloudCameras" type="Node" parent="." unique_id=129504982]
 unique_name_in_owner = true
 
-[node name="TrackingPointCloud" type="Node3D" parent="." unique_id=1764823802]
+[node name="Blobtrack3DDisplay" type="Node3D" parent="." unique_id=1527598893]
 unique_name_in_owner = true
-script = ExtResource("16_dunih")
+script = ExtResource("17_l3b00")
+
+[node name="BlobTrack3D" type="Node" parent="Blobtrack3DDisplay" unique_id=2122789029]
+unique_name_in_owner = true
+script = ExtResource("17_gl0la")
 
 [node name="TCPOutput" type="Node" parent="." unique_id=1557318940]
 unique_name_in_owner = true

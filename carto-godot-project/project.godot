@@ -32,6 +32,7 @@ LogManager="*res://scripts/log_manager.gd"
 NdiManager="*uid://bt82qx6vyc51q"
 ComputeShaderUtils="*uid://byotfa8j3lufl"
 ComputePipelinesManager="*uid://dlh6j5llqd6bi"
+DebugDraw="*uid://c0uw6ikpqxoy4"
 
 [display]
 

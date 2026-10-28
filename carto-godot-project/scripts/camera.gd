@@ -123,6 +123,8 @@ var last_transform: Transform3D
 func _on_display_transform_changed(tform: Transform3D):
 	transform = tform
 
+static var max_points_per_device := 1_048_576
+
 func get_total_max_points():
 	return 1_048_576
 

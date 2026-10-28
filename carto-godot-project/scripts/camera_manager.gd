@@ -15,6 +15,10 @@ var camera_container
 var camera_settings_container
 var point_cloud_container
 
+func toggle_calibration_mode():
+	for cam in nodes:
+		cam["point_cloud"].toggle_camera_sprite_visibility()
+
 func get_all_devices_gpu_idx() -> PackedInt32Array:
 	var device_nums := PackedInt32Array()
 	for cam in nodes:

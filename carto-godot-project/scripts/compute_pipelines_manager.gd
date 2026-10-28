@@ -17,7 +17,10 @@ var rd = ComputeShaderUtils.rendering_device
 # which will result in crashes.
 var filtered_points_gpu_resources: ComputeShaderUtils.GPUResources
 const floats_per_filtered_point := 3
-var tracking_node :TrackingPointCloud = null
+var blobtrack_node : Blobtrack3D
+var blobtrack_display_node : BlobtrackDisplay
+# 2 million for now
+var max_blobtrack_points := 2_000_000
 # contains current valid sizes for every camera in points. This is preallocated
 # to max_cam_num because a 100 uint buffer is not that big anyways.
 var filtered_sizes_gpu_resources: ComputeShaderUtils.GPUResources
@@ -27,24 +30,14 @@ var filtered_sizes_gpu_resources: ComputeShaderUtils.GPUResources
 # something like [0, 12, 45, 77] so we need to keep this mapping in order for
 # the compute shader to address the right offsets in the filtered points buffer.
 var point_cloud_indexes_gpu_resources: ComputeShaderUtils.GPUResources
-# don't know what the real practical max amount of points would be ...
-# lets say 10 millions
-var max_tracking_points := 10_000_000
-# this is the buffer containing the compacted point cloud used for tracking.
-# this is populated from tracking_point_cloud's compaction compute shader.
-var tracking_point_cloud_gpu_resources
 var current_filtered_size := 0
 var filter_shader_file := load("res://shaders/point_cloud_filter.glsl")
 var filter_shader_spirv: RDShaderSPIRV = filter_shader_file.get_spirv()
 var filter_shader := rd.shader_create_from_spirv(filter_shader_spirv)
 var filter_pipeline := rd.compute_pipeline_create(filter_shader)
-
-var tracking_shader_file := load("res://shaders/tracking_point_cloud_compaction.glsl")
-var tracking_shader_spirv: RDShaderSPIRV = tracking_shader_file.get_spirv()
-var tracking_shader := rd.shader_create_from_spirv(tracking_shader_spirv)
-var tracking_pipeline := rd.compute_pipeline_create(tracking_shader)
 #TODO: deduplicate this constant.
 const floats_per_points:=3
+
 
 func _init():
 	var empty_floats = PackedFloat32Array()
@@ -55,8 +48,6 @@ func _init():
 	empty_floats.resize(CameraManager.max_cam_num)
 	filtered_sizes_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 1)
 	point_cloud_indexes_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 2)
-	empty_floats.resize(max_tracking_points*floats_per_points)
-	tracking_point_cloud_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 0)
 
 ## this needs to be called everytime a new device is added.
 ## TODO: maybe prevent a compute shader call when this happens to make
@@ -78,14 +69,13 @@ func reallocate_filtered_points_buffer():
 
 func build_and_call_compute_shaders():
 	if CameraManager.num_cameras == 0:
-		tracking_node.make_multimesh_draw_zero_points()
 		return
 	# updating buffers is illegal when a compute list is open so we first ask
 	# every device to update their stuff
 	for cam in CameraManager.nodes:
 		cam["camera"].update_compute_shader_buffers()
-	if tracking_node:
-		tracking_node.update_compute_shader_buffers()
+	if blobtrack_node:
+		blobtrack_node.update_compute_shader_buffers(max_blobtrack_points)
 	# update the mapping dense id -> actual device gpu id.
 	var existing_cam_ids_bytes = CameraManager.get_all_devices_gpu_idx().to_byte_array()
 	rd.buffer_update(point_cloud_indexes_gpu_resources.buffer, 0, len(existing_cam_ids_bytes), existing_cam_ids_bytes)
@@ -103,20 +93,21 @@ func build_and_call_compute_shaders():
 	## are going to be processed and we don't have to process all the hypothetical
 	## ones
 	# add a barrier to make sure that the filter shaders are all run before the
-	# tracking shader. Note: add barrier only does compute_list_end() compute_list_begin()
+	# tracking shaders. Note: add barrier only does compute_list_end() compute_list_begin()
 	# and the RenderingServer is responsible to track dependencies between compute lists.
 	# If no dependencies are detected, the RenderingServer may reorder stuff. This is
 	# why we need a common uniform between the filter compute shaders and the tracking compute shader.
-	rd.compute_list_add_barrier(compute_list)
-	rd.compute_list_bind_compute_pipeline(compute_list, tracking_pipeline)
-	if tracking_node:
-		tracking_node.add_dispatch_to_compute_list(compute_list, filtered_points_gpu_resources, filtered_sizes_gpu_resources, point_cloud_indexes_gpu_resources, tracking_point_cloud_gpu_resources)
+	if blobtrack_node:
+		rd.compute_list_add_barrier(compute_list)
+		blobtrack_node.add_dispatch_segmented(compute_list, filtered_points_gpu_resources.buffer, filtered_sizes_gpu_resources.buffer, point_cloud_indexes_gpu_resources.buffer, CameraManager.num_cameras, Device.max_points_per_device)
 	rd.compute_list_end()
-
 	# update network outputs for every device if there is one active network output.
 	if len(get_tree().get_nodes_in_group("network_outputs").filter(func(out): return out.is_active)) > 0:
 		for cam in CameraManager.nodes:
 			cam["camera"].set_network_output_data()
+	if blobtrack_node:
+		var blobs = blobtrack_node.read_result()
+		blobtrack_display_node.display_blobs(blobs)
 
 func _process(_delta: float) -> void:
 	build_and_call_compute_shaders()

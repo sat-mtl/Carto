@@ -16,6 +16,9 @@ func _on_log_entry(log_entry):
 	%LogsRichTextLabel.text += LogManager.get_str_from_entry(log_entry)
 
 func _ready() -> void:
+	%BlobTrack3D.initialize_gpu_resources(ComputePipelinesManager.max_blobtrack_points, ComputeShaderUtils.rendering_device)
+	ComputePipelinesManager.blobtrack_node = %BlobTrack3D
+	ComputePipelinesManager.blobtrack_display_node = %Blobtrack3DDisplay
 	CameraManager.carto_node = self
 	CameraManager.point_cloud_container = %CalibPointClouds
 	CameraManager.camera_container =  %PointCloudCameras
@@ -646,10 +649,9 @@ func _on_ui_scaling_spin_box_value_changed(value: float) -> void:
 	user_settings["ui_scaling"] = value
 
 func _on_tracking_mode_button_toggled(toggled_on: bool) -> void:
-	%CalibPointClouds.visible = not toggled_on
-	%TrackingPointCloud.set_visibility(toggled_on)
 	%CalibSideBarUI.visible = not toggled_on
 	%TrackingSideBarUI.visible = toggled_on
+	CameraManager.toggle_calibration_mode()
 	if toggled_on:
 		# un-gizmo-select everything when in tracking mode
 		clear_gizmo_selection()

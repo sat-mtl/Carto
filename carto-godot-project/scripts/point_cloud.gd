@@ -224,6 +224,13 @@ var gizmo_selected := false:
 	set(selected):
 		camera.gizmo_selected = selected
 
+func set_tracking_mode(tracking_mode:bool):
+	%CameraSprite3D.visible = tracking_mode
+	if tracking_mode:
+		%CameraSpriteStaticBody3D.process_mode = Node.PROCESS_MODE_DISABLED
+	else:
+		%CameraSpriteStaticBody3D.process_mode = Node.PROCESS_MODE_INHERIT
+
 func highlight():
 	material.albedo_color = highlight_color
 	material.render_priority = 2

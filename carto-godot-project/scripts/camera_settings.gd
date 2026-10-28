@@ -544,6 +544,7 @@ func _on_gizmo_select_button_mouse_exited() -> void:
 
 func update_controls_for_device():
 	%FPSLabel.visible = true
+	%ConnectButton.visible = true
 	%OrbbecFPSLine.visible = false
 	%OrbbecIPLine.visible = false
 	%OrbbecResolutionLine.visible = false
@@ -562,6 +563,7 @@ func update_controls_for_device():
 		_:
 			# debug case
 			%FPSLabel.visible = false
+			%ConnectButton.visible = false
 
 ## this functions decides wether or not a device should be autostarted
 func auto_start_device():

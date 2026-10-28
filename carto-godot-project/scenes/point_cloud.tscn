@@ -45,6 +45,7 @@ render_priority = 3
 texture = ExtResource("2_qgsid")
 
 [node name="CameraSpriteStaticBody3D" type="StaticBody3D" parent="CameraSprite3D" unique_id=259515293]
+unique_name_in_owner = true
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CameraSprite3D/CameraSpriteStaticBody3D" unique_id=764428407]
