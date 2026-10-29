@@ -33,6 +33,7 @@ NdiManager="*uid://bt82qx6vyc51q"
 ComputeShaderUtils="*uid://byotfa8j3lufl"
 ComputePipelinesManager="*uid://dlh6j5llqd6bi"
 DebugDraw="*uid://c0uw6ikpqxoy4"
+OscOutManager="*uid://b4fy3uwramg4m"
 
 [display]
 
@@ -41,7 +42,7 @@ window/vsync/vsync_mode=0
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Gizmo3DScript/plugin.cfg", "res://addons/debug_menu/plugin.cfg", "res://addons/properUI_toast/plugin.cfg")
+enabled=PackedStringArray("res://addons/Gizmo3DScript/plugin.cfg", "res://addons/debug_menu/plugin.cfg", "res://addons/godOSC/plugin.cfg", "res://addons/properUI_toast/plugin.cfg")
 
 [global_group]
 

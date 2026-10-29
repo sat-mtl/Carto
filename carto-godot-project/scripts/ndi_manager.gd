@@ -31,7 +31,7 @@ func init_ndi_output():
 		return null
 	var ndi_output = ndi_output_scene.instantiate()
 	ndi_output.output_num = ndi_num
-	
+
 	ndi_output.delete_button_pressed.connect(carto_node._on_ndi_delete_requested)
 	return ndi_output
 

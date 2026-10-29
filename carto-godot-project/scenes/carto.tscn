@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://bcydqv6jfkgjn" path="res://scripts/camera_view_menu.gd" id="9_jur1s"]
 [ext_resource type="Theme" uid="uid://bl51ay8kbmrp" path="res://themes/controls_theme.tres" id="10_oxl2k"]
 [ext_resource type="PackedScene" uid="uid://d1knnhn22cjyc" path="res://scenes/ui_components/keybinding_display.tscn" id="11_0bpmb"]
+[ext_resource type="PackedScene" uid="uid://6fadwwn4aqei" path="res://scenes/ui_components/blobtrack_ui.tscn" id="12_l3b00"]
 [ext_resource type="Script" uid="uid://c7ieqghvdbi45" path="res://scripts/free_camera.gd" id="12_v6fjn"]
 [ext_resource type="PackedScene" uid="uid://tq6uf5kjby7t" path="res://scenes/orthographic_camera.tscn" id="13_hs86g"]
 [ext_resource type="Texture2D" uid="uid://bgmbgqc1wd2p3" path="res://assets/grid.png" id="14_ws6x0"]
@@ -21,6 +22,7 @@
 [ext_resource type="Script" uid="uid://budf7q4qmos0w" path="res://scripts/blobtrack_3d_display.gd" id="17_l3b00"]
 [ext_resource type="Script" uid="uid://halhuefrfjby" path="res://scripts/accept_dialog.gd" id="17_wy4cq"]
 [ext_resource type="Script" uid="uid://5oiwcutjml3v" path="res://scripts/save_dialog.gd" id="18_f16a8"]
+[ext_resource type="Script" uid="uid://b1y1hg1uylf5k" path="res://scripts/osc_output.gd" id="20_j5nj0"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_ku3x0"]
 material = ExtResource("4_gl0la")
@@ -263,10 +265,11 @@ grow_vertical = 2
 theme = ExtResource("10_oxl2k")
 theme_override_constants/side_margin = 0
 theme_override_font_sizes/font_size = 13
-current_tab = 0
+current_tab = 2
 use_hidden_tabs_for_min_size = true
 
 [node name="Cameras" type="MarginContainer" parent="CalibSideBarUI" unique_id=1741535256]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
@@ -445,7 +448,6 @@ step = 0.01
 [node name="TODO _ Global transform" type="Node" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=281173981]
 
 [node name="Network Outputs" type="MarginContainer" parent="CalibSideBarUI" unique_id=1073534318]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
@@ -529,6 +531,35 @@ theme_override_constants/margin_right = 0
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="OSCOutLabel" type="Label" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=290955413]
+layout_mode = 2
+text = "OSC Outputs"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=75040787]
+layout_mode = 2
+
+[node name="AddOSCOutsLabel" type="Label" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1857091198]
+layout_mode = 2
+text = "Add"
+
+[node name="AddOSCOutButton" type="Button" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer3" unique_id=1419906310]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "+"
+
+[node name="MarginContainer3" type="MarginContainer" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer" unique_id=1858269267]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = -4
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+
+[node name="OSCOutputs" type="VBoxContainer" parent="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/MarginContainer3" unique_id=159662572]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
 [node name="TrackingSideBarUI" type="TabContainer" parent="." unique_id=1371955735]
 unique_name_in_owner = true
 visible = false
@@ -544,13 +575,19 @@ theme_override_font_sizes/font_size = 13
 current_tab = 0
 use_hidden_tabs_for_min_size = true
 
-[node name="Tracking" type="MarginContainer" parent="TrackingSideBarUI" unique_id=1687756364]
+[node name="Blob Tracking" type="MarginContainer" parent="TrackingSideBarUI" unique_id=1687756364]
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 6
 metadata/_tab_index = 0
+
+[node name="BlobTrackUi" parent="TrackingSideBarUI/Blob Tracking" unique_id=1736570099 node_paths=PackedStringArray("blobtrack_node") instance=ExtResource("12_l3b00")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+blobtrack_node = NodePath("../../../Blobtrack3DDisplay/BlobTrack3D")
 
 [node name="ShortcutsWindow" type="MarginContainer" parent="." unique_id=1038772920 groups=["modals"]]
 unique_name_in_owner = true
@@ -983,6 +1020,10 @@ script = ExtResource("17_gl0la")
 unique_name_in_owner = true
 script = ExtResource("15_3aqgx")
 
+[node name="OSCOutput" type="Node" parent="." unique_id=433147645]
+unique_name_in_owner = true
+script = ExtResource("20_j5nj0")
+
 [node name="Gizmo3D" type="Node3D" parent="." unique_id=2026745209]
 unique_name_in_owner = true
 script = ExtResource("16_dkctx")
@@ -1069,6 +1110,8 @@ autostart = true
 [connection signal="pressed" from="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer2/AddNDIOutButton" to="." method="_on_add_ndi_out_button_pressed"]
 [connection signal="pressed" from="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/AddNetworkOutButton" to="." method="_on_add_network_out_button_pressed"]
 [connection signal="pressed" from="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer/RemoveNetworkOutButton" to="." method="_on_remove_network_out_button_pressed"]
+[connection signal="pressed" from="CalibSideBarUI/Network Outputs/ScrollContainer/MarginContainer/VBoxContainer/HBoxContainer3/AddOSCOutButton" to="." method="_on_add_osc_out_button_pressed"]
+[connection signal="active_changed" from="TrackingSideBarUI/Blob Tracking/BlobTrackUi" to="Blobtrack3DDisplay" method="_on_blob_track_ui_active_changed"]
 [connection signal="pressed" from="ShortcutsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer2/ShortcutsExitButton" to="." method="_on_close_modal_window_pressed"]
 [connection signal="pressed" from="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer2/ShortcutsExitButton" to="." method="_on_close_modal_window_pressed"]
 [connection signal="value_changed" from="SettingsWindow/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/CamSpeedHBoxContainer/CameraSpeedSpinBox" to="." method="_on_camera_speed_spin_box_value_changed"]

@@ -1,0 +1,185 @@
+[gd_scene format=3 uid="uid://6fadwwn4aqei"]
+
+[ext_resource type="Script" uid="uid://lvi0ouqvfu60" path="res://scripts/blobtrack_ui.gd" id="1_85uus"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q2iab"]
+bg_color = Color(0.53200006, 0.22000003, 1, 0.29803923)
+
+[node name="BlobTrackUi" type="MarginContainer" unique_id=1736570099]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+script = ExtResource("1_85uus")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1460305462]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_q2iab")
+
+[node name="SidePanel" type="HBoxContainer" parent="PanelContainer" unique_id=823112680]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/SidePanel" unique_id=580009829]
+layout_mode = 2
+
+[node name="BlobtrackNum" type="Label" parent="PanelContainer/SidePanel/PanelContainer" unique_id=1551138812]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 12
+text = "1"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/SidePanel" unique_id=941752504]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/SidePanel" unique_id=1890944519]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/SidePanel/MarginContainer" unique_id=2064837397]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SettingsContainer" type="GridContainer" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer" unique_id=1700172426]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 21
+columns = 2
+
+[node name="ActiveLabel" type="Label" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=484531208]
+layout_mode = 2
+text = "Active"
+
+[node name="ActiveToggle" type="CheckButton" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=504432652]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 12
+
+[node name="SmoothingLabel" type="Label" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=1897661910]
+layout_mode = 2
+mouse_filter = 1
+text = "Blob position smoothing"
+
+[node name="SmoothingHSlider" type="HSlider" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=1399837280]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 0.98
+step = 0.001
+value = 0.5
+
+[node name="ClusterDistanceLabel" type="Label" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=1041736348]
+layout_mode = 2
+text = "Cluster distance"
+
+[node name="ClusterDistanceSpinBox" type="SpinBox" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=641420463]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+value = 0.1
+
+[node name="ClusterMinPointsLabel" type="Label" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=739268350]
+layout_mode = 2
+text = "Cluster min points"
+
+[node name="ClusterMinPointsSpinBox" type="SpinBox" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=1402560442]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+max_value = 500.0
+value = 100.0
+
+[node name="MaxBlobsLabel" type="Label" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=605589228]
+layout_mode = 2
+text = "Max blobs"
+
+[node name="MaxBlobsSpinBox" type="SpinBox" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=1690412100]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+max_value = 1000.0
+value = 100.0
+
+[node name="MaxDetectionAgeLabel" type="Label" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=1754570899]
+layout_mode = 2
+text = "Max detection age (frames)"
+
+[node name="MaxDetectionAgeSpinBox" type="SpinBox" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=1219674019]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 1.0
+max_value = 1000.0
+value = 120.0
+
+[node name="MinHitsLabel" type="Label" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=45868228]
+layout_mode = 2
+tooltip_text = "Minimum number of time a blob needs to be detected before it is tracked."
+mouse_filter = 1
+text = "Min hits"
+
+[node name="MinHitsSpinBox" type="SpinBox" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=1132686363]
+unique_name_in_owner = true
+layout_mode = 2
+value = 10.0
+
+[node name="MergeMemoryLabel" type="Label" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=1731679822]
+layout_mode = 2
+tooltip_text = "Amount of frames a blob merge event will be kept in memory so that an attempt at reattributing merged ids can be made."
+mouse_filter = 1
+text = "Merge memory (frames)"
+
+[node name="MergeMemorySpinBox" type="SpinBox" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=1551702046]
+unique_name_in_owner = true
+layout_mode = 2
+value = 10.0
+
+[node name="UsePointCountLabel" type="Label" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=780328524]
+layout_mode = 2
+tooltip_text = "Use point count to associate blobs to ids to blobs. Can be counterproductive in heterogenous setups."
+mouse_filter = 1
+text = "Use point count"
+
+[node name="UsePointCountToggle" type="CheckButton" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=1576527655]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 12
+button_pressed = true
+
+[node name="PointCountWeightLabel" type="Label" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=1870342499]
+layout_mode = 2
+mouse_filter = 1
+text = "Point count weight"
+
+[node name="PointCountWeightHSlider" type="HSlider" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=303156432]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 7.0
+step = 0.001
+value = 3.25
+
+[connection signal="toggled" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/ActiveToggle" to="." method="_on_active_toggle_toggled"]
+[connection signal="value_changed" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/SmoothingHSlider" to="." method="_on_smoothing_h_slider_value_changed"]
+[connection signal="value_changed" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/ClusterDistanceSpinBox" to="." method="_on_cluster_distance_spin_box_value_changed"]
+[connection signal="value_changed" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/ClusterMinPointsSpinBox" to="." method="_on_cluster_min_points_spin_box_value_changed"]
+[connection signal="value_changed" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/MaxBlobsSpinBox" to="." method="_on_max_blobs_spin_box_value_changed"]
+[connection signal="value_changed" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/MaxDetectionAgeSpinBox" to="." method="_on_max_detection_age_spin_box_value_changed"]
+[connection signal="value_changed" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/MinHitsSpinBox" to="." method="_on_min_hits_spin_box_value_changed"]
+[connection signal="value_changed" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/MergeMemorySpinBox" to="." method="_on_merge_memory_spin_box_value_changed"]
+[connection signal="toggled" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/UsePointCountToggle" to="." method="_on_use_point_count_toggle_toggled"]
+[connection signal="value_changed" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/PointCountWeightHSlider" to="." method="_on_point_count_weight_h_slider_value_changed"]

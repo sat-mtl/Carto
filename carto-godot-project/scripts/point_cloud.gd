@@ -225,7 +225,7 @@ var gizmo_selected := false:
 		camera.gizmo_selected = selected
 
 func set_tracking_mode(tracking_mode:bool):
-	%CameraSprite3D.visible = tracking_mode
+	%CameraSprite3D.visible = not tracking_mode
 	if tracking_mode:
 		%CameraSpriteStaticBody3D.process_mode = Node.PROCESS_MODE_DISABLED
 	else:

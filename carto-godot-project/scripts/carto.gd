@@ -30,6 +30,9 @@ func _ready() -> void:
 	NdiManager.side_cam = %SideCamera
 	NdiManager.top_cam = %TopCamera
 
+	OscOutManager.carto_node = self
+	OscOutManager.osc_output_container = %OSCOutputs
+
 	LogManager.new_log_entry.connect(_on_log_entry)
 	# prevent the app from immediately exiting
 	# Note : when running carto from the godot editor, the window will still close
@@ -312,6 +315,15 @@ func _on_ndi_delete_requested(ndi_node):
 			update_add_ndi_enable()
 	)
 
+func _on_osc_delete_requested(osc_node):
+	var insert_idx = OscOutManager.get_array_idx_from_num(osc_node.output_num)
+	UndoManager.add_to_stack("remove osc_output " + str(osc_node.output_num),
+		func():
+			OscOutManager.remove_osc_output(osc_node.output_num),
+		func():
+			OscOutManager.add_osc_output(osc_node, insert_idx)
+	)
+
 func _on_add_ndi_out_button_pressed() -> void:
 	var ndi_node = NdiManager.init_ndi_output()
 	if ndi_node == null:
@@ -323,6 +335,17 @@ func _on_add_ndi_out_button_pressed() -> void:
 		func():
 			NdiManager.remove_ndi_output()
 			update_add_ndi_enable()
+	)
+
+func _on_add_osc_out_button_pressed() -> void:
+	var osc_node = OscOutManager.init_osc_output()
+	if osc_node == null:
+		return
+	UndoManager.add_to_stack("add osc_output",
+		func():
+			OscOutManager.add_osc_output(osc_node),
+		func():
+			OscOutManager.remove_osc_output()
 	)
 
 var current_save_path := "":
@@ -404,6 +427,23 @@ func save_savefile(path:String, store_current_path=true):
 			"hesai_settings": hesai_settings
 		}
 		save_data["cameras"].append(cam_data)
+	save_data["tracking"] = {
+		# only one blob track right now, maybe more in the future ?
+		"blobtracks": [
+			{
+				"active":ComputePipelinesManager.blobtrack_active,
+				"cluster_dist":%BlobTrack3D.cluster_dist,
+				"min_points":%BlobTrack3D.min_points,
+				"max_blobs":%BlobTrack3D.max_blobs,
+				"max_age":%BlobTrack3D.max_age,
+				"min_hits":%BlobTrack3D.min_hits,
+				"merge_memory_frames":%BlobTrack3D.merge_memory_frames,
+				"smoothing":%BlobTrack3D.smoothing,
+				"point_count_weight":%BlobTrack3D.point_count_weight,
+				"use_point_count":%BlobTrack3D.use_point_count,
+			}
+		]
+	}
 	save_data["network_outputs"] = []
 	for network_output in network_outputs:
 		var net_output_data := {
@@ -412,6 +452,13 @@ func save_savefile(path:String, store_current_path=true):
 			"output_ip" : network_output.output_ip
 		}
 		save_data["network_outputs"].append(net_output_data)
+	save_data["osc_outputs"] = []
+	for osc_out in OscOutManager.nodes:
+		save_data["osc_outputs"].append({
+			"active": osc_out.is_active,
+			"output_port": osc_out.output_port,
+			"output_ip" : osc_out.output_ip
+		})
 	save_data["ndi_outputs"] = []
 	for ndi_out in NdiManager.nodes:
 		save_data["ndi_outputs"].append({
@@ -481,6 +528,8 @@ func load_savefile(path: String, look_for_autosave: bool = true):
 		remove_network_output()
 	while len(NdiManager.nodes) > 0:
 		NdiManager.remove_ndi_output()
+	while len(OscOutManager.nodes) > 0:
+		OscOutManager.remove_osc_output()
 	var viewport_camera_settings = save_data.get("viewport_camera", {})
 	if viewport_camera_settings == {}:
 		viewport_camera_settings["camera_transform"] = save_data.get("viewport_camera_transform", false)
@@ -542,6 +591,25 @@ func load_savefile(path: String, look_for_autosave: bool = true):
 		cam_nodes["camera"].displayed = cam.get("displayed", true)
 		cam_nodes["camera"].soloed = cam.get("soloed", false)
 
+	var tracking_settings = save_data.get("tracking", null)
+	if tracking_settings:
+		%BlobTrack3D.cluster_dist = tracking_settings["blobtracks"][0]["cluster_dist"]
+		%BlobTrack3D.min_points = tracking_settings["blobtracks"][0]["min_points"]
+		%BlobTrack3D.max_blobs = tracking_settings["blobtracks"][0]["max_blobs"]
+		%BlobTrack3D.max_age = tracking_settings["blobtracks"][0]["max_age"]
+		%BlobTrack3D.min_hits = tracking_settings["blobtracks"][0]["min_hits"]
+		%BlobTrack3D.merge_memory_frames = tracking_settings["blobtracks"][0]["merge_memory_frames"]
+		%BlobTrack3D.smoothing = tracking_settings["blobtracks"][0]["smoothing"]
+		%BlobTrack3D.point_count_weight = tracking_settings["blobtracks"][0]["point_count_weight"]
+		%BlobTrack3D.use_point_count = tracking_settings["blobtracks"][0]["use_point_count"]
+		ComputePipelinesManager.blobtrack_active = tracking_settings["blobtracks"][0]["active"]
+	else:
+		# deactivate blobtracking if it wasn't in the savefile
+		ComputePipelinesManager.blobtrack_active = false
+	# this sets the ui sliders and spinboxes to the right values
+	%BlobTrackUi.blobtrack_node = %BlobTrack3D
+	%Blobtrack3DDisplay.tracking_mode = tracking_mode
+
 	var ndi_outputs = save_data.get("ndi_outputs", [])
 	if ndi_outputs is Dictionary:
 		ToastManager.show_toast("Old NDI format in savefile. Please instanciate your desired NDI view.", "warning")
@@ -552,6 +620,13 @@ func load_savefile(path: String, look_for_autosave: bool = true):
 			ndi_out_node.current_view = int(ndi_out["current_view"])
 			ndi_out_node.set_ndi_cam_from_current_view()
 			ndi_out_node.toggled = ndi_out["toggled"]
+	var osc_outputs = save_data.get("osc_outputs", [])
+	for osc_out in osc_outputs:
+		var osc_out_node = OscOutManager.init_osc_output()
+		OscOutManager.add_osc_output(osc_out_node)
+		osc_out_node.set_port_and_ip(osc_out["output_port"], osc_out["output_ip"])
+		osc_out_node.is_active = osc_out["active"]
+
 	%CropRegion.transform = SavefileUtils.deserialize_transform(save_data["crop_region"]["transform"])
 	# avoids triggering an undo/redo related transform change
 	%CropRegion.last_transform = %CropRegion.transform
@@ -648,10 +723,14 @@ func _on_ui_scaling_spin_box_value_changed(value: float) -> void:
 	scale_ui(value)
 	user_settings["ui_scaling"] = value
 
+var tracking_mode = false
+
 func _on_tracking_mode_button_toggled(toggled_on: bool) -> void:
 	%CalibSideBarUI.visible = not toggled_on
 	%TrackingSideBarUI.visible = toggled_on
-	CameraManager.toggle_calibration_mode()
+	#CameraManager.set_tracking_mode(toggled_on)
+	%Blobtrack3DDisplay.tracking_mode = toggled_on
+	tracking_mode = toggled_on
 	if toggled_on:
 		# un-gizmo-select everything when in tracking mode
 		clear_gizmo_selection()

@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://cbunqhrcogjkm"]
+
+[ext_resource type="Script" uid="uid://66kyafn38ijt" path="res://scripts/osc_destination.gd" id="1_1ku4h"]
+[ext_resource type="PackedScene" uid="uid://8fcl5673v366" path="res://scenes/ui_components/IPLineEdit.tscn" id="2_e6ujw"]
+[ext_resource type="Script" uid="uid://xi7uy8bnjk3a" path="res://addons/godOSC/scripts/OSCClient.gd" id="3_e6ujw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e6ujw"]
+bg_color = Color(0.53200006, 0.22000003, 1, 0.29803923)
+
+[node name="OSCDestination" type="MarginContainer" unique_id=1917470178]
+offset_right = 463.0
+offset_bottom = 94.0
+script = ExtResource("1_1ku4h")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=553964886]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_e6ujw")
+
+[node name="SidePannel" type="HBoxContainer" parent="PanelContainer" unique_id=947757801]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/SidePannel" unique_id=1283360636]
+layout_mode = 2
+
+[node name="OutputNum" type="Label" parent="PanelContainer/SidePannel/PanelContainer" unique_id=1198518140]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 12
+text = "1"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/SidePannel" unique_id=2123262271]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 21
+columns = 2
+
+[node name="ActiveLabel" type="Label" parent="PanelContainer/SidePannel/GridContainer" unique_id=21208802]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Active"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/SidePannel/GridContainer" unique_id=589103279]
+layout_mode = 2
+
+[node name="ActiveToggle" type="CheckButton" parent="PanelContainer/SidePannel/GridContainer/HBoxContainer" unique_id=792539812]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 12
+
+[node name="DeleteButton" type="Button" parent="PanelContainer/SidePannel/GridContainer/HBoxContainer" unique_id=2135396173]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+text = "  X  "
+
+[node name="IPLabel" type="Label" parent="PanelContainer/SidePannel/GridContainer" unique_id=840464144]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "IP"
+
+[node name="IPLineEdit" parent="PanelContainer/SidePannel/GridContainer" unique_id=227846424 instance=ExtResource("2_e6ujw")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PortLabel" type="Label" parent="PanelContainer/SidePannel/GridContainer" unique_id=659239738]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Port"
+
+[node name="PortSpinBoxEdit" type="SpinBox" parent="PanelContainer/SidePannel/GridContainer" unique_id=368414089]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1024.0
+max_value = 65535.0
+value = 8787.0
+rounded = true
+
+[node name="OSCClient" type="Node" parent="." unique_id=947143660]
+unique_name_in_owner = true
+script = ExtResource("3_e6ujw")
+metadata/_custom_type_script = "uid://xi7uy8bnjk3a"
+
+[connection signal="toggled" from="PanelContainer/SidePannel/GridContainer/HBoxContainer/ActiveToggle" to="." method="_on_active_toggle_toggled"]
+[connection signal="pressed" from="PanelContainer/SidePannel/GridContainer/HBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
+[connection signal="valid_change" from="PanelContainer/SidePannel/GridContainer/IPLineEdit" to="." method="_on_ip_line_edit_valid_change"]
+[connection signal="value_changed" from="PanelContainer/SidePannel/GridContainer/PortSpinBoxEdit" to="." method="_on_port_spinbox_value_changed"]

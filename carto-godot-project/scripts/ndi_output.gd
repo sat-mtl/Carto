@@ -24,7 +24,7 @@ var toggled :bool :
 		%ActiveToggle.set_pressed_no_signal(tog)
 		if ndi_cam:
 			ndi_cam.toggle(tog)
-		
+
 # orthographic camera node
 var ndi_cam:
 	set(ndi_cam_node):
@@ -85,8 +85,8 @@ func _on_delete_button_pressed() -> void:
 func _on_view_option_button_item_selected(index: int) -> void:
 	var old_view = current_view
 	var new_view = %ViewOptionButton.get_item_id(index)
-	UndoManager.add_to_stack("select ndi_view", 
-		func(): 
+	UndoManager.add_to_stack("select ndi_view",
+		func():
 			current_view = new_view
 			%ViewOptionButton.select(index)
 			NdiManager.update_ndi_view_list()

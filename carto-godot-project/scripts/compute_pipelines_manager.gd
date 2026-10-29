@@ -18,6 +18,7 @@ var rd = ComputeShaderUtils.rendering_device
 var filtered_points_gpu_resources: ComputeShaderUtils.GPUResources
 const floats_per_filtered_point := 3
 var blobtrack_node : Blobtrack3D
+var blobtrack_active := false
 var blobtrack_display_node : BlobtrackDisplay
 # 2 million for now
 var max_blobtrack_points := 2_000_000
@@ -74,7 +75,7 @@ func build_and_call_compute_shaders():
 	# every device to update their stuff
 	for cam in CameraManager.nodes:
 		cam["camera"].update_compute_shader_buffers()
-	if blobtrack_node:
+	if blobtrack_node and blobtrack_active:
 		blobtrack_node.update_compute_shader_buffers(max_blobtrack_points)
 	# update the mapping dense id -> actual device gpu id.
 	var existing_cam_ids_bytes = CameraManager.get_all_devices_gpu_idx().to_byte_array()
@@ -97,7 +98,7 @@ func build_and_call_compute_shaders():
 	# and the RenderingServer is responsible to track dependencies between compute lists.
 	# If no dependencies are detected, the RenderingServer may reorder stuff. This is
 	# why we need a common uniform between the filter compute shaders and the tracking compute shader.
-	if blobtrack_node:
+	if blobtrack_node and blobtrack_active:
 		rd.compute_list_add_barrier(compute_list)
 		blobtrack_node.add_dispatch_segmented(compute_list, filtered_points_gpu_resources.buffer, filtered_sizes_gpu_resources.buffer, point_cloud_indexes_gpu_resources.buffer, CameraManager.num_cameras, Device.max_points_per_device)
 	rd.compute_list_end()
@@ -105,9 +106,10 @@ func build_and_call_compute_shaders():
 	if len(get_tree().get_nodes_in_group("network_outputs").filter(func(out): return out.is_active)) > 0:
 		for cam in CameraManager.nodes:
 			cam["camera"].set_network_output_data()
-	if blobtrack_node:
+	if blobtrack_node and blobtrack_active:
 		var blobs = blobtrack_node.read_result()
 		blobtrack_display_node.display_blobs(blobs)
+		blobtrack_display_node.output_blobs(blobs)
 
 func _process(_delta: float) -> void:
 	build_and_call_compute_shaders()

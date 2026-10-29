@@ -10,7 +10,7 @@ var available_ids := range(1,1025)
 
 var nodes: Array
 
-## needs to be set to a function that takes "node" and returns the 
+## needs to be set to a function that takes "node" and returns the
 @abstract
 func get_num_from_node(node)
 
