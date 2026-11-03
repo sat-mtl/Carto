@@ -265,11 +265,10 @@ grow_vertical = 2
 theme = ExtResource("10_oxl2k")
 theme_override_constants/side_margin = 0
 theme_override_font_sizes/font_size = 13
-current_tab = 2
+current_tab = 0
 use_hidden_tabs_for_min_size = true
 
 [node name="Cameras" type="MarginContainer" parent="CalibSideBarUI" unique_id=1741535256]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6
@@ -448,6 +447,7 @@ step = 0.01
 [node name="TODO _ Global transform" type="Node" parent="CalibSideBarUI/Crop Region/VBoxContainer/HBoxContainer/GridContainer" unique_id=281173981]
 
 [node name="Network Outputs" type="MarginContainer" parent="CalibSideBarUI" unique_id=1073534318]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 6
 theme_override_constants/margin_top = 6

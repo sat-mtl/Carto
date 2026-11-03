@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="svg1"
+   viewBox="0 0 54.195983 46.533875"
+   _SVGFile__filename="oldscale/filesystems/folder_documents.svg"
+   version="1.0"
+   y="0"
+   x="0"
+   width="54.195984"
+   height="46.533875"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs1" />
+  <metadata
+     id="metadata1">
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:publisher>
+          <cc:Agent
+             rdf:about="http://openclipart.org/">
+            <dc:title>Openclipart</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="g1"
+     transform="translate(-744.76863,-371.27221)">
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#FFFFFF;stroke-width:3.3347;stroke-linejoin:round"
+       d="m 784.63296,416.07913 c -12.05599,0 -24.11198,0 -36.16797,0 -0.3845,0.0615 1.76628,0.0625 2.58203,0.0547 11.35498,-0.0195 22.71345,0.0389 34.06624,-0.0292 2.04437,-0.43094 2.1249,-2.79717 2.88147,-4.35975 3.10084,-8.30306 6.20168,-16.60612 9.30253,-24.90917 -0.17717,-2.47254 -1.73867,0.71407 -1.85424,1.80811 -3.344,8.93091 -6.48079,17.95447 -10.31958,26.68819 l -0.21631,0.4077 z"
+       id="path4" />
+    <path
+       id="path1111"
+       style="fill:none;fill-opacity:1;stroke:none;stroke-width:8.125;stroke-linejoin:round"
+       d="m 747.35247,372.95873 c -1.45139,0.27674 -0.78631,2.03122 -0.93905,3.08134 0.0106,12.95194 -0.0611,25.90787 9.8e-4,38.85733 0.48532,1.77022 2.56654,1.22136 3.94364,1.31183 11.4075,-0.0202 22.81877,0.0404 34.22391,-0.0303 2.02035,-0.46454 2.12471,-2.81331 2.90225,-4.37219 3.14369,-8.14717 6.28738,-16.29433 9.43107,-24.4415 0.44989,-1.90838 -1.86137,-1.36185 -3.00092,-1.437 -2.76003,0 -5.52005,0 -8.28008,0 -0.0201,-2.51026 0.0405,-5.02445 -0.0306,-7.53222 -0.42917,-1.75436 -2.46967,-1.13967 -3.78813,-1.24978 -3.99808,0 -7.99615,0 -11.99423,0 -0.12255,-1.29388 0.28111,-2.72643 -0.27725,-3.90969 -1.19639,-0.55519 -2.64017,-0.15677 -3.94697,-0.27731 -6.08128,-3.4e-4 -12.16453,6.6e-4 -18.24458,-5e-4 z" />
+    <path
+       d="m 747.35057,372.97045 c -1.45313,0.27706 -0.78878,2.03209 -0.941,3.08329 -0.009,12.84723 -0.0185,25.69447 -0.0277,38.54171 0.0638,1.10424 1.62792,2.19554 0.60835,0.59491 1.58459,-4.54022 3.44317,-8.99779 5.13429,-13.50587 1.89713,-4.86775 3.72294,-9.76673 5.66469,-14.61493 1.13823,-1.74106 3.37427,-0.98741 5.10416,-1.15185 7.58275,0 15.16551,0 22.74827,0 -0.0206,-2.50932 0.0414,-5.02277 -0.0313,-7.52949 -0.44921,-1.73977 -2.48307,-1.12153 -3.80234,-1.23418 -3.99752,0 -7.99503,0 -11.99254,0 -0.12318,-1.29233 0.2825,-2.72422 -0.27836,-3.9053 -1.19642,-0.55688 -2.64106,-0.15751 -3.94831,-0.27829 -6.07939,0 -12.15878,0 -18.23817,0 z"
+       style="fill:none;fill-rule:evenodd;stroke:#FFFFFF;stroke-width:3.2212;stroke-linejoin:round"
+       id="path1" />
+    <path
+       d="m 796.11148,385.82369 c -4.45988,0.0534 -8.91979,0.11127 -13.37994,0.13651 4.4596,-0.0698 8.91998,-0.0933 13.37994,-0.13651 z"
+       style="fill:none;fill-rule:evenodd;stroke:#FFFFFF;stroke-width:3.19179;stroke-linejoin:round"
+       id="path3" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:none;stroke-width:0.377953;stroke-linejoin:round"
+       id="rect4"
+       width="14.481835"
+       height="20.438904"
+       x="774.46014"
+       y="393.85553"
+       ry="1.8662007" />
+    <rect
+       style="fill:none;fill-opacity:1;stroke:none;stroke-width:0.377953;stroke-linejoin:round"
+       id="rect5"
+       width="18.076618"
+       height="22.801188"
+       x="772.71411"
+       y="394.88263"
+       ry="1.8662007" />
+  </g>
+</svg>

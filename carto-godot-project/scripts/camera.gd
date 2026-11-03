@@ -1,7 +1,7 @@
 ## This represents the characterist
 extends Node
 class_name Device
-enum device_types {DEBUG=0, ORBBEC=1, HESAI=2}
+enum device_types {DEBUG=0, ORBBEC=1, HESAI=2, PLY_READER=3}
 func device_str_to_enum(device_str:String):
 	device_str = device_str.to_lower()
 	match device_str:
@@ -9,6 +9,10 @@ func device_str_to_enum(device_str:String):
 			return device_types.ORBBEC
 		"hesai":
 			return device_types.HESAI
+		"ply_reader":
+			return device_types.PLY_READER
+		"ply reader":
+			return device_types.PLY_READER
 		_:
 			return device_types.DEBUG
 
@@ -18,6 +22,8 @@ func enum_to_device_str(device_enum) -> String:
 			return "Orbbec"
 		device_types.HESAI:
 			return "Hesai"
+		device_types.PLY_READER:
+			return "PLY Reader"
 		_:
 			return "Debug"
 
@@ -30,8 +36,12 @@ var current_device_type = device_types.ORBBEC:
 		# auto "start" the debug device.
 		if current_device_type == device_types.DEBUG:
 			start_debug_device()
+		elif current_device_type == device_types.PLY_READER:
+			start_ply_reader_device()
 var orbbec_device = OrbbecPointCloudGPU.new()
 var hesai_device = HesaiPointCloudGPU.new()
+var ply_reader_device = PLYReader.new()
+
 var output_data: PackedByteArray
 var has_new_output_data = false
 var device_stopped = false
@@ -188,6 +198,8 @@ func _init(ui:Node, display:Node, num:int) -> void:
 	hesai_device.set_rendering_device(rd)
 	connect_device_log_signals(hesai_device)
 	hesai_device.point_cloud_frame.connect(_on_device_point_frame)
+	ply_reader_device.point_cloud_frame.connect(_on_device_point_frame)
+	ply_reader_device.max_points_changed.connect(_on_device_max_points_change)
 	setup_points_for_compute_shader()
 	set_camera_name("Camera " + str(num), true)
 	color = get_camera_color(num)
@@ -306,7 +318,7 @@ func set_network_output_data():
 
 var uniform_set: RID
 
-# we need to give a consisten value of should_run_compute_shader
+# we need to give a consistent value of should_run_compute_shader
 # during a specific frame even if an event that should make us process the frame
 # happens. We'll just process it next frame.
 var should_run_last_frame = -1
@@ -481,11 +493,14 @@ func pre_process_orbbec_bytes(orbbec_bytes:PackedByteArray) -> PackedVector3Arra
 
 var centroid = Vector3(0,0,0)
 
-func calculate_centroid(pts):
+func calculate_centroid(pts) -> bool:
+	if len(pts) == 0:
+		return false
 	var sum: Vector3 = Vector3.ZERO
 	for point:Vector3 in pts:
 		sum+=point
 	centroid = sum / len(pts)
+	return true
 
 signal centroid_changed
 
@@ -494,6 +509,12 @@ func get_transform_centroid_compensated():
 		return transform*(Transform3D(Basis(), -centroid))
 	else:
 		return transform
+
+func _on_device_max_points_change(m_pts:int):
+	max_points = m_pts
+	if multimesh.instance_count != m_pts:
+		setup_points_for_compute_shader()
+
 
 func _on_device_point_frame(point_cloud_buffer: RID, point_cloud_bytes: PackedByteArray) -> void:
 	if device_stopped:
@@ -509,9 +530,10 @@ func _on_device_point_frame(point_cloud_buffer: RID, point_cloud_bytes: PackedBy
 			processed_points = pre_process_orbbec_bytes(point_cloud_bytes)
 		elif current_device_type == device_types.HESAI:
 			processed_points = pre_process_hesai_bytes(point_cloud_bytes)
-		calculate_centroid(processed_points)
-		centroid_changed.emit(centroid, centroid_toggled, false)
-		has_centroid = true
+		var valid_centroid := calculate_centroid(processed_points)
+		if valid_centroid:
+			centroid_changed.emit(centroid, centroid_toggled, false)
+			has_centroid = true
 	point_cloud_buffer_rid = point_cloud_buffer
 	should_draw = true
 
@@ -531,18 +553,41 @@ signal end_connecting
 func emit(sig):
 	sig.emit()
 
-# TODO: refactor this chunk, theres a bunch of common code.
-func _start_orbbec_device(ip, xres, yres, fps):
+var wait_message := "Connecting"
+
+func call_with_connection_wait(callable:Callable, reason:String, wait_msg="Connecting"):
+	wait_message = wait_msg
 	# we need to call_deferred the signals because we are not in the same thread.
 	call_deferred("emit", is_connecting)
-	UndoManager.disable("Waiting for a camera to connect")
+	UndoManager.disable(reason)
 	connecting = true
-	orbbec_device.set_device_from_ip(ip)
-	orbbec_device.start_stream(xres, yres, fps)
-	device_stopped = false
+	callable.call()
 	connecting = false
 	UndoManager.enable()
 	call_deferred("emit", end_connecting)
+
+func _ply_reader_set_folder(folder):
+	var read_folder := func():
+		ply_reader_device.read_folder(folder, ply_reader_device.current_file_name_prefix)
+	call_with_connection_wait(read_folder, "Waiting for ply file read", "Loading PLYs")
+
+func ply_reader_set_folder(folder:String):
+	WorkerThreadPool.add_task(func():self._ply_reader_set_folder(folder))
+
+func _ply_reader_set_prefix(file_prefix:String):
+	var read_folder := func():
+		ply_reader_device.read_folder(ply_reader_device.current_folder_path, file_prefix)
+	call_with_connection_wait(read_folder, "Waiting for ply file read", "Loading PLYs")
+
+func ply_reader_set_prefix(file_prefix:String):
+	WorkerThreadPool.add_task(func():self._ply_reader_set_prefix(file_prefix))
+
+func _start_orbbec_device(ip, xres, yres, fps):
+	var setup_orbbec := func():
+		orbbec_device.set_device_from_ip(ip)
+		orbbec_device.start_stream(xres, yres, fps)
+		device_stopped = false
+	call_with_connection_wait(setup_orbbec, "Waiting for a camera to connect")
 
 func start_orbbec_device(ip, xres, yres, fps):
 	max_points = xres*yres
@@ -556,14 +601,10 @@ func start_orbbec_device(ip, xres, yres, fps):
 	WorkerThreadPool.add_task(func():self._start_orbbec_device(ip, xres, yres, fps))
 
 func _start_hesai_device(ip):
-	call_deferred("emit", is_connecting)
-	UndoManager.disable("Waiting for a camera to connect")
-	connecting = true
-	hesai_device.start_stream(ip)
-	device_stopped = false
-	connecting = false
-	UndoManager.enable()
-	call_deferred("emit", end_connecting)
+	var setup_hesai := func():
+		hesai_device.start_stream(ip)
+		device_stopped = false
+	call_with_connection_wait(setup_hesai, "Waiting for a camera to connect")
 
 func start_hesai_device(ip, port):
 	max_points = hesai_device.get_max_points()
@@ -580,6 +621,12 @@ func start_hesai_device(ip, port):
 
 func start_debug_device():
 	max_points = len(debug_points)
+	setup_points_for_compute_shader()
+
+func start_ply_reader_device():
+	device_stopped = false
+	max_points = ply_reader_device.max_points
+	has_centroid = false
 	setup_points_for_compute_shader()
 
 func stop_device():
@@ -614,14 +661,17 @@ func get_points_buffer(	) -> RID:
 
 var transform_has_changed = true
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	transform_has_changed = transform != last_transform
 	if current_device_type == device_types.DEBUG:
 		var data_bytes = debug_points.to_byte_array()
 		upload_mock_data(data_bytes)
 		should_draw = true
 		if !has_centroid:
-			calculate_centroid(debug_points)
-			centroid_changed.emit(centroid, centroid_toggled, false)
-		has_centroid = true
+			var valid_centroid := calculate_centroid(debug_points)
+			if valid_centroid:
+				centroid_changed.emit(centroid, centroid_toggled, false)
+				has_centroid = true
 	last_transform = transform
+	if current_device_type == device_types.PLY_READER:
+		ply_reader_device.poll_for_frame(delta)

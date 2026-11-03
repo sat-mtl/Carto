@@ -728,7 +728,7 @@ var tracking_mode = false
 func _on_tracking_mode_button_toggled(toggled_on: bool) -> void:
 	%CalibSideBarUI.visible = not toggled_on
 	%TrackingSideBarUI.visible = toggled_on
-	#CameraManager.set_tracking_mode(toggled_on)
+	CameraManager.set_tracking_mode(toggled_on)
 	%Blobtrack3DDisplay.tracking_mode = toggled_on
 	tracking_mode = toggled_on
 	if toggled_on:

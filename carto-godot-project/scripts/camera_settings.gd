@@ -6,7 +6,7 @@ var camera_num: int:
 		%CameraNum.text = str(num)
 
 var orbbec_devices: OrbbecDevices
-var camera
+var camera: Device
 
 # still necessary for transform changes.
 var point_cloud
@@ -91,37 +91,32 @@ func _ready() -> void:
 	%BackgroundPanelContainer.add_theme_stylebox_override("panel", stylebox)
 	update_controls_for_device()
 
+func set_interactible(node, interactible: bool):
+	if "editable" in node:
+		node.editable = interactible
+	if "disabled" in node:
+		node.disabled = not interactible
+
+
 func _on_pointcloud_connecting():
-	%OrbbecIPOptionButton.disabled = true
-	%OrbbecFPSOptionButton.disabled = true
-	%OrbbecResolutionOptionButton.disabled = true
-	%HesaiIPLineEdit.editable = false
-	%HesaiPortSpinBox.editable = false
-	%DeviceOptionButton.disabled = true
-	%ActiveSwitch.disabled = true
-	%ConnectButton.disabled = true
-	%DeviceOptionButton.disabled = true
+	var to_disable = get_tree().get_nodes_in_group("disable_when_connecting")
+	for node in to_disable:
+		set_interactible(node, false)
 
 func _on_pointcloud_end_connecting():
-	%OrbbecIPOptionButton.disabled = false
-	%OrbbecFPSOptionButton.disabled = false
-	%OrbbecResolutionOptionButton.disabled = false
-	%HesaiIPLineEdit.editable = true
-	%HesaiPortSpinBox.editable = true
-	%DeviceOptionButton.disabled = false
-	%ActiveSwitch.disabled = false
-	%ConnectButton.disabled = false
-	%DeviceOptionButton.disabled = false
+	var to_enable = get_tree().get_nodes_in_group("disable_when_connecting")
+	for node in to_enable:
+		set_interactible(node, true)
 
 func _on_timer_timeout() -> void:
 	if camera.connecting:
 		# animation la plus boboche du monde
-		if %FPSLabel.text == "Connecting !":
-			%FPSLabel.text = "Connecting !!"
-		elif %FPSLabel.text == "Connecting !!":
-			%FPSLabel.text = "Connecting !!!"
+		if %FPSLabel.text == "{0} !".format([camera.wait_message]):
+			%FPSLabel.text = "{0} !!".format([camera.wait_message])
+		elif %FPSLabel.text == "{0} !!".format([camera.wait_message]):
+			%FPSLabel.text = "{0} !!!".format([camera.wait_message])
 		else:
-			%FPSLabel.text = "Connecting !"
+			%FPSLabel.text = "{0} !".format([camera.wait_message])
 		%FPSLabel.add_theme_color_override("font_color", fps_gradient.sample(0.5))
 	else:
 		var target_fps := 0.0
@@ -133,6 +128,8 @@ func _on_timer_timeout() -> void:
 			# (the sdk resorts to calculating the delta between a frame's first and last UDP
 			# packet)
 			target_fps = 20.0
+		elif camera.current_device_type == camera.device_types.PLY_READER:
+			target_fps = camera.ply_reader_device.frame_rate
 		%FPSLabel.text = "%.1f/%s FPS" % [camera.current_fps, int(target_fps)]
 		%FPSLabel.add_theme_color_override("font_color", fps_gradient.sample(camera.current_fps/target_fps))
 
@@ -551,6 +548,9 @@ func update_controls_for_device():
 	%HesaiIPLine.visible = false
 	%HesaiWebUILine.visible = false
 	%HesaiPortLine.visible = false
+	%PLYFilePrefixLine.visible = false
+	%PLYFolderLine.visible = false
+	%PLYFrameRateLine.visible = false
 	match get_current_device_type():
 		camera.device_types.ORBBEC:
 			%OrbbecFPSLine.visible = true
@@ -560,6 +560,11 @@ func update_controls_for_device():
 			%HesaiIPLine.visible = true
 			%HesaiPortLine.visible = true
 			%HesaiWebUILine.visible = true
+		camera.device_types.PLY_READER:
+			%PLYFilePrefixLine.visible = true
+			%PLYFolderLine.visible = true
+			%PLYFrameRateLine.visible = true
+			%ConnectButton.visible = false
 		_:
 			# debug case
 			%FPSLabel.visible = false
@@ -663,3 +668,51 @@ func _on_solo_button_toggled(toggled_on: bool) -> void:
 		func():
 			camera.soloed = !toggled_on
 	)
+
+func _on_ply_folder_select_dialog_dir_selected(dir: String) -> void:
+	%PLYFolderLineEdit.text = dir
+	_on_ply_folder_line_edit_text_submitted(dir)
+
+func _on_ply_frame_rate_spin_box_value_changed(value: float) -> void:
+	var old_val = camera.ply_reader_device.frame_rate
+	UndoManager.add_property_change_to_stack(
+		"ply frame rate cam " + str(camera_num),
+		value,
+		old_val,
+		func(val): camera.ply_reader_device.frame_rate = val,
+		func(val): %PLYFrameRateSpinBox.set_value_no_signal(val)
+	)
+	camera.ply_reader_device.frame_rate = value
+
+func _on_ply_folder_line_edit_text_submitted(folder: String) -> void:
+	var old_folder = camera.ply_reader_device.current_folder_path
+	UndoManager.add_to_stack(
+		"ply folder cam " + str(camera_num),
+		func():
+			%PLYFolderLineEdit.text = folder
+			camera.ply_reader_set_folder(folder),
+		func():
+			%PLYFolderLineEdit.text = old_folder
+			camera.ply_reader_set_folder(old_folder)
+	)
+
+func _on_ply_file_prefix_line_edit_text_submitted(file_prefix: String) -> void:
+	var old_prefix = camera.ply_reader_device.current_file_name_prefix
+	UndoManager.add_to_stack(
+		"ply file prefix cam " + str(camera_num),
+		func():
+			%PLYFilePrefixLineEdit.text = file_prefix
+			camera.ply_reader_set_prefix(file_prefix),
+		func():
+			%PLYFilePrefixLineEdit.text = old_prefix
+			camera.ply_reader_set_prefix(old_prefix)
+	)
+
+func _on_ply_folder_button_pressed() -> void:
+	%PLYFolderSelectDialog.popup()
+
+func _on_ply_folder_line_edit_focus_exited() -> void:
+	_on_ply_folder_line_edit_text_submitted(%PLYFolderLineEdit.text)
+
+func _on_ply_file_prefix_line_edit_focus_exited() -> void:
+	_on_ply_file_prefix_line_edit_text_submitted(%PLYFilePrefixLineEdit.text)
