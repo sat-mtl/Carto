@@ -673,6 +673,10 @@ func _on_ply_folder_select_dialog_dir_selected(dir: String) -> void:
 	%PLYFolderLineEdit.text = dir
 	_on_ply_folder_line_edit_text_submitted(dir)
 
+func set_ply_framerate(val):
+	%PLYFrameRateSpinBox.set_value_no_signal(val)
+	camera.ply_reader_device.frame_rate = val
+
 func _on_ply_frame_rate_spin_box_value_changed(value: float) -> void:
 	var old_val = camera.ply_reader_device.frame_rate
 	UndoManager.add_property_change_to_stack(
@@ -684,28 +688,32 @@ func _on_ply_frame_rate_spin_box_value_changed(value: float) -> void:
 	)
 	camera.ply_reader_device.frame_rate = value
 
+func set_ply_folder(folder):
+	%PLYFolderLineEdit.text = folder
+	camera.ply_reader_set_folder(folder)
+
 func _on_ply_folder_line_edit_text_submitted(folder: String) -> void:
 	var old_folder = camera.ply_reader_device.current_folder_path
 	UndoManager.add_to_stack(
 		"ply folder cam " + str(camera_num),
 		func():
-			%PLYFolderLineEdit.text = folder
-			camera.ply_reader_set_folder(folder),
+			set_ply_folder(folder),
 		func():
-			%PLYFolderLineEdit.text = old_folder
-			camera.ply_reader_set_folder(old_folder)
+			set_ply_folder(old_folder)
 	)
+
+func set_ply_file_prefix(prefix):
+	%PLYFilePrefixLineEdit.text = prefix
+	camera.ply_reader_set_prefix(prefix)
 
 func _on_ply_file_prefix_line_edit_text_submitted(file_prefix: String) -> void:
 	var old_prefix = camera.ply_reader_device.current_file_name_prefix
 	UndoManager.add_to_stack(
 		"ply file prefix cam " + str(camera_num),
 		func():
-			%PLYFilePrefixLineEdit.text = file_prefix
-			camera.ply_reader_set_prefix(file_prefix),
+			set_ply_file_prefix(file_prefix),
 		func():
-			%PLYFilePrefixLineEdit.text = old_prefix
-			camera.ply_reader_set_prefix(old_prefix)
+			set_ply_file_prefix(old_prefix)
 	)
 
 func _on_ply_folder_button_pressed() -> void:
