@@ -324,8 +324,8 @@ var uniform_set: RID
 var should_run_last_frame = -1
 var should_run_cache = false
 func should_run_compute_shader():
-	var this_frame = Engine.get_frames_drawn()
-	if should_run_last_frame < Engine.get_frames_drawn():
+	var this_frame = Engine.get_process_frames()
+	if should_run_last_frame < Engine.get_process_frames():
 		should_run_cache = active and (should_draw or transform_has_changed) and (current_device_type == device_types.DEBUG or point_cloud_buffer_rid.is_valid())
 		should_run_last_frame = this_frame
 	return should_run_cache
@@ -335,7 +335,7 @@ func should_run_compute_shader():
 func update_compute_shader_buffers():
 	if not should_run_compute_shader():
 		return
-	if uniform_set.is_valid():
+	if uniform_set.is_valid() and rd.uniform_set_is_valid(uniform_set):
 		# we need to cleanup our uniform set, there seems to be no way to update it
 		# so we need to create one every frame and if we don't free we eventually crash
 		rd.free_rid(uniform_set)
@@ -482,6 +482,13 @@ func pre_process_hesai_bytes(hesai_bytes:PackedByteArray) -> PackedVector3Array:
 		processed_bytes.append(point)
 	return processed_bytes
 
+func pre_process_ply_bytes(ply_bytes:PackedByteArray) -> PackedVector3Array:
+	var processed_bytes := PackedVector3Array()
+	for point in ply_bytes.to_vector3_array():
+		if point.x > -666.0 and point.y > -666.0 and point.z > -666.0:
+			processed_bytes.append(point)
+	return processed_bytes
+
 func pre_process_orbbec_bytes(orbbec_bytes:PackedByteArray) -> PackedVector3Array:
 	var processed_bytes := PackedVector3Array()
 	for point in orbbec_bytes.to_vector3_array():
@@ -530,6 +537,8 @@ func _on_device_point_frame(point_cloud_buffer: RID, point_cloud_bytes: PackedBy
 			processed_points = pre_process_orbbec_bytes(point_cloud_bytes)
 		elif current_device_type == device_types.HESAI:
 			processed_points = pre_process_hesai_bytes(point_cloud_bytes)
+		elif current_device_type == device_types.PLY_READER:
+			processed_points = pre_process_ply_bytes(point_cloud_bytes)
 		var valid_centroid := calculate_centroid(processed_points)
 		if valid_centroid:
 			centroid_changed.emit(centroid, centroid_toggled, false)

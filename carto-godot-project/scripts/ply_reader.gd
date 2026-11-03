@@ -80,16 +80,17 @@ func read_folder(path:String, file_name_prefix:String) -> bool:
 		var file_path :String = path+"/"+file_name_prefix+frames_nums[frame_num_int]+".ply"
 		if FileAccess.file_exists(file_path):
 			frames_files_strings.append(file_path)
-	point_frames.resize(len(frames_nums))
+	point_frames.resize(len(frames_files_strings))
 	var process_file_func = make_process_file_func(frames_files_strings)
 	var tasks = WorkerThreadPool.add_group_task(process_file_func, len(frames_files_strings),-1)
 	WorkerThreadPool.wait_for_group_task_completion(tasks)
+	var mx_pts:=0
 	for frame in point_frames:
-		max_points = max(max_points, len(frame))
+		mx_pts = max(mx_pts, len(frame))
 	for frame in point_frames:
 		var old_frame_size := len(frame)
-		var size_diff = max_points - old_frame_size
-		frame.resize(max_points)
+		var size_diff = mx_pts - old_frame_size
+		frame.resize(mx_pts)
 		# fill empty slots in vector buffer so that all the frame are the same size
 		for i in range(size_diff):
 			frame[old_frame_size + i] = Vector3.ONE*-666.0
@@ -97,7 +98,8 @@ func read_folder(path:String, file_name_prefix:String) -> bool:
 	if buffer.is_valid():
 		rd.free_rid(buffer)
 	# 3 floats of 4 bytes per point
-	buffer = rd.storage_buffer_create(max_points*3*4)
+	buffer = rd.storage_buffer_create(mx_pts*3*4)
+	max_points = mx_pts
 	return true
 
 func read_ply_file(path):

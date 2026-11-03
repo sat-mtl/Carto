@@ -30,9 +30,13 @@ func get_xyz_invocations(required_invocations:int) -> Vector3:
 		dispatch.z = 1;
 	return dispatch
 
+var already_warned_about_unsupported_device := false
+
 func create_buffer_with_device_address(buffer_size:int, buffer_bytes:PackedByteArray) -> RID:
 	if not rendering_device.has_feature(RenderingDevice.Features.SUPPORTS_BUFFER_DEVICE_ADDRESS):
-		ToastManager.show_toast("Your GPU doesn't support getting device address. Tracking mode will not work", "warning")
+		if not already_warned_about_unsupported_device:
+			ToastManager.show_toast("Your GPU doesn't support getting device address. Tracking mode will not work", "warning")
+			already_warned_about_unsupported_device = true
 		return rendering_device.storage_buffer_create(buffer_size, buffer_bytes)
 	else:
 		return rendering_device.storage_buffer_create(buffer_size, buffer_bytes, 0, RenderingDevice.BUFFER_CREATION_DEVICE_ADDRESS_BIT)

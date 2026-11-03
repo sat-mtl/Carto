@@ -51,8 +51,6 @@ func _init():
 	point_cloud_indexes_gpu_resources = ComputeShaderUtils.GPUResources.new(empty_floats.to_byte_array(), 2)
 
 ## this needs to be called everytime a new device is added.
-## TODO: maybe prevent a compute shader call when this happens to make
-## sure nothing breaks.
 func reallocate_filtered_points_buffer():
 	var size = CameraManager.get_total_max_points() * floats_per_filtered_point
 	# never reduce allocated size
@@ -62,7 +60,6 @@ func reallocate_filtered_points_buffer():
 	var empty_floats = PackedFloat32Array()
 	empty_floats.resize(size)
 	var bytes = empty_floats.to_byte_array()
-	# TODO: don't free now, wait for all potential CPU-side reads in this to be finished
 	ComputeShaderUtils.rendering_device.free_rid(filtered_points_gpu_resources.buffer)
 	filtered_points_gpu_resources.buffer = ComputeShaderUtils.create_buffer_with_device_address(bytes.size(), bytes)
 	filtered_points_gpu_resources.uniform.clear_ids()

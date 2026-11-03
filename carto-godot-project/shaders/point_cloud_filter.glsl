@@ -136,6 +136,7 @@ const int INACTIVE = 2;
 const int DEBUG = 0;
 const int ORBBEC = 1;
 const int HESAI = 2;
+const int PLY = 3;
 
 const float min_point_z_value = 1e-6f;
 
@@ -182,6 +183,11 @@ void main() {
       case HESAI:
         // x = -y; y = z; z = -x , no rescaling as the hesai should already be in meters.
         point_coords = vec3(-point_cloud_buffer.data[point_cloud_buffer_idx+1], point_cloud_buffer.data[point_cloud_buffer_idx + 2], -point_cloud_buffer.data[point_cloud_buffer_idx]);
+        break;
+      case PLY:
+        point_coords = vec3(point_cloud_buffer.data[point_cloud_buffer_idx], point_cloud_buffer.data[point_cloud_buffer_idx + 1], point_cloud_buffer.data[point_cloud_buffer_idx + 2]);
+        // the ply reader puts the points at -666 when they are padding points
+        point_is_kept = point_coords.x > -666.0 && point_coords.y > -666.0 && point_coords.z > -666.0;
         break;
       default:
         // catches DEBUG

@@ -12,6 +12,7 @@ signal active_changed(active)
 		%UsePointCountToggle.set_pressed_no_signal(blobtrack.use_point_count)
 		%PointCountWeightHSlider.set_value_no_signal(blobtrack.point_count_weight)
 		%ActiveToggle.set_pressed_no_signal(ComputePipelinesManager.blobtrack_active)
+		%MergeMemorySpinBox.set_value_no_signal(blobtrack.merge_memory_frames)
 		active_changed.emit(ComputePipelinesManager.blobtrack_active)
 var id := 0
 
@@ -108,6 +109,6 @@ func _on_active_toggle_toggled(toggled_on: bool) -> void:
 			ComputePipelinesManager.blobtrack_active = toggled_on,
 		func():
 			%ActiveToggle.set_pressed_no_signal(!toggled_on)
-			active_changed.emit(toggled_on)
+			active_changed.emit(!toggled_on)
 			ComputePipelinesManager.blobtrack_active = !toggled_on
 	)

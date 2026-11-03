@@ -97,14 +97,19 @@ func set_interactible(node, interactible: bool):
 	if "disabled" in node:
 		node.disabled = not interactible
 
+func get_nodes_to_disable():
+	var to_disable = get_tree().get_nodes_in_group("disable_when_connecting")
+	#print(to_disable.map(func(node): is_ancestor_of(node)))
+	print(to_disable.filter(func(node): return is_ancestor_of(node)))
+	return to_disable.filter(func(node): return is_ancestor_of(node))
 
 func _on_pointcloud_connecting():
-	var to_disable = get_tree().get_nodes_in_group("disable_when_connecting")
+	var to_disable = get_nodes_to_disable()
 	for node in to_disable:
 		set_interactible(node, false)
 
 func _on_pointcloud_end_connecting():
-	var to_enable = get_tree().get_nodes_in_group("disable_when_connecting")
+	var to_enable = get_nodes_to_disable()
 	for node in to_enable:
 		set_interactible(node, true)
 
@@ -701,6 +706,11 @@ func _on_ply_folder_line_edit_text_submitted(folder: String) -> void:
 		func():
 			set_ply_folder(old_folder)
 	)
+# use for save loads or forcibly changing both at once.
+func set_ply_folder_and_prefix(folder, prefix):
+	%PLYFolderLineEdit.text = folder
+	%PLYFilePrefixLineEdit.text = prefix
+	camera.ply_reader_device.read_folder(folder,prefix)
 
 func set_ply_file_prefix(prefix):
 	%PLYFilePrefixLineEdit.text = prefix

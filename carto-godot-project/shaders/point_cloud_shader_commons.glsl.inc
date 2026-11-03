@@ -55,7 +55,7 @@ void populate_current_offset_and_index(uint global_point_idx, uint num_point_clo
     }
   }
   current_point_cloud_offset = int(offset);
-  current_point_cloud_idx = int(num_point_clouds - 1);
+  current_point_cloud_idx = int(point_cloud_indexes_buffer.indexes[num_point_clouds-1]);
 }
 
 // from a global index (in number of floats, not points), returns the local index in float

@@ -593,8 +593,7 @@ func load_savefile(path: String, look_for_autosave: bool = true):
 			cam_nodes["camera_settings"].set_hesai_port(cam["hesai_settings"].get("port", 2368))
 			if cam.get("ply_settings", false):
 				cam_nodes["camera_settings"].set_ply_framerate(cam["ply_settings"]["frame_rate"])
-				cam_nodes["camera_settings"].set_ply_folder(cam["ply_settings"]["folder"])
-				cam_nodes["camera_settings"].set_ply_file_prefix(cam["ply_settings"]["file_prefix"])
+				cam_nodes["camera_settings"].set_ply_folder_and_prefix(cam["ply_settings"]["folder"], cam["ply_settings"]["file_prefix"])
 		cam_nodes["camera"].current_device_type = device_type_enum
 		cam_nodes["camera_settings"].start_device()
 		cam_nodes["camera_settings"].active_state = cam.get("active_state", true)
