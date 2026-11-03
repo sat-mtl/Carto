@@ -99,8 +99,6 @@ func set_interactible(node, interactible: bool):
 
 func get_nodes_to_disable():
 	var to_disable = get_tree().get_nodes_in_group("disable_when_connecting")
-	#print(to_disable.map(func(node): is_ancestor_of(node)))
-	print(to_disable.filter(func(node): return is_ancestor_of(node)))
 	return to_disable.filter(func(node): return is_ancestor_of(node))
 
 func _on_pointcloud_connecting():
