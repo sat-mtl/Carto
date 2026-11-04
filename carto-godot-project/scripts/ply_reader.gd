@@ -65,8 +65,8 @@ func read_folder(path:String, file_name_prefix:String) -> bool:
 	dir.list_dir_begin()
 	var frames_nums := {}
 	for file: String in dir.get_files():
-		var file_split := file.replace(path, "").split(".")
-		if file_split[len(file_split) - 1] != "ply":
+		var file_split := file.replace(path, "").split(".ply")
+		if not file.ends_with(".ply"):
 			continue
 		if not file.contains(file_name_prefix):
 			continue
