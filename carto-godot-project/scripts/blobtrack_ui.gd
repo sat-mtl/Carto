@@ -112,3 +112,17 @@ func _on_active_toggle_toggled(toggled_on: bool) -> void:
 			active_changed.emit(!toggled_on)
 			ComputePipelinesManager.blobtrack_active = !toggled_on
 	)
+
+
+func _on_dangerous_ranges_toggle_toggled(toggled_on: bool) -> void:
+	UndoManager.add_to_stack(
+		"set active blobtrack " + str(id),
+		func():
+			%ActiveToggle.set_pressed_no_signal(toggled_on)
+			active_changed.emit(toggled_on)
+			ComputePipelinesManager.blobtrack_active = toggled_on,
+		func():
+			%ActiveToggle.set_pressed_no_signal(!toggled_on)
+			active_changed.emit(!toggled_on)
+			ComputePipelinesManager.blobtrack_active = !toggled_on
+	)

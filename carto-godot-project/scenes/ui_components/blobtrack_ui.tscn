@@ -89,9 +89,10 @@ text = "Cluster distance"
 [node name="ClusterDistanceSpinBox" type="SpinBox" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=641420463]
 unique_name_in_owner = true
 layout_mode = 2
-max_value = 1.0
-step = 0.01
-value = 0.1
+min_value = 0.01
+max_value = 0.5
+step = 0.005
+value = 0.09999999999999999
 
 [node name="ClusterMinPointsLabel" type="Label" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=739268350]
 layout_mode = 2
@@ -100,8 +101,8 @@ text = "Cluster min points"
 [node name="ClusterMinPointsSpinBox" type="SpinBox" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=1402560442]
 unique_name_in_owner = true
 layout_mode = 2
-min_value = 1.0
-max_value = 500.0
+min_value = 30.0
+max_value = 5000.0
 value = 100.0
 
 [node name="MaxBlobsLabel" type="Label" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=605589228]
@@ -173,6 +174,16 @@ max_value = 7.0
 step = 0.001
 value = 3.25
 
+[node name="DangerousRangesLabel" type="Label" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=683623873]
+layout_mode = 2
+text = "Active"
+
+[node name="DangerousRangesToggle" type="CheckButton" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=2057596040]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_font_sizes/font_size = 12
+
 [connection signal="toggled" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/ActiveToggle" to="." method="_on_active_toggle_toggled"]
 [connection signal="value_changed" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/SmoothingHSlider" to="." method="_on_smoothing_h_slider_value_changed"]
 [connection signal="value_changed" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/ClusterDistanceSpinBox" to="." method="_on_cluster_distance_spin_box_value_changed"]
@@ -183,3 +194,4 @@ value = 3.25
 [connection signal="value_changed" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/MergeMemorySpinBox" to="." method="_on_merge_memory_spin_box_value_changed"]
 [connection signal="toggled" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/UsePointCountToggle" to="." method="_on_use_point_count_toggle_toggled"]
 [connection signal="value_changed" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/PointCountWeightHSlider" to="." method="_on_point_count_weight_h_slider_value_changed"]
+[connection signal="toggled" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/DangerousRangesToggle" to="." method="_on_dangerous_ranges_toggle_toggled"]
