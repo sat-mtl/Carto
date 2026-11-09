@@ -447,6 +447,7 @@ func save_savefile(path:String, store_current_path=true):
 				"smoothing":%BlobTrack3D.smoothing,
 				"point_count_weight":%BlobTrack3D.point_count_weight,
 				"use_point_count":%BlobTrack3D.use_point_count,
+				"max_blob_id":%BlobTrack3D.max_blob_id
 			}
 		]
 	}
@@ -611,6 +612,7 @@ func load_savefile(path: String, look_for_autosave: bool = true):
 		%BlobTrack3D.smoothing = tracking_settings["blobtracks"][0]["smoothing"]
 		%BlobTrack3D.point_count_weight = tracking_settings["blobtracks"][0]["point_count_weight"]
 		%BlobTrack3D.use_point_count = tracking_settings["blobtracks"][0]["use_point_count"]
+		%BlobTrack3D.max_blob_id = tracking_settings["blobtracks"][0].get("max_blob_id", -1)
 		ComputePipelinesManager.blobtrack_active = tracking_settings["blobtracks"][0]["active"]
 	else:
 		# deactivate blobtracking if it wasn't in the savefile

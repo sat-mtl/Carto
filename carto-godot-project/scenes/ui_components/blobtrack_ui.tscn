@@ -174,15 +174,18 @@ max_value = 7.0
 step = 0.001
 value = 3.25
 
-[node name="DangerousRangesLabel" type="Label" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=683623873]
+[node name="MaxBlobIdLabel" type="Label" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=253714137]
 layout_mode = 2
-text = "Active"
+tooltip_text = "Maximum ID assigned to a blob. This also limits the number of blobs tracked by the system. Setting this to -1 disables maximum ids."
+mouse_filter = 1
+text = "Max blob id"
 
-[node name="DangerousRangesToggle" type="CheckButton" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=2057596040]
+[node name="MaxBlobIdSpinBox" type="SpinBox" parent="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer" unique_id=1220976113]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 2
-theme_override_font_sizes/font_size = 12
+min_value = -1.0
+max_value = 1000.0
+value = 200.0
 
 [connection signal="toggled" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/ActiveToggle" to="." method="_on_active_toggle_toggled"]
 [connection signal="value_changed" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/SmoothingHSlider" to="." method="_on_smoothing_h_slider_value_changed"]
@@ -194,4 +197,4 @@ theme_override_font_sizes/font_size = 12
 [connection signal="value_changed" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/MergeMemorySpinBox" to="." method="_on_merge_memory_spin_box_value_changed"]
 [connection signal="toggled" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/UsePointCountToggle" to="." method="_on_use_point_count_toggle_toggled"]
 [connection signal="value_changed" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/PointCountWeightHSlider" to="." method="_on_point_count_weight_h_slider_value_changed"]
-[connection signal="toggled" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/DangerousRangesToggle" to="." method="_on_dangerous_ranges_toggle_toggled"]
+[connection signal="value_changed" from="PanelContainer/SidePanel/MarginContainer/VBoxContainer/SettingsContainer/MaxBlobIdSpinBox" to="." method="_on_max_blob_id_spin_box_value_changed"]

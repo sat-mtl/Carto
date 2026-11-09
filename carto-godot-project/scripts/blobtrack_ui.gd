@@ -13,6 +13,7 @@ signal active_changed(active)
 		%PointCountWeightHSlider.set_value_no_signal(blobtrack.point_count_weight)
 		%ActiveToggle.set_pressed_no_signal(ComputePipelinesManager.blobtrack_active)
 		%MergeMemorySpinBox.set_value_no_signal(blobtrack.merge_memory_frames)
+		%MaxBlobIdSpinBox.set_value_no_signal(blobtrack.max_blob_id)
 		active_changed.emit(ComputePipelinesManager.blobtrack_active)
 var id := 0
 
@@ -81,6 +82,15 @@ func _on_cluster_min_points_spin_box_value_changed(value: float) -> void:
 		func(val): %ClusterMinPointsSpinBox.set_value_no_signal(val)
 	)
 
+func _on_max_blob_id_spin_box_value_changed(value: float) -> void:
+	UndoManager.add_property_change_to_stack(
+		"set_max_blob_id blobtrack " + str(id),
+		value,
+		blobtrack_node.max_blob_id,
+		func(val): blobtrack_node.max_blob_id = val,
+		func(val): %MaxBlobIdSpinBox.set_value_no_signal(val)
+	)
+
 func _on_cluster_distance_spin_box_value_changed(value: float) -> void:
 	UndoManager.add_property_change_to_stack(
 		"set_cluster_dist blobtrack " + str(id),
@@ -101,20 +111,6 @@ func _on_smoothing_h_slider_value_changed(value: float) -> void:
 
 # manages the unique global blobtrack in computepipelinemanager for now
 func _on_active_toggle_toggled(toggled_on: bool) -> void:
-	UndoManager.add_to_stack(
-		"set active blobtrack " + str(id),
-		func():
-			%ActiveToggle.set_pressed_no_signal(toggled_on)
-			active_changed.emit(toggled_on)
-			ComputePipelinesManager.blobtrack_active = toggled_on,
-		func():
-			%ActiveToggle.set_pressed_no_signal(!toggled_on)
-			active_changed.emit(!toggled_on)
-			ComputePipelinesManager.blobtrack_active = !toggled_on
-	)
-
-
-func _on_dangerous_ranges_toggle_toggled(toggled_on: bool) -> void:
 	UndoManager.add_to_stack(
 		"set active blobtrack " + str(id),
 		func():
