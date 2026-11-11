@@ -36,6 +36,10 @@ var is_removed: int:
 			needs_reconnection = true
 
 func push_frame(frame: PackedByteArray):
+	# don't infinitely accumulate stale frames to avoid out of memory errors.
+	if queue_size() >= 1:
+		#print("no place in queue")
+		return
 	frame_queue_mutex.lock()
 	frame_queue.push_back(frame)
 	frame_queue_mutex.unlock()
@@ -53,6 +57,23 @@ func queue_size():
 	frame_queue_mutex.unlock()
 	return q_size
 
+func put_data_non_blocking(point_frame:PackedByteArray, timeout_ms:int) -> bool:
+	var start_send := Time.get_ticks_msec()
+	var to_send = len(point_frame)
+	var sent := 0
+	while sent < to_send:
+		if Time.get_ticks_msec() - start_send > timeout_ms:
+			print("timeout")
+			return false
+		if sent != 0 and len(point_frame) != to_send - sent:
+			point_frame = point_frame.slice(sent)
+		var result := tcp_sender.put_partial_data(point_frame)
+		if result[0] != Error.OK:
+			print("error")
+			return false
+		sent += result[1]
+	return true
+
 func send(combined_point_cloud:PackedByteArray):
 	if is_removed:
 		return
@@ -63,14 +84,21 @@ func send(combined_point_cloud:PackedByteArray):
 			not tcp_sender.get_connected_host() or
 			tcp_sender.get_status() == tcp_sender.STATUS_NONE or
 			tcp_sender.get_status() == tcp_sender.STATUS_ERROR):
+		print("tcp_sender.get_status() == tcp_sender.STATUS_NONE :", tcp_sender.get_status() == tcp_sender.STATUS_NONE)
+		print("tcp_sender.get_status() == tcp_sender.STATUS_ERROR :", tcp_sender.get_status() == tcp_sender.STATUS_ERROR)
 		tcp_sender.disconnect_from_host()
 		tcp_sender.connect_to_host(output_ip, output_port)
 		tcp_sender.set_no_delay(true)
 		tcp_sender.poll()
 		needs_reconnection = false
 	# frame the message with a 32 bit int
-	tcp_sender.put_u32(len(combined_point_cloud))
-	tcp_sender.put_data(combined_point_cloud)
+	var point_cloud_frame := PackedByteArray()
+	point_cloud_frame.resize(4)
+	point_cloud_frame.encode_u32(0, len(combined_point_cloud))
+	point_cloud_frame.append_array(combined_point_cloud)
+	var success = put_data_non_blocking(point_cloud_frame, 60)
+	if not success:
+		needs_reconnection = true
 	tcp_sender_mutex.unlock()
 
 var output_port: int = 9898:
@@ -104,6 +132,18 @@ func send_loop():
 				send(frame)
 
 func start_thread():
+	# wait for a possibly alive thread to finish
+	if send_thread and send_thread.is_alive():
+		should_exit_mutex.lock()
+		should_exit = true
+		should_exit_mutex.unlock()
+		# post the semaphore to ensure one loop through the loop to exit it.
+		sender_semaphore.post()
+		send_thread.wait_to_finish()
+		should_exit_mutex.lock()
+		should_exit = false
+		should_exit_mutex.unlock()
+
 	send_thread = Thread.new()
 	send_thread.start(send_loop)
 
