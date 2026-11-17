@@ -88,7 +88,7 @@ msgid ""
 "distribués que pour les abonnés PRO à la [suite SAT](https://suite-"
 "dev.sat.qc.ca/)."
 msgstr ""
-"Even though Carto is distributed under as free software, binaries are only "
+"Even though Carto is distributed as free software, binaries are only "
 "distributed to [Suite SAT](https://suite-dev.sat.qc.ca/) subscribers."
 
 #: src\installation.md:5
@@ -102,8 +102,8 @@ msgid ""
 "exécutable reste le même par rapport au reste du dossier Carto."
 msgstr ""
 "To launch Carto, you can extract the ZIP file that was made available to you "
-"and launch the executable file. Its important that the executable file stays "
-"in the same folder as the rest of the files."
+"and launch the executable file. It is important that the executable file "
+"stays in the same folder as the rest of the files."
 
 #: src\installation.md:9
 msgid "Vous devrez aussi installer les binaires NDI."
@@ -171,7 +171,7 @@ msgstr ""
 #: src\utilisation.md:11
 msgid ""
 "La section 2 est la barre d'outils qui contient plusieurs boutons et menus."
-msgstr "Section 3 is a toolbar with multiple menus and buttons."
+msgstr "Section 2 is a toolbar with multiple menus and buttons."
 
 #: src\utilisation.md:13
 msgid ""
@@ -194,8 +194,8 @@ msgid ""
 "La vue 3D contient les différents éléments de votre cartographie 3D. Ce qui "
 "suit est une description des éléments numérotés sur la capture d'écran."
 msgstr ""
-"The 3D view contains different parts of you 3D cartography. What follows is "
-"a desctiption of the labeled elements of the screenshot."
+"The 3D view contains the point cloud data. What follows is a description of "
+"the labeled elements of the screenshot."
 
 #: src\utilisation.md:21
 msgid ""
@@ -255,7 +255,8 @@ msgid ""
 "en cliquant sur les poignées"
 msgstr ""
 "Crop region. The gray volume represents the zone in which points will be "
-"kept. It is possible to get a gizmo on this zone by clicking on the handles"
+"visible. It is possible to get a gizmo on this zone by clicking on the "
+"handles"
 
 #: src\utilisation.md:28
 msgid "Barre d'outils"
@@ -263,7 +264,7 @@ msgstr "Toolbar"
 
 #: src\utilisation.md:30
 msgid "![Barre d'outil](imgs/carto-utilisation-barre-d-outils.png)"
-msgstr "![Toolbar](imgs/carto-utilisation-vue-3d.png)"
+msgstr "![Toolbar](imgs/carto-utilisation-barre-d-outils.png)"
 
 #: src\utilisation.md:32
 msgid ""
@@ -354,7 +355,7 @@ msgid ""
 msgstr ""
 "Orbecc Femto Mega's were the first devices to be integrated in Carto. When a "
 "device is created in Carto, the default device type is \"Orbbec\", which "
-"refer to the Femto Mega."
+"refers to the Femto Mega."
 
 #: src\dispositifs.md:10
 msgid ""
@@ -362,7 +363,7 @@ msgid ""
 "commutateur réseau PoE, la caméra annonce son identité sur le réseau, ce qui "
 "permet à Carto de l'auto-découvrir."
 msgstr ""
-"Using an Orbbec is very simple: Once plugged to a PoE switch, the camera "
+"Using an Orbbec is very simple: Once plugged in a PoE switch, the camera "
 "announces its identity to the network which allows Carto to auto-discover it."
 
 #: src\dispositifs.md:12
@@ -374,7 +375,7 @@ msgid ""
 "Cette capture d'écran annotée montre les différents contrôles liés à une "
 "orbbec femto mega ainsi que les contrôles génériques d'un dispositif."
 msgstr ""
-"This annotated printscreen shows the controls specific to an Orbbec Femto "
+"This annotated screenshot shows the controls specific to an Orbbec Femto "
 "Mega and other controls that are available for any devices."
 
 #: src\dispositifs.md:16
@@ -394,7 +395,8 @@ msgstr ""
 msgid ""
 "**Nom de la caméra**. Ce nom apparaîtra dans la vue 3D lorsque ce dispositif "
 "est sélectionné."
-msgstr "**Camera Name** This name appeas."
+msgstr ""
+"**Camera Name** This name appears in the 3D view when the device is selected."
 
 #: src\dispositifs.md:20
 msgid ""
@@ -420,7 +422,7 @@ msgid ""
 "cette valeur est indépendante du taux de rafraîchissement de Carto."
 msgstr ""
 "**Device frame rate display**. This counter represents the number of point "
-"cloud frames that Carto receives from the device every seconds. "
+"cloud frames that Carto receives from the device every second. "
 "**Important**: this value is independent of Carto's internal framerate."
 
 #: src\dispositifs.md:23
