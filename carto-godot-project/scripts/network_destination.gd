@@ -63,15 +63,12 @@ func put_data_non_blocking(point_frame:PackedByteArray, timeout_ms:int) -> bool:
 	var sent := 0
 	while sent < to_send:
 		if Time.get_ticks_msec() - start_send > timeout_ms:
-			print("timeout")
 			return false
 		if sent != 0 and len(point_frame) != to_send - sent:
 			point_frame = point_frame.slice(sent)
 		var result := tcp_sender.put_partial_data(point_frame)
-		if result[0] != Error.OK:
-			print("error")
-			return false
-		sent += result[1]
+		if result[0] == Error.OK and result[1] > 0:
+			sent += result[1]
 	return true
 
 func send(combined_point_cloud:PackedByteArray):
@@ -84,8 +81,6 @@ func send(combined_point_cloud:PackedByteArray):
 			not tcp_sender.get_connected_host() or
 			tcp_sender.get_status() == tcp_sender.STATUS_NONE or
 			tcp_sender.get_status() == tcp_sender.STATUS_ERROR):
-		print("tcp_sender.get_status() == tcp_sender.STATUS_NONE :", tcp_sender.get_status() == tcp_sender.STATUS_NONE)
-		print("tcp_sender.get_status() == tcp_sender.STATUS_ERROR :", tcp_sender.get_status() == tcp_sender.STATUS_ERROR)
 		tcp_sender.disconnect_from_host()
 		tcp_sender.connect_to_host(output_ip, output_port)
 		tcp_sender.set_no_delay(true)
@@ -96,9 +91,7 @@ func send(combined_point_cloud:PackedByteArray):
 	point_cloud_frame.resize(4)
 	point_cloud_frame.encode_u32(0, len(combined_point_cloud))
 	point_cloud_frame.append_array(combined_point_cloud)
-	var success = put_data_non_blocking(point_cloud_frame, 60)
-	if not success:
-		needs_reconnection = true
+	var success = put_data_non_blocking(point_cloud_frame, 120)
 	tcp_sender_mutex.unlock()
 
 var output_port: int = 9898:
