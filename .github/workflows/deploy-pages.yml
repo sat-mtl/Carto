@@ -1,0 +1,50 @@
+name: github pages
+
+on:
+  push:
+    branches:
+      - main
+      - mdbook
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    container: guillaumeriousat/mdbook-i18n-helpers:latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: |
+          cd doc/
+          MDBOOK_BOOK__LANGUAGE=en mdbook build -d book/en
+          MDBOOK_BOOK__LANGUAGE=fr mdbook build -d book/fr
+          cd ..
+          mkdir github-page
+          mv doc/book/* github-page
+
+      - name: Upload static files as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: github-page
+
+  # Deploy job
+  deploy:
+    # Add a dependency to the build job
+    needs: build
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Specify runner + deployment step
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5 # or specific "vX.X.X" version tag for this action

@@ -1,0 +1,228 @@
+{
+  "cameras": [
+    {
+      "active_state": true,
+      "centroid": [
+        0.25925076007843,
+        -0.200403615832329,
+        1.95992815494537
+      ],
+      "centroid_toggled": true,
+      "color": [
+        1.0,
+        0.120335690677166,
+        0.543115139007568,
+        0.340000003576279
+      ],
+      "device_type": "Orbbec",
+      "has_centroid": true,
+      "has_default_name": true,
+      "hesai_settings": {
+        "ip": "192.168.1.201"
+      },
+      "name": "Camera 1",
+      "orbbec_settings": {
+        "fps": "30",
+        "ip": "10.10.30.179",
+        "resolution": "512x512"
+      },
+      "thinning": 0.0,
+      "transform": {
+        "basis": {
+          "x": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "z": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "origin": [
+          1.86007153987885,
+          1.79959630966187,
+          1.95992815494537
+        ]
+      }
+    },
+    {
+      "active_state": true,
+      "centroid": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "centroid_toggled": true,
+      "color": [
+        0.985197365283966,
+        0.278214126825333,
+        0.0,
+        0.340000003576279
+      ],
+      "device_type": "Hesai",
+      "has_centroid": false,
+      "has_default_name": true,
+      "hesai_settings": {
+        "ip": "192.168.1.201"
+      },
+      "name": "Camera 2",
+      "orbbec_settings": {
+        "fps": "30",
+        "ip": "None",
+        "resolution": "512x512"
+      },
+      "thinning": 0.0,
+      "transform": {
+        "basis": {
+          "x": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "z": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "origin": [
+          1.0,
+          2.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "active_state": true,
+      "centroid": [
+        1.81908464431763,
+        1.81917834281921,
+        1.81915032863617
+      ],
+      "centroid_toggled": true,
+      "color": [
+        0.771167039871216,
+        0.502654552459717,
+        0.0,
+        0.340000003576279
+      ],
+      "device_type": "Debug",
+      "has_centroid": true,
+      "has_default_name": true,
+      "hesai_settings": {
+        "ip": "192.168.1.201"
+      },
+      "name": "Camera 3",
+      "orbbec_settings": {
+        "fps": "30",
+        "ip": "None",
+        "resolution": "512x512"
+      },
+      "thinning": 0.0,
+      "transform": {
+        "basis": {
+          "x": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "z": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "origin": [
+          2.81908464431763,
+          3.81917834281921,
+          2.81915044784546
+        ]
+      }
+    }
+  ],
+  "carto_save_version": 3,
+  "crop_region": {
+    "active": true,
+    "transform": {
+      "basis": {
+        "x": [
+          5.0,
+          0.0,
+          0.0
+        ],
+        "y": [
+          0.0,
+          2.0,
+          0.0
+        ],
+        "z": [
+          0.0,
+          0.0,
+          5.0
+        ]
+      },
+      "origin": [
+        2.5,
+        1.0,
+        2.5
+      ]
+    }
+  },
+  "ndi_outputs": [
+    {
+      "current_view": 0,
+      "toggled": true
+    }
+  ],
+  "network_outputs": [],
+  "save_time": 1784141213.567,
+  "viewport_camera": {
+    "camera_mode": "Perspective",
+    "camera_transform": {
+      "basis": {
+        "x": [
+          0.753868043422699,
+          0.0,
+          -0.657025218009949
+        ],
+        "y": [
+          -0.342781364917755,
+          0.853118360042572,
+          -0.39330592751503
+        ],
+        "z": [
+          0.560520350933075,
+          0.521716833114624,
+          0.643138706684113
+        ]
+      },
+      "origin": [
+        4.42899990081787,
+        6.30100011825562,
+        8.78400039672852
+      ]
+    },
+    "pivot_global_position": [
+      -0.766313076019287,
+      1.46534633636475,
+      2.82291984558105
+    ]
+  }
+}
